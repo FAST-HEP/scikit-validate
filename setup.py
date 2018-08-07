@@ -36,6 +36,7 @@ setup(
     entry_points={
         'console_scripts': [
             'lz_validation=lz_validation.cli:main',
+            'run-clang-tidy=lz_validation.clang_tidy:main',
         ],
     },
     install_requires=requirements,
