@@ -17,7 +17,7 @@ stages:
 
 linters:
   image: python:3.5
-  stage: test
+  stage: quick-checks
   script: tox -e linters
 
 build:
