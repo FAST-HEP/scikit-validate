@@ -14,6 +14,7 @@ stages:
   - build
   - test
   - deploy
+  - cleanup
 
 linters:
   image: python:3.5
@@ -51,7 +52,24 @@ docs:
   stage: test
   script: make docs
 
-deploy:
+deploy_pypi:
   stage: deploy
   script:
-    - echo "Nothing to to (yet)"
+    script:   # Configure the PyPI credentials, then push the package, and cleanup the creds.
+    - echo "[server-login]" >> ~/.pypirc
+    - echo "username=" ${PYPI_USER} >> ~/.pypirc
+    - echo "password=" ${PYPI_PASSWORD} >> ~/.pypirc
+    - python setup.py check sdist bdist_wheel --universal
+    - python setup.py upload   # This will fail if your creds are bad.
+    - echo "" > ~/.pypirc && rm ~/.pypirc  # If the above fails, this won't run.
+  only:
+    - tags
+  except:
+    - branches
+
+
+cleanup_pypirc:
+   stage: cleanup
+   when: always   # this is important; run even if preceding stages failed.
+   script:
+    - rm -vf ~/.pypirc  # we don't want to leave these around, but GitLab may clean up anyway.
