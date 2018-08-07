@@ -16,6 +16,8 @@ import logging
 import errno
 import click
 
+from lz_validation.io import save_metrics_to_file
+
 
 def monitor_command(command):
     usage_start = resource.getrusage(resource.RUSAGE_CHILDREN)
@@ -62,14 +64,6 @@ def which(program):
     return None
 
 
-def save_to_file(metrics, metrics_file):
-    if os.path.exists(metrics_file):
-        with open(metrics_file) as f:
-            metrics.update(json.load(f))
-    with open(metrics_file, 'w') as f:
-        json.dump(metrics, f)
-
-
 def print_metrics(metrics):
     command = metrics.keys()[0]
     params = dict(command=command)
@@ -88,7 +82,7 @@ def print_metrics(metrics):
 def cli(command, output_folder, metrics_file):
     metrics = monitor_command(command.split())
     print_metrics(metrics)
-    save_to_file(metrics, metrics_file)
+    save_metrics_to_file(metrics, metrics_file)
 
 if __name__ == '__main__':
     command = sys.argv[1:]
