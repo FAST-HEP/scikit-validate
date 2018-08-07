@@ -55,7 +55,7 @@ docs:
 deploy_pypi:
   stage: deploy
   script:
-    script:   # Configure the PyPI credentials, then push the package, and cleanup the creds.
+    # Configure the PyPI credentials, then push the package, and cleanup the creds.
     - echo "[server-login]" >> ~/.pypirc
     - echo "username=" ${PYPI_USER} >> ~/.pypirc
     - echo "password=" ${PYPI_PASSWORD} >> ~/.pypirc
