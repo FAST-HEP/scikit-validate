@@ -1,0 +1,51 @@
+image: python
+
+before_script:
+  - curl -O https://bootstrap.pypa.io/get-pip.py
+  - python get-pip.py
+  - pip install -r requirements_dev.txt
+
+after_script:
+  - pip install codecov
+  # - codecov --token=<>
+
+stages:
+  - quick-checks
+  - build
+  - test
+  - deploy
+
+linters:
+  image: python:3.5
+  stage: test
+  script: tox -e linters
+
+build:
+  stage: build
+  script:
+    - make install-dev
+    - make dist
+
+python2:
+  image: python:2.7
+  stage: test
+  script: tox -e py27
+
+python36:
+  image: python:3.6
+  stage: test
+  script: tox -e py36
+
+python37:
+  image: python:3.7
+  stage: test
+  script: tox -e py37
+
+docs:
+  stage: test
+  script: make docs
+
+deploy:
+  stage: deploy
+  script:
+    - echo "Nothing to to (yet)"
