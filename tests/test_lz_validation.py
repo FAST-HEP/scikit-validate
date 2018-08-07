@@ -7,7 +7,7 @@ import pytest
 
 from click.testing import CliRunner
 
-from lz_validation import lz_validation
+# from lz_validation import lz_validation
 from lz_validation import cli
 
 

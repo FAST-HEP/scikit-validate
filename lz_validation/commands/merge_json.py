@@ -1,8 +1,7 @@
-'''
-Merges <N>JSON files into one output file
-'''
-import click
+"""Merges <N>JSON files into one output file."""
 import json
+
+import click
 
 
 @click.command(help=__doc__)
