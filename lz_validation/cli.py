@@ -1,16 +1,39 @@
 # -*- coding: utf-8 -*-
 
 """Console script for lz_validation."""
-import sys
 import click
+import os
+import sys
+
+plugin_folder = os.path.join(os.path.dirname(__file__), 'commands')
+
+class LzCLI(click.MultiCommand):
+    '''
+        Copied from http://click.pocoo.org/5/commands/#custom-multi-commands
+    '''
+
+    def list_commands(self, ctx):
+        rv = []
+        for filename in os.listdir(plugin_folder):
+            if filename.endswith('.py'):
+                rv.append(filename[:-3])
+        rv.sort()
+        return rv
+
+    def get_command(self, ctx, name):
+        ns = {}
+        fn = os.path.join(plugin_folder, name + '.py')
+        with open(fn) as f:
+            code = compile(f.read(), fn, 'exec')
+            eval(code, ns, ns)
+        return ns.get('cli', None)
 
 
-@click.command()
+
+@click.group(cls=LzCLI, help='This tool\'s subcommands are loaded from a '
+            'plugin folder dynamically.')
 def main(args=None):
     """Console script for lz_validation."""
-    click.echo("Replace this message by putting your code into "
-               "lz_validation.cli.main")
-    click.echo("See click documentation at http://click.pocoo.org/")
     return 0
 
 
