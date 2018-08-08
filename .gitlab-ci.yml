@@ -55,12 +55,18 @@ docs:
 deploy_pypi:
   stage: deploy
   script:
+    - pip install twine
+    - echo "[distutils]" >> ~/.pypirc
+    - echo "index-servers =" >> ~/.pypirc
+    - echo "    pypi" >> ~/.pypirc
+    - echo "" >> ~/.pypirc
+    - echo "[pypi]" >> ~/.pypirc
+    - echo "repository = https://upload.pypi.org/legacy/" >> ~/.pypirc
     # Configure the PyPI credentials, then push the package, and cleanup the creds.
-    - echo "[server-login]" >> ~/.pypirc
-    - echo "username=" ${PYPI_USER} >> ~/.pypirc
-    - echo "password=" ${PYPI_PASSWORD} >> ~/.pypirc
-    - python setup.py check sdist bdist_wheel --universal
-    - python setup.py upload   # This will fail if your creds are bad.
+    - 'echo "username = ${PYPI_USER}" >> ~/.pypirc'
+    - 'echo "password = ${PYPI_PASSWORD}" >> ~/.pypirc'
+    - python setup.py check sdist bdist_wheel
+    - twine upload -r pypi dist/* # This will fail if your creds are bad.
     - echo "" > ~/.pypirc && rm ~/.pypirc  # If the above fails, this won't run.
   only:
     - tags
