@@ -5,7 +5,7 @@ echo "    pypi" >> ~/.pypirc
 echo "" >> ~/.pypirc
 echo "[pypi]" >> ~/.pypirc
 echo "repository = https://upload.pypi.org/legacy/" >> ~/.pypirc
-Configure the PyPI credentials, then push the package, and cleanup the creds.
+# Configure the PyPI credentials, then push the package, and cleanup the creds.
 echo "username = ${PYPI_USER}" >> ~/.pypirc
 echo "password = ${PYPI_PASSWORD}" >> ~/.pypirc
 set -x
