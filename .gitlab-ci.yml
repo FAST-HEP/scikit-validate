@@ -58,6 +58,9 @@ docs:
 deploy_pypi:
   stage: deploy
   script:
+    - echo "[pypi]" >> ~/.pypirc
+    - echo "username =" $PYPI_USER >> ~/.pypirc
+    - echo "password =" $PYPI_PASSWORD >> ~/.pypirc
     - pip install -U twine setuptools
     - python setup.py check sdist bdist_wheel
     - twine upload dist/*
