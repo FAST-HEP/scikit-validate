@@ -10,6 +10,7 @@ Meant to be run within a Gitlab CI job and needs the following ENV variables def
 
 Related issue: https://gitlab.com/gitlab-org/gitlab-ce/issues/15280
 """
+import logging
 import os
 import sys
 
@@ -36,6 +37,6 @@ def cli(args=None):
             target_branch = mr.attributes['target_branch']
 
     if target_branch is None:
-        print('Could not find matching MR')
+        logging.error('Could not find matching MR')
         sys.exit(-1)
     click.echo(target_branch)
