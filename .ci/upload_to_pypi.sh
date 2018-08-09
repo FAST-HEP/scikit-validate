@@ -10,5 +10,5 @@ echo "username = ${PYPI_USER}" >> ~/.pypirc
 echo "password = ${PYPI_PASSWORD}" >> ~/.pypirc
 set -x
 python setup.py check sdist bdist_wheel
-twine upload -r pypi dist/* # This will fail if your creds are bad.
+twine upload -u ${PYPI_USER} -p ${PYPI_PASSWORD} -r pypi dist/* # This will fail if your creds are bad.
 set +x
