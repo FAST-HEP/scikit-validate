@@ -45,11 +45,11 @@ setup(
     include_package_data=True,
     keywords='lz_validation',
     name='lz_validation',
-    packages=find_packages(include=['lz_validation']),
+    packages=find_packages(include=['lz_validation', 'lz_validation.commands', 'lz_validation.io']),
     setup_requires=setup_requirements,
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/kreczko/lz_validation',
-    version='0.0.1',
+    version='0.0.2',
     zip_safe=False,
 )
