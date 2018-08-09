@@ -8,10 +8,13 @@ import os
 import re
 from setuptools import setup, find_packages
 
+here = os.path.abspath(os.path.dirname(__file__))
+
 
 def read(*parts):
     # intentionally *not* adding an encoding option to open, See:
     #   https://github.com/pypa/virtualenv/issues/201#issuecomment-3145690
+    global here
     with codecs.open(os.path.join(here, *parts), 'r') as fp:
         return fp.read()
 
@@ -23,6 +26,7 @@ def find_version(*file_paths):
     if version_match:
         return version_match.group(1)
     raise RuntimeError("Unable to find version string.")
+
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
