@@ -81,7 +81,7 @@ def print_metrics(metrics):
 @click.command(help=__doc__)
 @click.argument('command')
 @click.option('--metrics-file', default='metrics.json')
-def cli(command, output_folder, metrics_file):
+def cli(command, metrics_file):
     metrics = monitor_command(command.split())
     print_metrics(metrics)
     save_metrics_to_file(metrics, metrics_file)
