@@ -22,12 +22,11 @@ logging.basicConfig(level=logging.INFO)
 @click.option('--output-file')
 def cli(input_file, output_file):
     f = uproot.open(input_file)
-    e = f['MCTruthTree']['MCTruthEvent']
-    b = f['MCTruthTree']['MCTruthEvent']['fReferencePhotonTime_ns']
 
     results = [inspect_size(name, obj) for (name, obj) in root_walk(f)]
     df = pandas.DataFrame.from_dict(results)
-    order = ['name', 'interpretation', 'uncompressedbytes', 'compressedbytes', 'compressionratio', 'fZipBytes','fTotBytes']
+    order = ['name', 'interpretation', 'uncompressedbytes',
+             'compressedbytes', 'compressionratio', 'fZipBytes', 'fTotBytes']
     df = df[order]
     print(df)
 

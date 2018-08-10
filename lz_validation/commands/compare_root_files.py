@@ -46,7 +46,7 @@ def _walk(obj):
     for k in sorted(obj.allkeys()):
         try:
             yield k.decode("utf-8"), obj[k].array()
-        except:
+        except (KeyError, AttributeError):
             for n, o in _walk(obj[k]):
                 yield '{0}.{1}'.format(k.decode("utf-8"), n), o
 
@@ -73,7 +73,7 @@ def _compare_root_files(path, ref_path):
 def _diff(n1, n2):
     try:
         return n1 - n2
-    except:
+    except TypeError:
         return [0]  # TODO: need to compare string as well?
 
 

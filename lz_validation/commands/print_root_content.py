@@ -18,7 +18,7 @@ def cli(input_file, tree):
     f = uproot.open(input_file)
     if not tree:
         for key in f.keys():
-            print('>'*10, 'Tree =', key)
+            print('>' * 10, 'Tree =', key)
             f[key].show()
         return
 
