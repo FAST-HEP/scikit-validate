@@ -34,7 +34,7 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['Click>=6.0', 'python-gitlab', 'pandas', 'matplotlib']
+requirements = ['Click>=6.0', 'matplotlib', 'python-gitlab', 'pandas', 'uproot']
 
 setup_requirements = ['pytest-runner', ]
 
