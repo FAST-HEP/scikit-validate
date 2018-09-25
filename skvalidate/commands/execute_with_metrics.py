@@ -6,7 +6,7 @@ For testing install 'stress' package and run
 
 \b
     export OUTPUT_DIR=<existing folder>
-    lz_validation execute_with_metrics stress --cpu 1 --io 1 --vm 1 --vm-bytes 128M --timeout 10s --verbose
+    skvalidate execute_with_metrics stress --cpu 1 --io 1 --vm 1 --vm-bytes 128M --timeout 10s --verbose
 """
 from __future__ import print_function
 
@@ -18,7 +18,7 @@ import subprocess
 
 import click
 
-from lz_validation.io import save_metrics_to_file
+from skvalidate.io import save_metrics_to_file
 
 
 def monitor_command(command):

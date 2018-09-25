@@ -1,16 +1,16 @@
 =============
-lz-validation
+scikit-validate
 =============
 
 
-.. image:: https://img.shields.io/pypi/v/lz_validation.svg
-        :target: https://pypi.python.org/pypi/lz_validation
+.. image:: https://img.shields.io/pypi/v/skvalidate.svg
+        :target: https://pypi.python.org/pypi/skvalidate
 
-.. image:: https://img.shields.io/travis/kreczko/lz_validation.svg
-        :target: https://travis-ci.org/kreczko/lz_validation
+.. image:: https://img.shields.io/travis/kreczko/skvalidate.svg
+        :target: https://travis-ci.org/kreczko/skvalidate
 
-.. image:: https://readthedocs.org/projects/lz-validation/badge/?version=latest
-        :target: https://lz-validation.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/scikit-validate/badge/?version=latest
+        :target: https://scikit-validate.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
 
@@ -20,7 +20,7 @@ LZ physics validation package
 
 
 * Free software: Apache Software License 2.0
-* Documentation: https://lz-validation.readthedocs.io.
+* Documentation: https://scikit-validate.readthedocs.io.
 
 
 Features

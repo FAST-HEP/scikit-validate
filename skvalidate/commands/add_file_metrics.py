@@ -5,7 +5,7 @@ For testing install 'stress' package and run
 
 \n
     dd if=/dev/zero of=test.file bs=10240 count=1
-    lz_validation add_file_metrics test.file
+    skvalidate add_file_metrics test.file
 """
 from __future__ import division, print_function
 
@@ -13,7 +13,7 @@ import os
 
 import click
 
-from lz_validation.io import save_metrics_to_file
+from skvalidate.io import save_metrics_to_file
 
 
 def get_file_metrics(input_file):

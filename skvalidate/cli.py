@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""Console script for lz_validation."""
+"""Console script for skvalidate."""
 import os
 import sys
 
@@ -34,7 +34,7 @@ class LzCLI(click.MultiCommand):
 @click.group(cls=LzCLI, help='This tool\'s subcommands are loaded from a '
              'plugin folder dynamically.')
 def main(args=None):
-    """Console script for lz_validation."""
+    """Console script for skvalidate."""
     return 0
 
 

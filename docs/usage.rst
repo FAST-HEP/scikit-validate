@@ -2,6 +2,6 @@
 Usage
 =====
 
-To use lz-validation in a project::
+To use scikit-validate in a project::
 
-    import lz_validation
+    import skvalidate as skval

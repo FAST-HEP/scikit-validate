@@ -20,12 +20,16 @@ import gitlab
 
 
 @click.command(help=__doc__)
-def cli(args=None):
+def cli(gitlab_server='gitlab.com'):
     ci_project_id = os.environ.get('CI_PROJECT_ID')
     ci_api_token = os.environ.get('CI_API_TOKEN')
     ci_commit_sha = os.environ.get('CI_COMMIT_SHA')
 
-    connection = gitlab.Gitlab('https://lz-git.ua.edu/', ci_api_token, api_version=4)
+    connection = gitlab.Gitlab(
+        'https://{0}/'.format(gitlab_server),
+        ci_api_token,
+        api_version=4,
+    )
     connection.auth()
 
     project = connection.projects.get(ci_project_id)

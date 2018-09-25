@@ -5,7 +5,7 @@ Credits
 Development Lead
 ----------------
 
-* Luke Kreczko <kreczko@cern.ch>
+* Faster Analysis Software Taskforce (FAST) <fast-hep@cern.ch>
 
 Contributors
 ------------

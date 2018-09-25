@@ -1,4 +1,4 @@
-Welcome to lz-validation's documentation!
+Welcome to the scikit-validate documentation!
 ======================================
 
 .. toctree::

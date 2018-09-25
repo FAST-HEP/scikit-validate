@@ -1,4 +1,4 @@
-* lz-validation version:
+* scikit-validate version:
 * Python version:
 * Operating System:
 

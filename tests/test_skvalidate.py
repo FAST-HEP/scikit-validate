@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Tests for `lz_validation` package."""
+"""Tests for `skvalidate` package."""
 
 import pytest
 
 from click.testing import CliRunner
 
-# from lz_validation import lz_validation
-from lz_validation import cli
+# from skvalidate import skvalidate
+from skvalidate import cli
 
 
 @pytest.fixture

@@ -9,7 +9,7 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=.
 set BUILDDIR=_build
-set SPHINXPROJ=lz_validation
+set SPHINXPROJ=skvalidate
 
 if "%1" == "" goto help
 
