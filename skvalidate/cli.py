@@ -9,7 +9,7 @@ import click
 plugin_folder = os.path.join(os.path.dirname(__file__), 'commands')
 
 
-class LzCLI(click.MultiCommand):
+class ValidateCLI(click.MultiCommand):
     """Copied from http://click.pocoo.org/5/commands/#custom-multi-commands."""
 
     def list_commands(self, ctx):
@@ -31,7 +31,7 @@ class LzCLI(click.MultiCommand):
         return ns.get('cli', None)
 
 
-@click.group(cls=LzCLI, help='This tool\'s subcommands are loaded from a '
+@click.group(cls=ValidateCLI, help='This tool\'s subcommands are loaded from a '
              'plugin folder dynamically.')
 def main(args=None):
     """Console script for skvalidate."""
