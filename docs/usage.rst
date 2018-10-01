@@ -78,6 +78,16 @@ will result in `/d/b/a`. Recommended use is to clean up ENV variables::
     PATH=`skvalidate remove_from_env /a/b/c:/a/b/d:/d/b/a /a/b`
 
 
+skvalidate root_diff
+--------------------
+Calculates the difference between two ROOT (https://root.cern.ch/) files.
+If a difference is present, the command will create plots for the distributions that differ.::
+
+    skvalidate root_diff file_under_test reference_file --out-dir <path to output folder (for plots etc)>
+
+TODO: include plot examples 
+
+
 run-clang-tidy
 --------------
 From https://github.com/llvm-mirror/clang-tools-extra/blob/master/clang-tidy/tool/run-clang-tidy.py
