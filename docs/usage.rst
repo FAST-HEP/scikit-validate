@@ -47,6 +47,22 @@ At the moment only (simple) CPU time and RAM usage are supported::
       --help                   Show this message and exit.
 
 
+skvalidate get_artifact_url
+-----------------------------
+Reads the ENV variable in a Gitlab CI job and constructs a URL for a given existing file or folder.
+
+e.g.::
+
+    skvalidate get_artefact_url output/test_file
+
+will return :code:`${CI_PROJECT_URL}/-/jobs/${CI_JOB_ID}/artifacts/file/output/test_file`
+
+while::
+
+    skvalidate get_artefact_url output
+
+will return :code:`${CI_PROJECT_URL}/-/jobs/${CI_JOB_ID}/artifacts/browse/output`
+
 skvalidate get_target_branch
 -----------------------------
 Script to extract the target branch for a given project and commit hash.
@@ -85,7 +101,7 @@ If a difference is present, the command will create plots for the distributions 
 
     skvalidate root_diff file_under_test reference_file --out-dir <path to output folder (for plots etc)>
 
-TODO: include plot examples 
+TODO: include plot examples
 
 
 run-clang-tidy
