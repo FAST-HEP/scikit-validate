@@ -22,9 +22,9 @@ Features
 --------
 
 * Collect metrics in JSON output
-  * measure file metrics (e.g. size)
-  * measure execution time and memory usage
-  * compare to previous executions
+ * measure file metrics (e.g. size)
+ * measure execution time and memory usage
+ * compare to previous executions
 * compare ROOT files & plot discrepancies
 * create validation reports
 
