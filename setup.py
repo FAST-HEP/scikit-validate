@@ -60,6 +60,7 @@ setup(
         'console_scripts': [
             'skvalidate=skvalidate.cli:main',
             'run-clang-tidy=skvalidate.clang_tidy:main',
+            'execute_with_metrics=skvalidate.commands.execute_with_metrics:cli'
         ],
     },
     install_requires=requirements,

@@ -20,7 +20,8 @@ import gitlab
 
 
 @click.command(help=__doc__)
-def cli(gitlab_server='gitlab.com'):
+@click.option('--gitlab-server', default='gitlab.com')
+def cli(gitlab_server):
     ci_project_id = os.environ.get('CI_PROJECT_ID')
     ci_api_token = os.environ.get('CI_API_TOKEN')
     ci_commit_sha = os.environ.get('CI_COMMIT_SHA')

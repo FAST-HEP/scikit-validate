@@ -5,8 +5,9 @@ Command that wraps and monitors another command.
 For testing install 'stress' package and run
 
 \b
-    export OUTPUT_DIR=<existing folder>
-    skvalidate execute_with_metrics stress --cpu 1 --io 1 --vm 1 --vm-bytes 128M --timeout 10s --verbose
+    skvalidate execute_with_metrics 'stress --cpu 1 --io 1 --vm 1 --vm-bytes 128M --timeout 10s --verbose' -m resource_metrics.json
+
+If the output file, default resource_metrics.json, already exists it will be read first and results will be appended.
 """
 from __future__ import print_function
 
@@ -80,8 +81,8 @@ def print_metrics(metrics):
 
 @click.command(help=__doc__)
 @click.argument('command')
-@click.option('--metrics-file', default='metrics.json')
-def cli(command, output_folder, metrics_file):
+@click.option('-m', '--metrics-file', default='resource_metrics.json')
+def cli(command, metrics_file):
     metrics = monitor_command(command.split())
     print_metrics(metrics)
     save_metrics_to_file(metrics, metrics_file)

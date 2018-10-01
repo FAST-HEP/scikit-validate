@@ -1,3 +1,4 @@
+# From https://github.com/llvm-mirror/clang-tools-extra/blob/master/clang-tidy/tool/run-clang-tidy.py
 # Script to run clang-tidy in parallel.
 #
 # ===- run-clang-tidy.py - Parallel clang-tidy runner ---------*- python -*--===#
