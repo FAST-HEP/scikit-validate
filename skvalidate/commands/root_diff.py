@@ -6,7 +6,6 @@ TODO: separate functionality: plotting, recursive reading of ROOT files, diff ca
 TODO: allow for injection of user-defined high-level variables
 
 """
-#!/usr/bin/env python
 from __future__ import print_function
 import os
 import uproot
@@ -46,7 +45,7 @@ def _walk(obj):
     for k in sorted(obj.allkeys()):
         try:
             yield k.decode("utf-8"), obj[k].array()
-        except:
+        except Exception:
             for n, o in _walk(obj[k]):
                 yield '{0}.{1}'.format(k.decode("utf-8"), n), o
 
@@ -73,7 +72,7 @@ def _compare_mctruth(path, ref_path):
 def _diff(n1, n2):
     try:
         return n1 - n2
-    except:
+    except Exception:
         return [0]  # TODO: need to compare string as well?
 
 

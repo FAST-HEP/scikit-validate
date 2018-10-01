@@ -5,7 +5,8 @@ Command that wraps and monitors another command.
 For testing install 'stress' package and run
 
 \b
-    skvalidate execute_with_metrics 'stress --cpu 1 --io 1 --vm 1 --vm-bytes 128M --timeout 10s --verbose' -m resource_metrics.json
+    skvalidate execute_with_metrics 'stress --cpu 1 --io 1 --vm 1 --vm-bytes 128M --timeout 10s --verbose' \
+                                    -m resource_metrics.json
 
 If the output file, default resource_metrics.json, already exists it will be read first and results will be appended.
 """

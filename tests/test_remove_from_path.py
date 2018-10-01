@@ -3,8 +3,6 @@
 
 """Tests for `skvalidate` package."""
 
-import pytest
-
 from click.testing import CliRunner
 
 from skvalidate.commands.remove_from_env import cli
