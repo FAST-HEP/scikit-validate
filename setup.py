@@ -55,7 +55,7 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
-    description="LZ physics validation package",
+    description="Science validation toolkit",
     entry_points={
         'console_scripts': [
             'skvalidate=skvalidate.cli:main',
@@ -68,12 +68,12 @@ setup(
     long_description=readme + '\n\n' + history,
     include_package_data=True,
     keywords='skvalidate',
-    name='skvalidate',
+    name='scikit-validate',
     packages=find_packages(include=['skvalidate', 'skvalidate.commands', 'skvalidate.io']),
     setup_requires=setup_requirements,
     test_suite='tests',
     tests_require=test_requirements,
-    url='https://github.com/kreczko/skvalidate',
+    url='https://gitlab.cern.ch/fast-hep/public/scikit-validate',
     version=find_version("skvalidate", '__init__.py'),
     zip_safe=False,
 )
