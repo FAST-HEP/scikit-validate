@@ -67,6 +67,16 @@ Usage::
     skvalidate merge_json [OPTIONS] [INPUT_FILES]... OUTPUT
 
 
+skvalidate remove_from_env
+-----------------------------
+Removes a path from an environment variable, e.g. ::
+
+    skvalidate remove_from_env /a/b/c:/a/b/d:/d/b/a /a/b
+
+will result in `/d/b/a`. Recommended use is to clean up ENV variables::
+
+    PATH=`skvalidate remove_from_env /a/b/c:/a/b/d:/d/b/a /a/b`
+
 
 run-clang-tidy
 --------------
