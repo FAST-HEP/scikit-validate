@@ -18,6 +18,7 @@ stages:
   - quick-checks
   - build
   - test
+  - validation
   - deploy
   - cleanup
 
@@ -56,6 +57,20 @@ python37:
 docs:
   stage: test
   script: make docs
+
+
+validate-root-diff:
+  image: python:3.7
+  stage: validation
+  script:
+    - mkdir -p output/validate/test_1_2
+    - skvalidate root_diff tests/samples/test_1.root tests/samples/test_2.root --out-dir=output/validate/test_1_2
+    - skvalidate root_diff tests/samples/test_1.root tests/samples/test_3.root --out-dir=output/validate/test_1_3
+  artifacts:
+    paths:
+    - output/validate
+    expire_in: 1 week
+
 
 deploy_pypi:
   stage: deploy
