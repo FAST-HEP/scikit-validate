@@ -4,8 +4,6 @@ Run from main directory
 Usage:
     python tests/samples/generate_samples.py
 """
-
-
 from random import gauss
 
 
@@ -26,6 +24,7 @@ def generate_root_data(output_file="tests/samples/test_1.root", branches={'x': '
     tree.write()
 
     f.close()
+
 
 if __name__ == '__main__':
     branches = {'x': 'F', 'y': 'F', 'z': 'F', 'i': 'I'}
