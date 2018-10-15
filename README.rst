@@ -15,7 +15,7 @@ scikit-validate
 
 Overview
 --------
-scikit-validate is a validation package for science output developed within F.A.S.T (https://fast-hep.web.cern.ch).
+scikit-validate is a validation package for science output developed within `F.A.S.T.`_.
 This package provides commands for monitoring and comparing analysis outputs, computing resource usage (e.g. CPU time/RAM) as well as commands for summarising findings.
 
 Features
@@ -33,5 +33,6 @@ Credits
 
 This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
 
+.. _`F.A.S.T.`: https://fast-hep.web.cern.ch/fast-hep/public
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
