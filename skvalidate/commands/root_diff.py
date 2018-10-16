@@ -25,7 +25,7 @@ from skvalidate import compare
 @click.option('--out-dir', type=click.Path(exists=True))
 def cli(file_under_test, reference_file, out_dir):
     assert out_dir is not None
-    are_OK, are_not_OK = _compare_mctruth(file_under_test, reference_file)
+    are_OK, are_not_OK = _compare(file_under_test, reference_file)
 
     outfiles = []
     for o_name, values in are_not_OK:
@@ -43,7 +43,7 @@ def cli(file_under_test, reference_file, out_dir):
     # TODO: produce validatition report dict
 
 
-def _compare_mctruth(path, ref_path):
+def _compare(path, ref_path):
     are_OK = []
     are_not_OK = []
 
