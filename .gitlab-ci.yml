@@ -64,7 +64,8 @@ validate-root-diff:
   stage: validation
   script:
     - make install
-    - mkdir -p output/validate/test_1_2 output/validate/test_1_3
+    - mkdir -p output/validate/test_1_2
+    - mkdir -p output/validate/test_1_3
     - skvalidate root_diff tests/samples/test_1.root tests/samples/test_2.root --out-dir=output/validate/test_1_2
     - skvalidate root_diff tests/samples/test_1.root tests/samples/test_3.root --out-dir=output/validate/test_1_3
   artifacts:
