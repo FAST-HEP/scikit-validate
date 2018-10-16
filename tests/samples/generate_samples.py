@@ -21,6 +21,8 @@ def generate_root_data(output_file="tests/samples/test_1.root", branches={'x': '
         tree.y = gauss(.3, 2.)
         tree.z = gauss(13., 42.)
         tree.i = i
+        if 'a' in branches:
+            tree.a = gauss(.1, 1.)
         tree.fill()
     tree.write()
 
