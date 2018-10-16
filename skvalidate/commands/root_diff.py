@@ -16,6 +16,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
+from skvalidate.io import walk
 
 @click.command()
 @click.argument('file_under_test', type=click.Path(exists=True))
@@ -41,22 +42,11 @@ def cli(file_under_test, reference_file, out_dir):
     # TODO: produce validatition report dict
 
 
-def _walk(obj):
-    for k in sorted(obj.allkeys()):
-        try:
-            yield k.decode("utf-8"), obj[k].array()
-        except Exception:
-            for n, o in _walk(obj[k]):
-                yield '{0}.{1}'.format(k.decode("utf-8"), n), o
-
-
 def _compare_mctruth(path, ref_path):
-    mctruth = uproot.open(path)
-    ref_mctruth = uproot.open(ref_path)
     are_OK = []
     are_not_OK = []
 
-    for (o_name, orig), (ref_name, ref) in zip(_walk(mctruth), _walk(ref_mctruth)):
+    for (o_name, orig), (ref_name, ref) in zip(walk(path), walk(ref_path)):
         if o_name != ref_name:
             continue
             raise ValueError(
