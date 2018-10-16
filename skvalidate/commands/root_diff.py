@@ -78,11 +78,6 @@ def _isOK(diff, ref, orig):
     return max(d) < isOKMaxDiff
 
 
-def store_diff(name, diff, out_dir):
-    out = os.path.join(out_dir, name + '.npy')
-    np.save(out, diff)
-
-
 def draw_diff(name, values, out_dir):
     orig, ref, diff = values
     orig_hist, bins = np.histogram(orig, 100)
