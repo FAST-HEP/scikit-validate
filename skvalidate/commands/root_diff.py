@@ -17,6 +17,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 from skvalidate.io import walk
+from skvalidate import compare
 
 @click.command()
 @click.argument('file_under_test', type=click.Path(exists=True))
@@ -51,31 +52,13 @@ def _compare_mctruth(path, ref_path):
             continue
             raise ValueError(
                 'Comparing two different entries {0} vs {1}'.format(o_name, ref_name))
-        diff = _diff(ref, orig)
-        if not _isOK(diff, ref, orig):
+        diff = compare.difference(ref, orig)
+        if not compare.is_ok(diff, tolerance=0.02):
             are_not_OK.append((o_name, (orig, ref, diff)))
         else:
-            are_OK.append(o_name)
+            are_OK.append((o_name, (orig, ref, diff)))
     return are_OK, are_not_OK
 
-
-def _diff(n1, n2):
-    try:
-        return n1 - n2
-    except Exception:
-        return [0]  # TODO: need to compare string as well?
-
-
-def _isOK(diff, ref, orig):
-    if len(diff) == 0:
-        return len(ref) == len(orig)
-    isOKMaxDiff = 0.02  # 2%
-    d = np.absolute(diff)
-    norm = np.linalg.norm(d)
-    if norm == 0:
-        return True
-    d = d / norm
-    return max(d) < isOKMaxDiff
 
 
 def draw_diff(name, values, out_dir):
