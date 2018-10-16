@@ -24,6 +24,5 @@ def test_walk(input_file, names, types):
     result = list(walk(input_file))
 
     for name, array in result:
-        print(name)
         assert name in names
         assert array.dtype == types[names.index(name)]
