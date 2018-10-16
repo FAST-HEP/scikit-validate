@@ -11,7 +11,7 @@ from skvalidate.io import walk
     ),
     (
         'tests/samples/test_2.root',
-        ['test;1.i', 'test;1.x', 'test;1.y','test;1.z'],
+        ['test;1.i', 'test;1.x', 'test;1.y', 'test;1.z'],
         [np.int32, np.float32, np.float32, np.float32]
     ),
     (

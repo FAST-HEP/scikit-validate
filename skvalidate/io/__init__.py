@@ -28,5 +28,5 @@ def _walk(obj):
 
 
 def save_array_to_file(array, name, output_dir):
-    output_file = os.path.join(out_dir, name + '.npy')
+    output_file = os.path.join(output_dir, name + '.npy')
     np.save(output_file, array)

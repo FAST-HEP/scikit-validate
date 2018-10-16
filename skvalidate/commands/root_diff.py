@@ -7,9 +7,6 @@ TODO: allow for injection of user-defined high-level variables
 
 """
 from __future__ import print_function
-import os
-import uproot
-import numpy as np
 import click
 
 from skvalidate.io import walk
