@@ -1,12 +1,29 @@
 import numpy as np
+import pytest
 from skvalidate.io import walk
 
 
-def test_walk():
-    result = list(walk('tests/samples/test_1.root'))
-    keys = ['test;1.i',  'test;1.x', 'test;1.y', 'test;1.z']
-    types = [np.int32, np.float32, np.float32, np.float32]
-    for i, k, t in zip(result, keys, types):
-        name, array = i
-        assert name == k
-        assert array.dtype == t
+@pytest.mark.parametrize("input_file,names,types", [
+    (
+        'tests/samples/test_1.root',
+        ['test;1.i', 'test;1.x', 'test;1.y', 'test;1.z'],
+        [np.int32, np.float32, np.float32, np.float32]
+    ),
+    (
+        'tests/samples/test_2.root',
+        ['test;1.i', 'test;1.x', 'test;1.y','test;1.z'],
+        [np.int32, np.float32, np.float32, np.float32]
+    ),
+    (
+        'tests/samples/test_3.root',
+        ['test;1.i', 'test;1.x', 'test;1.y', 'test;1.z', 'test;1.a'],
+        [np.int32, np.float32, np.float32, np.float32, np.float32]
+    ),
+])
+def test_walk(input_file, names, types):
+    result = list(walk(input_file))
+
+    for name, array in result:
+        print(name)
+        assert name in names
+        assert array.dtype == types[names.index(name)]
