@@ -16,7 +16,7 @@ def generate_root_data(output_file="tests/samples/test_1.root", branches={'x': '
     tree = Tree("test")
     tree.create_branches(branches)
 
-    for i in six.xrange(10000):
+    for i in six.moves.xrange(10000):
         tree.x = gauss(.5, 1.)
         tree.y = gauss(.3, 2.)
         tree.z = gauss(13., 42.)
