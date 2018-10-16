@@ -101,7 +101,15 @@ If a difference is present, the command will create plots for the distributions 
 
     skvalidate root_diff file_under_test reference_file --out-dir <path to output folder (for plots etc)>
 
-TODO: include plot examples
+Example output 1 - `test.a` only exists in the reference file:
+
+.. image:: _static/root_diff/test.a.png
+   :target: _static/root_diff/test.a.png
+
+Example output 2 - `test.y` exists in both, but different random seed:
+
+   .. image:: _static/root_diff/test.y.png
+      :target: _static/root_diff/test.y.png
 
 
 run-clang-tidy

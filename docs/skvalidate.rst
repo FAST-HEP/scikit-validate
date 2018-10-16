@@ -7,7 +7,9 @@ Subpackages
 .. toctree::
 
     skvalidate.commands
+    skvalidate.compare
     skvalidate.io
+    skvalidate.vis
 
 Submodules
 ----------
