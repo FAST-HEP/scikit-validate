@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from skvalidate.io import walk, unpack
+from skvalidate.io import walk
 
 
 @pytest.mark.parametrize("input_file,names,types", [
