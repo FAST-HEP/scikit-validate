@@ -8,7 +8,7 @@ def difference(a1, a2):
         return (a1 - a2).flatten()
     except Exception:
         # TODO: need to compare string as well?
-        return [0]
+        return []
 
 
 def is_ok(diff, normalisation, tolerance=0.02):
@@ -38,7 +38,11 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
         value2 = content2[name] if name in content2 else np.array([np.Infinity])
 
         diff = difference(value2, value1)
-        if not is_ok(diff, normalisation=np.linalg.norm(value1), tolerance=tolerance):
+        if not len(diff):
+            are_OK.append((name, (value1, value2, diff)))
+            continue
+        norm = np.sqrt(np.sum(value1**2))
+        if not is_ok(diff, normalisation=norm, tolerance=tolerance):
             are_not_OK.append((name, (value1, value2, diff)))
         else:
             are_OK.append((name, (value1, value2, diff)))

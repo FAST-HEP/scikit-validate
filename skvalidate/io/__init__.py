@@ -39,7 +39,16 @@ def _walk(obj):
 
 
 def unpack(name, obj):
-    flat_array = obj.array(flatten=True)
+    try:
+        array = obj.array()
+    except Exception:
+        yield name, []
+        return
+
+    if hasattr(array, 'flatten'):
+        flat_array = obj.array().flatten()
+    else:
+        flat_array = array
 
     if flat_array.__class__.__name__ == 'ObjectArrayMethods':
         o = flat_array[0]
