@@ -85,35 +85,35 @@ def test_is_ok(diff, normalisation, tolerance, expected):
         'tests/samples/test_1.root',
         'tests/samples/test_1.root',
         0,
-        4,
+        5,
         0
     ),
     (
         'tests/samples/test_1.root',
         'tests/samples/test_2.root',
         0.02,
-        1,
+        2,
         3
     ),
     (
         'tests/samples/test_1.root',
         'tests/samples/test_2.root',
         1,
-        4,
+        5,
         0
     ),
     (
         'tests/samples/test_1.root',
         'tests/samples/test_3.root',
         0.02,
-        1,
+        2,
         4
     ),
     (
         'tests/samples/test_3.root',
         'tests/samples/test_1.root',
         0.02,
-        1,
+        2,
         4
     ),
 ])
