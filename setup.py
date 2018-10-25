@@ -5,6 +5,7 @@
 
 import codecs
 import os
+import glob
 import re
 from setuptools import setup, find_packages
 
@@ -26,6 +27,24 @@ def find_version(*file_paths):
     if version_match:
         return version_match.group(1)
     raise RuntimeError("Unable to find version string.")
+
+
+def _is_valid_command(file_name):
+    with open(file_name) as f:
+        return 'def cli(' in f.read()
+
+def find_commands(path='skvalidate/commands'):
+    """ Scans path for valid commands """
+    command_files = glob.glob(os.path.join(path, '*.py'))
+    commands = []
+    for file_name in command_files:
+        if not _is_valid_command(file_name):
+            continue
+        command_path = file_name.replace('.py', '').replace(os.path.sep, '.')
+        name = command_path.split('.')[-1]
+        yield'{name}={path}:cli'.format(name=name, path=command_path)
+
+        # execute_with_metrics=skvalidate.commands.execute_with_metrics:cli
 
 
 with open('README.rst') as readme_file:
@@ -60,8 +79,7 @@ setup(
         'console_scripts': [
             'skvalidate=skvalidate.cli:main',
             'run-clang-tidy=skvalidate.clang_tidy:main',
-            'execute_with_metrics=skvalidate.commands.execute_with_metrics:cli'
-        ],
+        ] + list(find_commands()),
     },
     install_requires=requirements,
     license="Apache Software License 2.0",
