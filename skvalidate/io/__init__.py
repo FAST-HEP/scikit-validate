@@ -21,7 +21,7 @@ def walk(path_to_root_file):
 def _walk(obj):
     for k in sorted(obj.allkeys()):
         try:
-            yield k.decode("utf-8"), obj[k].array()
+            yield k.decode("utf-8"), obj[k].array().flatten()
         except Exception:
             for n, o in _walk(obj[k]):
                 yield '{0}.{1}'.format(k.decode("utf-8"), n), o
