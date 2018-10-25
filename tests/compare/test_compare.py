@@ -116,6 +116,13 @@ def test_is_ok(diff, normalisation, tolerance, expected):
         2,
         4
     ),
+    (
+        'tests/samples/objects.root',
+        'tests/samples/objects.root',
+        0.02,
+        13,
+        0
+    ),
 ])
 def test_compare_two_root_files(file1, file2, tolerance, nOK, nNotOK):
     ok, notOK = compare_two_root_files(file1, file2, tolerance=tolerance)

@@ -5,7 +5,7 @@ from skvalidate.io import walk
 
 def difference(a1, a2):
     try:
-        return a1 - a2
+        return (a1 - a2).flatten()
     except Exception:
         # TODO: need to compare string as well?
         return [0]
