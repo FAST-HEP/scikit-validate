@@ -23,6 +23,8 @@ def generate_root_data(output_file="tests/samples/test_1.root", branches={'x': '
         tree.i = i
         if 'a' in branches:
             tree.a = gauss(.1, 1.)
+        for v in six.moves.xrange(10):
+            tree.v[v] = gauss(.5, 1.)
         tree.fill()
     tree.write()
 
@@ -30,8 +32,8 @@ def generate_root_data(output_file="tests/samples/test_1.root", branches={'x': '
 
 
 if __name__ == '__main__':
-    branches = {'x': 'F', 'y': 'F', 'z': 'F', 'i': 'I'}
+    branches = {'x': 'F', 'y': 'F', 'z': 'F', 'i': 'I', 'v': 'F[10]'}
     generate_root_data("tests/samples/test_1.root", branches)
     generate_root_data("tests/samples/test_2.root", branches)
-    branches = {'x': 'F', 'y': 'F', 'z': 'F', 'i': 'I', 'a': 'F'}
+    branches = {'x': 'F', 'y': 'F', 'z': 'F', 'i': 'I', 'v': 'F[10]', 'a': 'F'}
     generate_root_data("tests/samples/test_3.root", branches)
