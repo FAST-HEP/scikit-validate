@@ -8,12 +8,17 @@ import numpy as np
 from scipy import stats
 
 
-def draw_diff(name, values, out_dir, bins=100, logy=False):
+def draw_diff(name, values, out_dir, bins=100):
+    logy = False
+
     orig, ref, diff = values
     bins = 100
     orig[np.absolute(orig) == np.Infinity] = 0
     ref[np.absolute(ref) == np.Infinity] = 0
     diff[np.absolute(diff) == np.Infinity] = 0
+
+    min_x = min(min(orig), min(ref))
+    max_x = max(max(orig), max(ref))
 
     fig, (a0, a1) = plt.subplots(2, 1, gridspec_kw={'height_ratios': [5, 1]}, sharex=True)
     name = name.replace(';1', '')
@@ -22,8 +27,10 @@ def draw_diff(name, values, out_dir, bins=100, logy=False):
     a0.hist(orig, label='this code', color='red', histtype='step', bins=bins, linewidth=2, alpha=0.6)
     a0.hist(ref, label='reference', color='black', histtype='step', bins=bins)
     a0.set_ylabel('a.u.')
-    if logy:
-        a0.set_yscale('log', nonposy='clip')
+
+    min_y, max_y = a0.get_ylim()
+    if max_y - min_y > 1e3:
+        logy = True
     a0.legend()
 
     ks_statistic, pvalue = stats.ks_2samp(ref, orig)
@@ -34,7 +41,12 @@ def draw_diff(name, values, out_dir, bins=100, logy=False):
     a1.minorticks_on()
     a1.legend()
 
+    if logy:
+        a0.set_yscale('log', nonposy='clip')
+        a1.set_yscale('log', nonposy='clip')
+
     fig.tight_layout()
+    plt.xlim(min_x, max_x)
     plt.savefig(output_file)
     plt.close()
     return output_file
