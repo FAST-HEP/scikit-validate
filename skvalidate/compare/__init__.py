@@ -5,7 +5,11 @@ from skvalidate.io import walk
 
 def difference(a1, a2):
     try:
-        return (a1 - a2).flatten()
+        # convert to float64 to avoid hitting int limits
+        new_type = a1.dtype
+        if np.issubdtype(new_type, np.integer):
+            new_type = np.float64
+        return np.subtract(a1.flatten().astype(new_type), a2.flatten().astype(new_type))
     except Exception:
         # TODO: need to compare string as well?
         return []
@@ -39,9 +43,9 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
 
         diff = difference(value2, value1)
         if not len(diff):
-            are_OK.append((name, (value1, value2, diff)))
+            are_not_OK.append((name, (value1, value2, diff)))
             continue
-        norm = np.sqrt(np.sum(value1**2))
+        norm = np.sqrt(np.sum(value2**2))
         if not is_ok(diff, normalisation=norm, tolerance=tolerance):
             are_not_OK.append((name, (value1, value2, diff)))
         else:

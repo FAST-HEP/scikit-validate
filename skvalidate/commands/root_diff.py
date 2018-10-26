@@ -22,10 +22,14 @@ def cli(file_under_test, reference_file, out_dir):
     are_OK, are_not_OK = compare.compare_two_root_files(file_under_test, reference_file)
 
     outfiles = []
-    for o_name, values in are_not_OK:
-        outfiles.append(draw_diff(o_name, values, out_dir))
-
     print('Testing distributions')
+    for o_name, values in are_not_OK:
+        _, _, diff = values
+        if not len(diff):
+            outfiles.append('WARNING: Unable to compare')
+        else:
+            outfiles.append(draw_diff(o_name, values, out_dir))
+
     for name, _ in are_OK:
         print(name, '- OK')
 

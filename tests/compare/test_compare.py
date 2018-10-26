@@ -18,7 +18,7 @@ from skvalidate.compare import compare_two_root_files, difference, is_ok
     (
         np.array(['1', '2', '3']),
         np.array(['1', '2', '3']),
-        np.array([0]),
+        np.array([]),
     ),
 ])
 def test_difference(a1, a2, expected):
@@ -120,7 +120,7 @@ def test_is_ok(diff, normalisation, tolerance, expected):
         'tests/samples/objects.root',
         'tests/samples/objects.root',
         0.02,
-        13,
+        11,
         0
     ),
 ])
