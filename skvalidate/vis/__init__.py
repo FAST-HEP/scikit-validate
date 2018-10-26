@@ -8,6 +8,18 @@ import numpy as np
 from scipy import stats
 
 
+def adjust_axis_limits(a_min, a_max, change=0.2):
+    a_min = a_min * (1 + change) if a_min < 0 else a_min * (1 - change)
+    a_max = a_max * (1 + change) if a_max > 0 else a_max * (1 - change)
+    return a_min, a_max
+
+
+def find_limits(d_1, d2):
+    a_min = min(min(d_1), min(d2))
+    a_max = max(max(d_1), max(d2))
+    return a_min, a_max
+
+
 def draw_diff(name, values, out_dir, bins=100):
     logy = False
 
@@ -17,28 +29,38 @@ def draw_diff(name, values, out_dir, bins=100):
     ref[np.absolute(ref) == np.Infinity] = 0
     diff[np.absolute(diff) == np.Infinity] = 0
 
-    min_x = min(min(orig), min(ref))
-    max_x = max(max(orig), max(ref))
+    min_x, max_x = find_limits(orig, ref)
+    min_x, max_x = adjust_axis_limits(min_x, max_x, change=0.1)
 
     fig, (a0, a1) = plt.subplots(2, 1, gridspec_kw={'height_ratios': [5, 1]}, sharex=True)
     name = name.replace(';1', '')
     output_file = os.path.join(out_dir, name + '.png')
 
-    a0.hist(orig, label='this code', color='red', histtype='step', bins=bins, linewidth=2, alpha=0.6)
-    a0.hist(ref, label='reference', color='black', histtype='step', bins=bins)
-    a0.set_ylabel('a.u.')
+    h_ref, bin_edges, _ = a0.hist(
+        ref, label='reference', color='black', histtype='step', bins=bins, range=(min_x, max_x),
+    )
+    h_orig, _, _ = a0.hist(
+        orig, label='this code', color='red', histtype='step', bins=bin_edges, linewidth=2, alpha=0.6,
+        range=(min_x, max_x),
+    )
 
-    min_y, max_y = a0.get_ylim()
+    min_y, max_y = find_limits(h_ref, h_orig)
     if max_y - min_y > 1e3:
         logy = True
+    min_y, max_y = adjust_axis_limits(min_y, max_y)
+    a0.set_ylim(min_y, max_y)
     a0.legend()
 
     ks_statistic, pvalue = stats.ks_2samp(ref, orig)
-    a0.set_title('{0} - KS statistic: {1:.3f}; p-value: {2:.3f}'.format(name, ks_statistic, pvalue))
+    a0.set_title('{0} \n KS statistic: {1:.3f}; p-value: {2:.3f}'.format(name, ks_statistic, pvalue))
 
-    a1.hist(diff, label='reference - this code', histtype='step', bins=bins)
+    a1.plot(bin_edges[1:], h_ref - h_orig, label='difference', drawstyle='steps',)
     a1.set_xlabel(name)
-    a1.minorticks_on()
+    # a1.minorticks_on()
+    min_y, max_y = a1.get_ylim()
+    min_y, max_y = adjust_axis_limits(min_y, max_y)
+    a1.set_ylim(min_y, max_y)
+    a1.locator_params(axis='y', nbins=4)
     a1.legend()
 
     if logy:
@@ -46,7 +68,6 @@ def draw_diff(name, values, out_dir, bins=100):
         a1.set_yscale('log', nonposy='clip')
 
     fig.tight_layout()
-    plt.xlim(min_x, max_x)
     plt.savefig(output_file)
     plt.close()
     return output_file
