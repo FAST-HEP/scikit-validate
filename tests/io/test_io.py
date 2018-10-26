@@ -23,16 +23,16 @@ from skvalidate.io import walk
         'tests/samples/objects.root',
         [
             'Events;1.MyEvent.TObject.fUniqueID', 'Events;1.MyEvent.TObject.fBits', 'Events;1.MyEvent.eventID',
-            'Events;1.MyEvent.ayes', 'Events;1.MyEvent.ayes.start_ns', 'Events;1.MyEvent.ayes.end_ns',
-            'Events;1.MyEvent.bees', 'Events;1.MyEvent.bees.driftTime',
+            'Events;1.MyEvent.ayes.start_ns', 'Events;1.MyEvent.ayes.end_ns',
+            'Events;1.MyEvent.bees.driftTime',
             'Events;1.MyEvent.bees.xyPosition._fX', 'Events;1.MyEvent.bees.xyPosition._fY',
             'Events;1.MyEvent.bees.xyzPosition._fX', 'Events;1.MyEvent.bees.xyzPosition._fY',
             'Events;1.MyEvent.bees.xyzPosition._fZ',
         ],
         [
             np.uint32, np.uint32, np.uint32,
-            np.int32, np.float32, np.float32,
-            np.int32, np.float32,
+            np.float32, np.float32,
+            np.float32,
             np.float64, np.float64,
             np.float64, np.float64, np.float64
         ]
