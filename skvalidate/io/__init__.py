@@ -20,13 +20,13 @@ def walk(path_to_root_file):
             yield subname, subobj
 
 
-def _walk(obj, name=''):
+def _walk(obj, name=None):
     if not obj.keys():
         yield name, obj
     else:
         for k in sorted(obj.keys()):
             # if there is a '.' the first part of k it will be a duplicate
-            new_k = k.split('.')[-1]
+            new_k = k.decode("utf-8").split('.')[-1]
             new_name = '.'.join([name, new_k]) if name else new_k
             for n, o in _walk(obj[k], new_name):
                 yield n, o
