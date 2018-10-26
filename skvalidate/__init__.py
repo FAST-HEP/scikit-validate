@@ -4,4 +4,4 @@
 
 __author__ = """FAST"""
 __email__ = 'fast-hep@cern.ch'
-__version__ = '0.1.0'
+__version__ = '0.1.1'
