@@ -11,8 +11,8 @@ while
 
 will return ${CI_PROJECT_URL}/-/jobs/${CI_JOB_ID}/artifacts/browse/output
 """
-import click
 import os
+import click
 
 
 @click.command(help=__doc__)

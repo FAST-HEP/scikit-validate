@@ -1,7 +1,6 @@
-"""
-Merges dictionaries in <N>JSON files into one output file.
-Uses dict.update() --> last occurrence of a key will take precedence.
+"""Merges dictionaries in <N>JSON files into one output file.
 
+Uses dict.update() --> last occurrence of a key will take precedence.
 """
 import json
 

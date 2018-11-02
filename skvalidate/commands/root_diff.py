@@ -1,10 +1,9 @@
-"""
-Calculates the difference between two ROOT (https://root.cern.ch/) files.
+"""Calculates the difference between two ROOT (https://root.cern.ch/) files.
+
 If a difference is present, the command will create plots for the distributions that differ.
 
 TODO: separate functionality: plotting, recursive reading of ROOT files, diff calculation
 TODO: allow for injection of user-defined high-level variables
-
 """
 from __future__ import print_function
 import click

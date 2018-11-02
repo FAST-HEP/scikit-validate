@@ -1,6 +1,5 @@
 import numpy as np
 import pytest
-
 from skvalidate.compare import compare_two_root_files, difference, is_ok
 
 
@@ -80,7 +79,7 @@ def test_is_ok(diff, normalisation, tolerance, expected):
     assert is_ok(diff, normalisation, tolerance=tolerance) == expected
 
 
-@pytest.mark.parametrize("file1,file2,tolerance,nOK,nNotOK", [
+@pytest.mark.parametrize("file1,file2,tolerance,n_ok,n_not_ok", [
     (
         'tests/samples/test_1.root',
         'tests/samples/test_1.root',
@@ -124,7 +123,7 @@ def test_is_ok(diff, normalisation, tolerance, expected):
         0
     ),
 ])
-def test_compare_two_root_files(file1, file2, tolerance, nOK, nNotOK):
-    ok, notOK = compare_two_root_files(file1, file2, tolerance=tolerance)
-    assert len(ok) == nOK
-    assert len(notOK) == nNotOK
+def test_compare_two_root_files(file1, file2, tolerance, n_ok, n_not_ok):
+    ok, not_ok = compare_two_root_files(file1, file2, tolerance=tolerance)
+    assert len(ok) == n_ok
+    assert len(not_ok) == n_not_ok

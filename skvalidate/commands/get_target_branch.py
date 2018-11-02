@@ -12,7 +12,6 @@ Related issue: https://gitlab.com/gitlab-org/gitlab-ce/issues/15280
 """
 import logging
 import os
-import sys
 
 import click
 

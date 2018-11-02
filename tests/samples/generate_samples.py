@@ -1,19 +1,20 @@
 """
-Run from main directory
+Run from main directory.
 
 Usage:
     python tests/samples/generate_samples.py
 """
 from random import gauss
+
 import six
 
 
-def generate_root_data(output_file="tests/samples/test_1.root", branches={'x': 'F', 'y': 'F', 'z': 'F', 'i': 'I'}):
-    """From http://www.rootpy.org/modules/trees.html"""
+def generate_root_data(output_file='tests/samples/test_1.root', branches={'x': 'F', 'y': 'F', 'z': 'F', 'i': 'I'}):
+    """From http://www.rootpy.org/modules/trees.html."""
     from rootpy.tree import Tree
     from rootpy.io import root_open
-    f = root_open(output_file, "recreate")
-    tree = Tree("test")
+    f = root_open(output_file, 'recreate')
+    tree = Tree('test')
     tree.create_branches(branches)
 
     for i in six.moves.xrange(10000):
@@ -33,7 +34,7 @@ def generate_root_data(output_file="tests/samples/test_1.root", branches={'x': '
 
 if __name__ == '__main__':
     branches = {'x': 'F', 'y': 'F', 'z': 'F', 'i': 'I', 'v': 'F[10]'}
-    generate_root_data("tests/samples/test_1.root", branches)
-    generate_root_data("tests/samples/test_2.root", branches)
+    generate_root_data('tests/samples/test_1.root', branches)
+    generate_root_data('tests/samples/test_2.root', branches)
     branches = {'x': 'F', 'y': 'F', 'z': 'F', 'i': 'I', 'v': 'F[10]', 'a': 'F'}
-    generate_root_data("tests/samples/test_3.root", branches)
+    generate_root_data('tests/samples/test_3.root', branches)

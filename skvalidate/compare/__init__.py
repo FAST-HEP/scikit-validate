@@ -27,27 +27,27 @@ def is_ok(diff, normalisation, tolerance=0.02):
 
 
 def compare_two_root_files(file1, file2, tolerance=0.02):
-    are_OK = []
-    are_not_OK = []
+    are_ok = []
+    are_not_ok = []
 
     content1 = dict((key, value) for (key, value) in walk(file1))
     content2 = dict((key, value) for (key, value) in walk(file2))
     keys1 = set(content1.keys())
     keys2 = set(content2.keys())
 
-    allKeys = sorted(keys1 | keys2)
+    all_keys = sorted(keys1 | keys2)
 
-    for name in allKeys:
+    for name in all_keys:
         value1 = content1[name] if name in content1 else np.array([np.Infinity])
         value2 = content2[name] if name in content2 else np.array([np.Infinity])
 
         diff = difference(value2, value1)
         if not len(diff):
-            are_not_OK.append((name, (value1, value2, diff)))
+            are_not_ok.append((name, (value1, value2, diff)))
             continue
         norm = np.sqrt(np.sum(value2**2))
         if not is_ok(diff, normalisation=norm, tolerance=tolerance):
-            are_not_OK.append((name, (value1, value2, diff)))
+            are_not_ok.append((name, (value1, value2, diff)))
         else:
-            are_OK.append((name, (value1, value2, diff)))
-    return are_OK, are_not_OK
+            are_ok.append((name, (value1, value2, diff)))
+    return are_ok, are_not_ok
