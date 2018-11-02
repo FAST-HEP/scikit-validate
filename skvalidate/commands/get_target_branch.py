@@ -21,7 +21,8 @@ import gitlab
 
 @click.command(help=__doc__)
 @click.option('--gitlab-server', default='gitlab.com')
-def cli(gitlab_server):
+@click.option('--default-branch', default='master')
+def cli(gitlab_server, default_branch):
     ci_project_id = os.environ.get('CI_PROJECT_ID')
     ci_api_token = os.environ.get('CI_API_TOKEN')
     ci_commit_sha = os.environ.get('CI_COMMIT_SHA')
@@ -42,6 +43,6 @@ def cli(gitlab_server):
             target_branch = mr.attributes['target_branch']
 
     if target_branch is None:
-        logging.error('Could not find matching MR')
-        sys.exit(-1)
+        target_branch = default_branch
+        logging.warning('Could not find matching MR, will use default ({0})'.format(default_branch))
     click.echo(target_branch)
