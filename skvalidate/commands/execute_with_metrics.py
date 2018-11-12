@@ -39,6 +39,7 @@ def monitor_command(command):
 
 
 def execute(cmd):
+    """https://stackoverflow.com/questions/4417546/constantly-print-subprocess-output-while-process-is-running"""
     exe = which(cmd[0])
     if exe is None:
         logging.error('Could not find executable "{0}"'.format(cmd[0]))
@@ -50,6 +51,8 @@ def execute(cmd):
     popen.stdout.close()
     return_code = popen.wait()
     if return_code:
+        if popen.stderr:
+            logging.error(popen.stderr.read())
         raise subprocess.CalledProcessError(return_code, cmd)
 
 
@@ -83,7 +86,18 @@ def print_metrics(metrics):
 @click.command(help=__doc__)
 @click.argument('command')
 @click.option('-m', '--metrics-file', default='resource_metrics.json')
-def cli(command, metrics_file):
+@click.option('--memprof-file', default='mprofile.dat')
+def cli(command, metrics_file, memprof_file):
     metrics = monitor_command(command.split())
     print_metrics(metrics)
-    save_metrics_to_file(metrics, metrics_file)
+    try:
+        save_metrics_to_file(metrics, metrics_file)
+    except IOError:
+        logging.exception("Could not create metrics file {0}".format(metrics_file))
+
+
+# add mprof
+# with open(mprofile_output, "a") as f:
+#         f.write("CMDLINE {0}\n".format(cmd_line))
+#         mp.memory_usage(proc=p, interval=options.interval, timestamps=True,
+#                          include_children=options.include_children, stream=f)
