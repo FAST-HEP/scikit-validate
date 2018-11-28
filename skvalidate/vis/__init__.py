@@ -69,7 +69,7 @@ def draw_diff(name, values, out_dir, bins=100):
 
     if logy:
         a0.set_yscale('log', nonposy='clip')
-        a1.set_yscale('log', nonposy='clip')
+        # a1.set_yscale('log', nonposy='clip')
 
     fig.tight_layout()
     plt.savefig(output_file)
