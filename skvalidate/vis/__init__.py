@@ -47,6 +47,8 @@ def draw_diff(name, values, out_dir, bins=100):
     min_y, max_y = find_limits(h_ref, h_orig)
     if max_y - min_y > 1e3:
         logy = True
+    if max_y <= 0 or min_y <=0:
+        logy = False
     min_y, max_y = adjust_axis_limits(min_y, max_y)
     a0.set_ylim(min_y, max_y)
     a0.legend()
