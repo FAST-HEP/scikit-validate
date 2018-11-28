@@ -35,7 +35,7 @@ http://clang.llvm.org/docs/HowToSetupToolingForLLVM.html
 
 from __future__ import print_function
 
-import Queue
+import six.moves.queue as Queue
 import argparse
 import json
 import multiprocessing
