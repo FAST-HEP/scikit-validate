@@ -8,9 +8,11 @@ import numpy as np
 from scipy import stats
 
 
-def adjust_axis_limits(a_min, a_max, change=0.2):
+def adjust_axis_limits(a_min, a_max, change=0.2, logy=False):
     a_min = a_min * (1 + change) if a_min < 0 else a_min * (1 - change)
     a_max = a_max * (1 + change) if a_max > 0 else a_max * (1 - change)
+    if logy and a_min <= 0:
+        a_min = 1e-1
     return a_min, a_max
 
 
@@ -47,9 +49,9 @@ def draw_diff(name, values, out_dir, bins=100):
     min_y, max_y = find_limits(h_ref, h_orig)
     if max_y - min_y > 1e3:
         logy = True
-    if max_y <= 0 or min_y <=0:
+    if max_y <= 0 and min_y <=0:
         logy = False
-    min_y, max_y = adjust_axis_limits(min_y, max_y)
+    min_y, max_y = adjust_axis_limits(min_y, max_y, logy=logy)
     a0.set_ylim(min_y, max_y)
     a0.legend()
 
