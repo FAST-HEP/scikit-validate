@@ -30,8 +30,7 @@ def get_file_metrics(input_file):
     return metrics
 
 
-def print_metrics(metrics):
-    input_file = metrics.keys()[0]
+def print_metrics(metrics, input_file):
     params = dict(input_file=input_file)
     params.update(metrics[input_file])
     msg = [
@@ -51,5 +50,5 @@ def cli(input_files, metrics_file):
         # print(get_file_metrics(input_file))
         file_metrics = get_file_metrics(input_file)
         metrics.update(file_metrics)
-        print_metrics(file_metrics)
+        print_metrics(file_metrics, input_file)
     save_metrics_to_file(metrics, metrics_file)
