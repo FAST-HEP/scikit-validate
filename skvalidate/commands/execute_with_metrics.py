@@ -71,8 +71,7 @@ def which(program):
     return None
 
 
-def print_metrics(metrics):
-    command = metrics.keys()[0]
+def print_metrics(metrics, command):
     params = dict(command=command)
     params.update(metrics[command])
     msg = [
@@ -89,7 +88,7 @@ def print_metrics(metrics):
 @click.option('--memprof-file', default='mprofile.dat')
 def cli(command, metrics_file, memprof_file):
     metrics = monitor_command(command.split())
-    print_metrics(metrics)
+    print_metrics(metrics, command)
     try:
         save_metrics_to_file(metrics, metrics_file)
     except IOError:
