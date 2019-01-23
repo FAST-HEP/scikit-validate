@@ -55,7 +55,9 @@ with open('HISTORY.rst') as history_file:
 
 requirements = ['Click>=6.0', 'matplotlib', 'numpy', 'python-gitlab', 'scipy', 'uproot']
 
-setup_requirements = ['pytest-runner', ]
+setup_requirements = [
+    # 'pytest-runner',
+]
 
 test_requirements = ['pytest', ]
 
@@ -94,6 +96,11 @@ setup(
         'skvalidate.io',
         'skvalidate.vis',
     ]),
+    package_data={'skvalidate': [
+        'config/*.yml',
+        'config/*.yaml',
+        'templates/*',
+        ]},
     setup_requires=setup_requirements,
     test_suite='tests',
     tests_require=test_requirements,

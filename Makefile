@@ -89,4 +89,4 @@ install: clean ## install the package to the active Python's site-packages
 	python setup.py install
 
 install-dev: clean
-	python setup.py develop
+	python -m pip install -U -e .
