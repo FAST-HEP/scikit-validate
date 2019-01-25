@@ -1,6 +1,8 @@
 ## Tests (TODO - dummy content)
-
-< list of test results>
- - Test 1 (e.g. CI-macro) (100 events): passed;
- - Output file: OK
- - Other test: ...
+{% if tests -%}
+| name | status | info |
+|------|:------:|:----:|
+{% endif -%}
+{% for name, test in tests.items() -%}
+| {{name}} | {{test['status']}} | [log]({{test['link']}}) ([raw]({{test['link_raw']}})) |
+{% endfor %}

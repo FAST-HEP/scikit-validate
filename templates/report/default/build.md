@@ -1,6 +1,8 @@
 ## Builds
-{% for build in builds %}
-
+{% if builds -%}
+| name | status | info |
+|------|:------:|:----:|
+{% endif -%}
+{% for name, build in builds.items() -%}
+| {{name}} | {{build['status']}} | [log]({{build['link']}}) ([raw]({{build['link_raw']}})) |
 {% endfor %}
- - Build test ROOT=6.04, GEANT4.10.3: passed;
- - Build test ROOT=5.32, GEANT4.9.5: passed;
