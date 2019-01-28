@@ -20,7 +20,7 @@ class Report(object):
 
         @param yamlConfig: yaml config dictionary
         """
-        self.__general = Section(**yaml_config, section_name='general')
+        self.__general = Section(section_name='general', **yaml_config)
 
     @staticmethod
     def from_yaml(path):
@@ -73,7 +73,7 @@ class Section(object):
         self.__content = ''
 
         for name, content in sections.items():
-            self.__sections[name] = Section(**content, section_name=name)
+            self.__sections[name] = Section(section_name=name, **content)
 
     def __fill__(self):
         """Read template and fill with values"""
