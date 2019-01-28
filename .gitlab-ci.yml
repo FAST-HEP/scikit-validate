@@ -78,7 +78,21 @@ validate:demo_report:
   stage: validation
   script:
     - make install
-    - skvalidate make_demo_report
+    - make_demo_report
+    - test -f demo_report.md
+  artifacts:
+    paths:
+      - demo_report.md
+    expire_in: 1 week
+
+validate:metric_pipeline:
+  image: python:3.7
+  stage: validation
+  script:
+    - make install-dev
+    - apt update && apt install stress
+    - ./.ci/test_metric_pipeline.sh
+    - make_demo_report
     - test -f demo_report.md
   artifacts:
     paths:

@@ -21,10 +21,17 @@ from skvalidate.io import save_metrics_to_file
 
 def get_file_metrics(input_file):
     statinfo = os.stat(input_file)
-    size_in_mb = statinfo.st_size / 1024 / 1024
+    size_in_bytes = statinfo.st_size
+    size_in_mb = size_in_bytes / 1024 / 1024
     metrics = dict(
-        size_in_bytes=statinfo.st_size,
-        size_in_mb=round(size_in_mb, 1),
+        size_in_bytes=dict(
+            value=size_in_bytes,
+            unit='B'
+        ),
+        size_in_mb=dict(
+            value=round(size_in_mb, 1),
+            unit='MB'
+        ),
     )
     metrics = {input_file: metrics}
     return metrics
