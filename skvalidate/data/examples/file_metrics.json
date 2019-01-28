@@ -1,0 +1,32 @@
+{
+    "continuous_integration_101.bin": {
+        "size_in_bytes": {
+            "value": 84890132,
+            "unit": "B"
+        },
+        "size_in_mb": {
+            "value": 81.0,
+            "unit": "MB"
+        }
+    },
+    "continuous_integration_101.root": {
+        "size_in_bytes": {
+            "value": 14951803,
+            "unit": "B"
+        },
+        "size_in_mb": {
+            "value": 14.3,
+            "unit": "MB"
+        }
+    },
+    "continuous_integration_101_mctruth.root": {
+        "size_in_bytes": {
+            "value": 94735343,
+            "unit": "B"
+        },
+        "size_in_mb": {
+            "value": 90.3,
+            "unit": "MB"
+        }
+    }
+}

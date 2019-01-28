@@ -73,6 +73,17 @@ validate-root-diff:
     - output/validate
     expire_in: 1 week
 
+validate:demo_report:
+  image: python:3.7
+  stage: validation
+  script:
+    - make install
+    - skvalidate make_demo_report
+    - test -f demo_report.md
+  artifacts:
+    paths:
+      - demo_report.md
+    expire_in: 1 week
 
 deploy_pypi:
   stage: deploy

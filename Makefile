@@ -51,10 +51,10 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr .pytest_cache
 
 lint: ## check style with flake8
-	flake8 skvalidate tests --ignore=D301,E302,E402,D100,D103,D104,Q000,I001,I003,I004,N806 --max-line-length=120
+	flake8 skvalidate tests --ignore=D301,D400,E302,E402,D100,D103,D104,Q000,I001,I003,I004,N806 --max-line-length=120
 
 test: ## run tests quickly with the default Python
-	@python -m pytest -v
+	@python -m pytest -vv
 
 test-all: ## run tests on every Python version with tox
 	tox
@@ -89,4 +89,4 @@ install: clean ## install the package to the active Python's site-packages
 	python setup.py install
 
 install-dev: clean
-	python setup.py develop
+	python -m pip install -U -e .

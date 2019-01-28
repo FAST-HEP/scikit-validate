@@ -53,9 +53,20 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['Click>=6.0', 'matplotlib', 'numpy', 'python-gitlab', 'scipy', 'uproot']
+requirements = [
+    'Click>=6.0',
+    'jinja2',
+    'matplotlib',
+    'numpy',
+    'python-gitlab',
+    'pyyaml',
+    'scipy',
+    'uproot',
+]
 
-setup_requirements = ['pytest-runner', ]
+setup_requirements = [
+    # 'pytest-runner',
+]
 
 test_requirements = ['pytest', ]
 
@@ -92,6 +103,7 @@ setup(
         'skvalidate.commands',
         'skvalidate.compare',
         'skvalidate.io',
+        'skvalidate.report',
         'skvalidate.vis',
     ]),
     setup_requires=setup_requirements,
