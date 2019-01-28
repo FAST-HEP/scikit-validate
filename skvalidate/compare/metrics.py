@@ -45,7 +45,7 @@ def compare_metrics(metrics, metrics_ref, keys=None):
                 results[metric][k]['diff'] = value - ref
                 results[metric][k]['diff_pc'] = (value - ref) / ref * 100
                 print(results[metric][k]['diff_pc'])
-            except (TypeError, ValueError, ZeroDivisionError) as _:
+            except (TypeError, ValueError, ZeroDivisionError):
                 results[metric][k]['diff'] = missing
                 results[metric][k]['diff_pc'] = missing
     return results
@@ -78,7 +78,7 @@ def convert_old_to_new(metrics_collection):
                 new_style_metrics[name][metric_name]['value'] = metric
             else:
                 new_style_metrics[name][metric_name] = metric
-            if not 'unit' in new_style_metrics[name][metric_name]:
+            if 'unit' not in new_style_metrics[name][metric_name]:
                 new_style_metrics[name][metric_name]['unit'] = ''
 
     return new_style_metrics

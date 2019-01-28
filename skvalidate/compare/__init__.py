@@ -3,6 +3,7 @@ import numpy as np
 from skvalidate.io import walk
 from .metrics import compare_metrics
 
+
 def difference(a1, a2):
     try:
         # convert to float64 to avoid hitting int limits
@@ -51,3 +52,9 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
         else:
             are_ok.append((name, (value1, value2, diff)))
     return are_ok, are_not_ok
+
+
+__all__ = [
+    'compare_metrics',
+    'compare_two_root_files',
+]
