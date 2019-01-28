@@ -103,6 +103,7 @@ setup(
         'skvalidate.commands',
         'skvalidate.compare',
         'skvalidate.io',
+        'skvalidate.report',
         'skvalidate.vis',
     ]),
     package_data={'skvalidate': [
