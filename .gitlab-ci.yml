@@ -78,7 +78,7 @@ validate:demo_report:
   stage: validation
   script:
     - make install
-    - make_demo_report
+    - skvalidate make_demo_report
     - test -f demo_report.md
   artifacts:
     paths:
