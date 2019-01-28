@@ -98,10 +98,53 @@ missing_ref = (
 
 )
 
+old_style_metrics = (
+    {
+        "file1": {
+            "size_in_bytes": {'value': 84890132, 'unit': 'B'},
+            "size_in_mb": {'value': 81.0, 'unit': 'MB'},
+        },
+        "file2": {
+            "size_in_bytes": {'value': 14951803, 'unit': 'B'},
+            "size_in_mb": {'value': 14.3, 'unit': 'MB'}},
+    },
+    {
+        "file1": {
+            "size_in_bytes": 41487008,
+            "size_in_mb": 39.6,
+        },
+        "file2": {
+            "size_in_bytes": 9857661,
+            "size_in_mb": 9.4,
+        },
+    },
+    ['size_in_bytes'],
+    {
+        "file1": {
+            'size_in_bytes': {
+                'unit': 'B',
+                'value': 84890132,
+                'ref': 41487008,
+                'diff': 84890132 - 41487008,
+                'diff_pc': (84890132 - 41487008) / 41487008 * 100,
+            },
+        },
+        "file2": {
+            'size_in_bytes': {
+                'unit': 'B',
+                'value': 14951803,
+                'ref': 9857661,
+                'diff': 14951803 - 9857661,
+                'diff_pc': (14951803 - 9857661) / 9857661 * 100,
+            },
+        }
+    }
+)
 
 @pytest.mark.parametrize("metrics,metrics_ref,keys,diff", [
     file_metrics,
     missing_ref,
+    old_style_metrics,
 ])  # TODO: add with keys=None
 def test_compare_file_metrics(metrics, metrics_ref, keys, diff):
     result = compare_metrics(metrics, metrics_ref, keys=keys)
