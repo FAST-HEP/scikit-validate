@@ -1,5 +1,4 @@
 from __future__ import division
-import json
 
 
 def compare_metrics(metrics, metrics_ref, keys=None):
@@ -21,8 +20,8 @@ def compare_metrics(metrics, metrics_ref, keys=None):
         ...
     }
     """
-    # metrics = json.load(metrics_json)
-    # metrics_ref = json.load(metrics_json_ref)
+    metrics = convert_old_to_new(metrics)
+    metrics_ref = convert_old_to_new(metrics_ref)
     if keys is None:
         keys = list(metrics_ref.values())[0].keys()
 
