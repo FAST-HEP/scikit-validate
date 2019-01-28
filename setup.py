@@ -106,11 +106,6 @@ setup(
         'skvalidate.report',
         'skvalidate.vis',
     ]),
-    package_data={'skvalidate': [
-        'config/*.yml',
-        'config/*.yaml',
-        'templates/*',
-        ]},
     setup_requires=setup_requirements,
     test_suite='tests',
     tests_require=test_requirements,
