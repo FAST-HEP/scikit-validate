@@ -1,4 +1,7 @@
 """ Dummy package for testing & examples """
+import json
+
+from ..compare import compare_metrics
 
 DEMO_SERVER = 'gitlab.example.com'
 DEMO_GROUP = 'secret'
@@ -53,17 +56,20 @@ def get_jobs_for_stage(stage, **kwargs):
 
     return _format_status(result, symbol_ok, symbol_fail)
 
+
 def _get_builds(link, link_raw):
     return {
         'build1': {'status': 'passed', 'link': link, 'link_raw': link_raw},
         'build2': {'status': 'failed', 'link': link, 'link_raw': link_raw},
     }
 
+
 def _get_tests(link, link_raw):
     return {
         'test1': {'status': 'passed', 'link': link, 'link_raw': link_raw},
         'test2': {'status': 'failed', 'link': link, 'link_raw': link_raw},
     }
+
 
 def _format_status(items, symbol_ok, symbol_fail):
     result = {}
@@ -76,8 +82,34 @@ def _format_status(items, symbol_ok, symbol_fail):
     return result
 
 
-def get_metrics(metrics_json, **kwargs):
-    return {}
+def get_metrics(metrics_json, metrics_ref_json, **kwargs):
+    with open(metrics_json) as f:
+        metrics = json.load(f)
+    with open(metrics_ref_json) as f:
+        metrics_ref = json.load(f)
+
+    keys = kwargs.pop('keys', None)
+    comparison = compare_metrics(metrics, metrics_ref, keys=keys)
+    # format metrics
+    symbol_up = kwargs.pop('symbol_up', '')
+    symbol_down = kwargs.pop('symbol_down', '')
+    symbol_same = kwargs.pop('symbol_same', '')
+
+    tmp = '{:2f}% {}'
+
+    for cmd, metrics in comparison.items():
+        for name, metric in metrics.items():
+            if isinstance(metric['diff'], str):
+                metric['symbol'] = ''
+                continue
+            if metric['diff'] > 0:
+                metric['symbol'] = symbol_up
+            elif metric['diff'] < 0:
+                metric['symbol'] = symbol_down
+            else:
+                metric['symbol'] = symbol_same
+
+    return comparison
 
 
 def software_versions(**kwargs):
