@@ -7,7 +7,7 @@ add_file_metrics file1 file2 --metrics-file=file_metrics_ref.json
 
 execute_with_metrics \
   'stress --cpu 1 --io 1 --vm 1 --vm-bytes 128M --timeout 10s --verbose' \
-  -m metrics_ref.json
+  -m performance_metrics_ref.json
 
 rm -f file1 file2
 
@@ -18,7 +18,7 @@ add_file_metrics file1 file2 --metrics-file=file_metrics.json
 
 execute_with_metrics \
   'stress --cpu 1 --io 1 --vm 1 --vm-bytes 200M --timeout 15s --verbose' \
-  -m metrics.json
+  -m performance_metrics.json
 
 rm -f file1 file2
 
