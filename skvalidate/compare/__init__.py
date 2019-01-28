@@ -1,6 +1,5 @@
 from __future__ import division
 import numpy as np
-import json
 from skvalidate.io import walk
 
 
@@ -55,7 +54,8 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
 
 
 def compare_metrics(metrics, metrics_ref, keys=None):
-    """ Compares two sets of metrics (nominal and reference).
+    """Compare two sets of metrics (nominal and reference).
+
     @param metrics: dictionary of metrics
     @param metrics_ref: dictionary of reference metrics
     @param keys: list of metrics to consider
@@ -88,7 +88,7 @@ def compare_metrics(metrics, metrics_ref, keys=None):
         for k in keys:
             results[metric][k] = {}
             value = content[k]['value'] if k in content else mmissing
-            ref = content_ref[k]['value']  if k in content_ref else mmissing
+            ref = content_ref[k]['value'] if k in content_ref else mmissing
             unit = content[k]['unit'] if k in content and 'unit' in content[k] else ''
             results[metric][k]['unit'] = unit
             results[metric][k]['value'] = value
@@ -96,7 +96,7 @@ def compare_metrics(metrics, metrics_ref, keys=None):
             try:
                 results[metric][k]['diff'] = value - ref
                 results[metric][k]['diff_pc'] = (value - ref) / ref * 100
-            except:
+            except (TypeError, ValueError, ZeroDivisionError) as _:
                 results[metric][k]['diff'] = mmissing
                 results[metric][k]['diff_pc'] = mmissing
     return results

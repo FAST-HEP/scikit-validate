@@ -15,39 +15,30 @@ def make_report(config):
 class Report(object):
     """Compiles a report in Markdown format."""
 
-    def __init__(self, yamlConfig):
+    def __init__(self, yaml_config):
         """Create a report from a yaml config.
 
         @param yamlConfig: yaml config dictionary
         """
-        # 'general' is just a section from here on
-        self.__general = Section(**yamlConfig, section_name='general')
-        # self.__template = yamlConfig['general'].pop('template')
-        # self.__properties = yamlConfig['general']
-        # self.__values = {}
-
-        # self.__sections = yamlConfig.pop('sections')
-
-        # self.__content = ''
-
-        # __check_template__(self.__template, 'general')
-        # for name, content in self.__properties.items():
-        #     value = __fill_property__(name, content)
-        #     self.__values.update(value)
+        self.__general = Section(**yaml_config, section_name='general')
 
     @staticmethod
     def from_yaml(path):
-        '''
-        '''
+        """Create Report from YAML config"""
         config = read_config(path)
         return Report(config)
 
-    def write(self, outputFile):
+    def write(self, output_file):
+        """Write report to outputfile
+
+        @param output_file: file to write Report to
+        """
         content = self.__general.content
-        with open(outputFile, 'w') as f:
+        with open(output_file, 'w') as f:
             f.write(content)
 
     def __repr__(self):
+        """Return string representation of Report"""
         repr = 'Output file: {}\n'
         repr += 'Template: {}\n'
         repr += 'Properties: {}\n'
@@ -61,7 +52,14 @@ class Report(object):
 
 
 class Section(object):
+    """Class to encapsulate configuration for a section of a report"""
+
     def __init__(self, section_name, **kwargs):
+        """Create Section instance from a name and a dictionary
+
+        @param section_name: name of the section
+        @param kwargs: dictionary of content of the section
+        """
         sections = kwargs.pop('sections', {})
         self.__template = kwargs.pop('template')
         self.__name = section_name
@@ -78,6 +76,7 @@ class Section(object):
             self.__sections[name] = Section(**content, section_name=name)
 
     def __fill__(self):
+        """Read template and fill with values"""
         with open(self.__template) as f:
             self.__content = Template(f.read())
 
@@ -94,6 +93,7 @@ class Section(object):
 
     @property
     def content(self):
+        """Return entire content of the section"""
         if not self.__filled:
             try:
                 self.__fill__()
@@ -117,15 +117,16 @@ def __check_template__(path, section):
 
 
 def __fill_property__(name, content):
-    ''' Fills property with values. A property is a dictionary of the type
+    """Fill property with values from content.
+
+    A property is a dictionary of the type
         {name: content}
-        where the content can either be a value (e.g. string) or a function
-        or
+    where the content can either be a value (e.g. string) or a function or
         {name: {function:<include for python function, param1:v1, param2:v2, ...}}
 
-        @param name: name of the property
-        @param: content: content of the property
-    '''
+    @param name: name of the property
+    @param: content: content of the property
+    """
     if isinstance(content, dict):
         func_path = content.pop('function')
         tokens = func_path.split('.')

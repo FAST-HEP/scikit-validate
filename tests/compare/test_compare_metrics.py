@@ -1,6 +1,4 @@
 from __future__ import division
-import json
-import numpy as np
 import pytest
 from skvalidate.compare import compare_metrics
 
@@ -31,7 +29,7 @@ file_metrics = (
                 'value': 84890132,
                 'ref': 41487008,
                 'diff': 84890132 - 41487008,
-                'diff_pc':  (84890132 - 41487008) / 41487008 * 100,
+                'diff_pc': (84890132 - 41487008) / 41487008 * 100,
             },
         },
         "file2": {
@@ -70,14 +68,14 @@ missing_ref = (
                 'value': 1000,
                 'ref': 1000,
                 'diff': 0,
-                'diff_pc':  0,
+                'diff_pc': 0,
             },
             'memory_in_gb': {
                 'unit': '',
                 'value': 84890132,
                 'ref': '---',
                 'diff': '---',
-                'diff_pc':  '---',
+                'diff_pc': '---',
             },
         },
         "cmd2": {
@@ -86,14 +84,14 @@ missing_ref = (
                 'value': 500,
                 'ref': '---',
                 'diff': '---',
-                'diff_pc':  '---',
+                'diff_pc': '---',
             },
             'memory_in_gb': {
                 'unit': '',
                 'value': '---',
                 'ref': '---',
                 'diff': '---',
-                'diff_pc':  '---',
+                'diff_pc': '---',
             },
         }
     }

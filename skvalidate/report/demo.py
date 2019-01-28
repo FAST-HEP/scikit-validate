@@ -1,4 +1,4 @@
-""" Dummy package for testing & examples """
+"""Dummy package for testing & examples."""
 import json
 
 from ..compare import compare_metrics
@@ -94,8 +94,6 @@ def get_metrics(metrics_json, metrics_ref_json, **kwargs):
     symbol_up = kwargs.pop('symbol_up', '')
     symbol_down = kwargs.pop('symbol_down', '')
     symbol_same = kwargs.pop('symbol_same', '')
-
-    tmp = '{:2f}% {}'
 
     for cmd, metrics in comparison.items():
         for name, metric in metrics.items():
