@@ -13,9 +13,13 @@ def make_report(config):
 
 
 class Report(object):
+    """Compiles a report in Markdown format."""
 
     def __init__(self, yamlConfig):
-        self.__output_file = yamlConfig.pop('output_file')
+        """Create a report from a yaml config.
+
+        @param yamlConfig: yaml config dictionary
+        """
         # 'general' is just a section from here on
         self.__general = Section(**yamlConfig, section_name='general')
         # self.__template = yamlConfig['general'].pop('template')
@@ -33,12 +37,14 @@ class Report(object):
 
     @staticmethod
     def from_yaml(path):
+        '''
+        '''
         config = read_config(path)
         return Report(config)
 
-    def write(self):
+    def write(self, outputFile):
         content = self.__general.content
-        with open(self.__output_file, 'w') as f:
+        with open(outputFile, 'w') as f:
             f.write(content)
 
     def __repr__(self):
@@ -91,7 +97,7 @@ class Section(object):
         if not self.__filled:
             try:
                 self.__fill__()
-            except (UndefinedError, TemplateSyntaxError) as e:
+            except (UndefinedError, TemplateSyntaxError, TypeError) as e:
                 print('Unable to render section "{}": {}'.format(self.__name, e))
                 print('Section values:', self.__values)
         return self.__content
