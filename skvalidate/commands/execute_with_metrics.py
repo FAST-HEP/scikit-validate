@@ -31,8 +31,14 @@ def monitor_command(command):
 
     max_rss_in_mb = (usage_end.ru_maxrss - usage_start.ru_maxrss) / 1024.
     metrics = dict(
-        cpu_time_in_s=usage_end.ru_utime - usage_start.ru_utime,
-        max_rss_in_mb=round(max_rss_in_mb, 1),
+        cpu_time_in_s=dict(
+            value=usage_end.ru_utime - usage_start.ru_utime,
+            unit='s',
+        ),
+        max_rss_in_mb=dict(
+            value=round(max_rss_in_mb, 1),
+            unit='MB',
+        )
     )
     metrics = {' '.join(command): metrics}
     return metrics
