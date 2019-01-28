@@ -79,16 +79,16 @@ def compare_metrics(metrics, metrics_ref, keys=None):
 
     all_metrics = list(metrics.keys()) + list(metrics_ref.keys())
     results = {}
-    mmissing = '---'
+    missing = '---'
 
     for metric in all_metrics:
         results[metric] = {}
-        content = metrics[metric] if metric in metrics else mmissing
-        content_ref = metrics_ref[metric] if metric in metrics_ref else mmissing
+        content = metrics[metric] if metric in metrics else missing
+        content_ref = metrics_ref[metric] if metric in metrics_ref else missing
         for k in keys:
             results[metric][k] = {}
-            value = content[k]['value'] if k in content else mmissing
-            ref = content_ref[k]['value'] if k in content_ref else mmissing
+            value = content[k]['value'] if k in content else missing
+            ref = content_ref[k]['value'] if k in content_ref else missing
             unit = content[k]['unit'] if k in content and 'unit' in content[k] else ''
             results[metric][k]['unit'] = unit
             results[metric][k]['value'] = value
@@ -97,6 +97,6 @@ def compare_metrics(metrics, metrics_ref, keys=None):
                 results[metric][k]['diff'] = value - ref
                 results[metric][k]['diff_pc'] = (value - ref) / ref * 100
             except (TypeError, ValueError, ZeroDivisionError) as _:
-                results[metric][k]['diff'] = mmissing
-                results[metric][k]['diff_pc'] = mmissing
+                results[metric][k]['diff'] = missing
+                results[metric][k]['diff_pc'] = missing
     return results
