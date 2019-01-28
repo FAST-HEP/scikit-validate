@@ -1,6 +1,7 @@
 from __future__ import division
 import json
 
+
 def compare_metrics(metrics, metrics_ref, keys=None):
     """Compare two sets of metrics (nominal and reference).
 
@@ -49,3 +50,36 @@ def compare_metrics(metrics, metrics_ref, keys=None):
                 results[metric][k]['diff'] = missing
                 results[metric][k]['diff_pc'] = missing
     return results
+
+
+def convert_old_to_new(metrics_collection):
+    """Convert old metric format to new oneself.
+    Old:
+    {
+        "file1": {
+            "size_in_bytes": 84890132,
+            "size_in_mb": 81.0,
+        }
+    }
+
+    new:
+    {
+        "file1": {
+            "size_in_bytes": {'value': 84890132, 'unit': 'B'},
+            "size_in_mb": {'value': 81.0, 'unit': 'MB'},
+        }
+    }
+    """
+    new_style_metrics = {}
+    for name, metrics in metrics_collection.items():
+        new_style_metrics[name] = {}
+        for metric_name, metric in metrics.items():
+            new_style_metrics[name][metric_name] = {}
+            if not isinstance(metric, dict):
+                new_style_metrics[name][metric_name]['value'] = metric
+            else:
+                new_style_metrics[name][metric_name] = metric
+            if not 'unit' in new_style_metrics[name][metric_name]:
+                new_style_metrics[name][metric_name]['unit'] = ''
+
+    return new_style_metrics
