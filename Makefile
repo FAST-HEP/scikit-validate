@@ -54,7 +54,7 @@ lint: ## check style with flake8
 	flake8 skvalidate tests --ignore=D301,E302,E402,D100,D103,D104,Q000,I001,I003,I004,N806 --max-line-length=120
 
 test: ## run tests quickly with the default Python
-	@python -m pytest -v
+	@python -m pytest -vv
 
 test-all: ## run tests on every Python version with tox
 	tox
