@@ -14,23 +14,9 @@ will return ${CI_PROJECT_URL}/-/jobs/${CI_JOB_ID}/artifacts/browse/output
 import os
 import click
 
+from skvalidate.gitlab import get_artifact_url
 
 @click.command(help=__doc__)
 @click.argument('path', type=click.Path(exists=True))
 def cli(path):
-    CI_PROJECT_PATH = os.environ.get('CI_PROJECT_PATH', os.getcwd())
-    CI_JOB_ID = os.environ.get('CI_JOB_ID')
-    CI_PROJECT_URL = os.environ.get('CI_PROJECT_URL')
-    url_template = '{CI_PROJECT_URL}/-/jobs/{CI_JOB_ID}/artifacts/{option}/{path}'
-
-    path = path.replace(CI_PROJECT_PATH, '')
-
-    option = 'browse'
-    if os.path.isfile(path):
-        option = 'file'
-    return url_template.format(
-        CI_PROJECT_URL=CI_PROJECT_URL,
-        CI_JOB_ID=CI_JOB_ID,
-        option=option,
-        path=path,
-    )
+    return get_artifact_url(path)
