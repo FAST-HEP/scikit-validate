@@ -41,11 +41,17 @@ def print_metrics(metrics, input_file):
     params = dict(input_file=input_file)
     params.update(metrics[input_file])
     msg = [
-        '>>> Input file: "{input_file}"',
-        '>>> File size: {size_in_mb} MB ({size_in_bytes} bytes)'
+        '>>> Input file: "{0}"',
+        '>>> File size: {1} {2} ({3} {4})'
     ]
     msg = '\n'.join(msg)
-    print(msg.format(**params))
+    print(msg.format(
+        params['input_file'],
+        params['size_in_mb']['value'],
+        params['size_in_mb']['unit'],
+        params['size_in_bytes']['value'],
+        params['size_in_bytes']['unit'],
+    ))
 
 
 @click.command(help=__doc__)
