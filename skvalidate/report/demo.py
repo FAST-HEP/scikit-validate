@@ -1,7 +1,4 @@
 """Dummy package for testing & examples."""
-import json
-
-from ..compare import compare_metrics
 
 DEMO_SERVER = 'gitlab.example.com'
 DEMO_GROUP = 'secret'
@@ -80,34 +77,6 @@ def _format_status(items, symbol_ok, symbol_fail):
         if content['status'] == 'failed':
             result[name]['status'] = symbol_fail
     return result
-
-
-def get_metrics(metrics_json, metrics_ref_json, **kwargs):
-    with open(metrics_json) as f:
-        metrics = json.load(f)
-    with open(metrics_ref_json) as f:
-        metrics_ref = json.load(f)
-
-    keys = kwargs.pop('keys', None)
-    comparison = compare_metrics(metrics, metrics_ref, keys=keys)
-    # format metrics
-    symbol_up = kwargs.pop('symbol_up', '')
-    symbol_down = kwargs.pop('symbol_down', '')
-    symbol_same = kwargs.pop('symbol_same', '')
-
-    for cmd, metrics in comparison.items():
-        for name, metric in metrics.items():
-            if isinstance(metric['diff'], str):
-                metric['symbol'] = ''
-                continue
-            if metric['diff'] > 0:
-                metric['symbol'] = symbol_up
-            elif metric['diff'] < 0:
-                metric['symbol'] = symbol_down
-            else:
-                metric['symbol'] = symbol_same
-
-    return comparison
 
 
 def software_versions(**kwargs):

@@ -41,7 +41,7 @@ sections:
   performance_report:
     template: {{scikit_validate}}/data/templates/report/default/performance.md
     comparison:
-      function: skvalidate.report.demo.get_metrics
+      function: skvalidate.report.get_metrics
       metrics_json: {{scikit_validate}}/data/examples/performance_metrics.json
       metrics_ref_json: {{scikit_validate}}/data/examples/performance_metrics_ref.json
       symbol_up: '&#10138;'
@@ -51,7 +51,7 @@ sections:
   file_report:
     template: {{scikit_validate}}/data/templates/report/default/file_metrics.md
     comparison:
-      function: skvalidate.report.demo.get_metrics
+      function: skvalidate.report.get_metrics
       metrics_json: {{scikit_validate}}/data/examples/file_metrics.json
       metrics_ref_json: {{scikit_validate}}/data/examples/file_metrics_ref.json
       keys:

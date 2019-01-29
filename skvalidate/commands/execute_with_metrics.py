@@ -81,11 +81,17 @@ def print_metrics(metrics, command):
     params = dict(command=command)
     params.update(metrics[command])
     msg = [
-        '>>> Ran command: "{command}"',
-        '>>> in {cpu_time_in_s}s and used {max_rss_in_mb} MB of memory.'
+        '>>> Ran command: "{0}"',
+        ">>> in {1}{2} and used {3} {4} of memory."
     ]
     msg = '\n'.join(msg)
-    print(msg.format(**params))
+    print(msg.format(
+        params['command'],
+        params['cpu_time_in_s']['value'],
+        params['cpu_time_in_s']['unit'],
+        params['max_rss_in_mb']['value'],
+        params['max_rss_in_mb']['unit'],
+    ))
 
 
 @click.command(help=__doc__)

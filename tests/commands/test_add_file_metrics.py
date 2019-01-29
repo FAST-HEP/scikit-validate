@@ -6,8 +6,14 @@ from skvalidate.commands.add_file_metrics import print_metrics
     (
         {'file1':
          {
-             'size_in_mb': 23,
-             'size_in_bytes': 23 * 1024 * 1024,
+             'size_in_mb': {
+                 'value': 23,
+                 'unit': 'MB',
+             },
+             'size_in_bytes': {
+                 'value': 23 * 1024 * 1024,
+                 'unit': 'B',
+             }
          }
          },
         'file1'
@@ -15,14 +21,16 @@ from skvalidate.commands.add_file_metrics import print_metrics
 ])
 def test_print_metrics(capsys, metrics, input_file):
     msg = [
-        '>>> Input file: "{input_file}"',
-        '>>> File size: {size_in_mb} MB ({size_in_bytes} bytes)'
+        '>>> Input file: "{0}"',
+        '>>> File size: {1} {2} ({3} {4})'
     ]
     msg = '\n'.join(msg)
     expected = msg.format(
-        input_file=input_file,
-        size_in_mb=metrics[input_file]['size_in_mb'],
-        size_in_bytes=metrics[input_file]['size_in_bytes'],
+        input_file,
+        metrics[input_file]['size_in_mb']['value'],
+        metrics[input_file]['size_in_mb']['unit'],
+        metrics[input_file]['size_in_bytes']['value'],
+        metrics[input_file]['size_in_bytes']['unit'],
     )
     print_metrics(metrics, input_file)
     captured = capsys.readouterr()
