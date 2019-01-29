@@ -1,11 +1,13 @@
 import os
 from importlib import import_module
 
+import json
 import yaml
 from jinja2 import Template
 from jinja2.exceptions import TemplateSyntaxError, UndefinedError
 
 from .. import __skvalidate_root__
+from ..compare import compare_metrics
 
 
 def make_report(config):
@@ -148,3 +150,30 @@ def __repr_section__(name, section):
         section.pop('template'),
         str(section),
     )
+
+def get_metrics(metrics_json, metrics_ref_json, **kwargs):
+    with open(metrics_json) as f:
+        metrics = json.load(f)
+    with open(metrics_ref_json) as f:
+        metrics_ref = json.load(f)
+
+    keys = kwargs.pop('keys', None)
+    comparison = compare_metrics(metrics, metrics_ref, keys=keys)
+    # format metrics
+    symbol_up = kwargs.pop('symbol_up', '')
+    symbol_down = kwargs.pop('symbol_down', '')
+    symbol_same = kwargs.pop('symbol_same', '')
+
+    for cmd, metrics in comparison.items():
+        for name, metric in metrics.items():
+            if isinstance(metric['diff'], str):
+                metric['symbol'] = ''
+                continue
+            if metric['diff'] > 0:
+                metric['symbol'] = symbol_up
+            elif metric['diff'] < 0:
+                metric['symbol'] = symbol_down
+            else:
+                metric['symbol'] = symbol_same
+
+    return comparison
