@@ -1,4 +1,8 @@
 ## Pipeline summary
+{% if pipeline -%}
+Current pipeline: [{{pipeline}}]({{pipeline}})
+{% endif %}
+
 {% if jobs -%}
 | name | status | log | software versions |
 |------|:------:|:---:|:-----------------:|
