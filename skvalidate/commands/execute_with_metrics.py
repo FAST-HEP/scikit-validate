@@ -34,10 +34,12 @@ def monitor_command(command):
         cpu_time_in_s=dict(
             value=usage_end.ru_utime - usage_start.ru_utime,
             unit='s',
+            lower_is_better=True,
         ),
         max_rss_in_mb=dict(
             value=round(max_rss_in_mb, 1),
             unit='MB',
+            lower_is_better=True,
         )
     )
     metrics = {' '.join(command): metrics}
