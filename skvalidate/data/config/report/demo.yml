@@ -15,17 +15,17 @@ sections:
         - validation
       software_versions: {{scikit_validate}}/data/examples/software_versions.json
       symbol_ok: '&#9989;'
-      symbol_differ: '&#10060;'
+      symbol_fail: '&#10060;'
       symbol_unkown: '&#10067;'
 
   validation_report:
     template: {{scikit_validate}}/data/templates/report/default/validation.md
     validation:
-      function: skvalidate.report.demo.get_jobs_for_stage
-      stage: validation
-      symbol_ok: '&#9989;'
-      symbol_differ: '&#10060;'
-      symbol_unkown: '&#10067;'
+      function: skvalidate.report.demo.get_full_validations
+      validation_json: {{scikit_validate}}/data/examples/validation.json
+    #   symbol_ok: '&#9989;'
+    #   symbol_fail: '&#10060;'
+    #   symbol_unkown: '&#10067;'
 
 
   performance_report:

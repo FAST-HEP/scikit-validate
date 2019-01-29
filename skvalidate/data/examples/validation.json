@@ -1,0 +1,23 @@
+{
+    "validation1": {
+        "status": "failed",
+        "differ": ["MET"],
+        "unknown": ["n_muons"],
+        "distributions": ["jet_pt", "MET", "n_photons", "n_muons"],
+        "output_dir": "output"
+    },
+    "validation2": {
+        "status": "passed",
+        "differ": [],
+        "unknown": [],
+        "distributions": ["jet_pt", "MET", "n_photons"],
+        "output_dir": "output"
+    },
+    "validation3": {
+        "status": "failed",
+        "differ": ["MET"],
+        "unknown": [],
+        "distributions": ["jet_pt", "MET", "n_photons"],
+        "output_dir": "output"
+    }
+}

@@ -100,6 +100,32 @@ def _get_validations(link, link_raw, software_versions):
     }
 
 
+def get_full_validations(**kwargs):
+    data = read_data_from_json(kwargs.pop('validation_json'))
+    tmp = 'https://{server}/{group}/{project}/-/jobs/{j_id}/artifacts/file/{output_dir}/validation_report.html'
+
+    result = {}
+    for name, info in data.items():
+        link = tmp.format(
+            server=DEMO_SERVER,
+            group=DEMO_GROUP,
+            project=DEMO_PROJECT,
+            j_id=1,
+            output_dir=info['output_dir'],
+        )
+        result[name] = info
+        result[name]['link_to_details'] = link
+
+    symbol_ok = 'passed'
+    symbol_fail = 'failed'
+    if 'symbol_ok' in kwargs:
+        symbol_ok = kwargs.pop('symbol_ok')
+    if 'symbol_fail' in kwargs:
+        symbol_fail = kwargs.pop('symbol_fail')
+
+    return _format_status(result, symbol_ok, symbol_fail)
+
+
 def _format_status(items, symbol_ok, symbol_fail):
     result = {}
     for name, content in items.items():
