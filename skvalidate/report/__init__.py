@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os
 from importlib import import_module
 
@@ -8,10 +9,6 @@ from jinja2.exceptions import TemplateSyntaxError, UndefinedError
 
 from .. import __skvalidate_root__
 from ..compare import compare_metrics
-
-
-def make_report(config):
-    pass
 
 
 class Report(object):
