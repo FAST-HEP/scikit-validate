@@ -58,6 +58,7 @@ requirements = [
     'jinja2',
     'matplotlib',
     'numpy',
+    'plumbum',
     'python-gitlab',
     'pyyaml',
     'scipy',
