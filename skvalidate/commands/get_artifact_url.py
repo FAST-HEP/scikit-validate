@@ -11,7 +11,6 @@ while
 
 will return ${CI_PROJECT_URL}/-/jobs/${CI_JOB_ID}/artifacts/browse/output
 """
-import os
 import click
 
 from skvalidate.gitlab import get_artifact_url
