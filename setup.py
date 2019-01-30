@@ -104,6 +104,7 @@ setup(
         'skvalidate',
         'skvalidate.commands',
         'skvalidate.compare',
+        'skvalidate.gitlab',
         'skvalidate.io',
         'skvalidate.report',
         'skvalidate.vis',
