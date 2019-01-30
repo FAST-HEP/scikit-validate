@@ -13,7 +13,7 @@ before_script:
 after_script:
   - pip install codecov
   - make install-dev
-  - detect_software_versions python -p build -o software_versions.md
+  - detect_software_versions python -p build -o software_versions.json
   # - codecov --token=<>
 
 stages:
@@ -40,7 +40,7 @@ build:
   artifacts:
     paths:
     - dist/
-    - software_versions.md
+    - software_versions.json
     expire_in: 1 month
 
 failed:build:
@@ -50,7 +50,7 @@ failed:build:
   allow_failure: true
   artifacts:
     paths:
-      - software_versions.md
+      - software_versions.json
     when: always
     expire_in: 1 month
 
@@ -58,7 +58,7 @@ failed:build:
   stage: test
   artifacts:
     paths:
-      - software_versions.md
+      - software_versions.json
     when: always
     expire_in: 1 month
 
@@ -94,7 +94,7 @@ validate-root-diff:
   artifacts:
     paths:
       - output/validate
-      - software_versions.md
+      - software_versions.json
     expire_in: 1 week
 
 validate:demo_report:
@@ -107,7 +107,7 @@ validate:demo_report:
   artifacts:
     paths:
       - demo_report.md
-      - software_versions.md
+      - software_versions.json
     expire_in: 1 week
 
 validate:metric_pipeline:
@@ -123,7 +123,7 @@ validate:metric_pipeline:
     paths:
       - demo_report.md
       - skvalidate/data/examples/*.json
-      - software_versions.md
+      - software_versions.json
     expire_in: 1 week
 
 failed:validation:
@@ -133,7 +133,7 @@ failed:validation:
   allow_failure: true
   artifacts:
     paths:
-      - software_versions.md
+      - software_versions.json
     when: always
     expire_in: 1 month
 
