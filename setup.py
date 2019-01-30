@@ -60,7 +60,7 @@ requirements = [
     'matplotlib',
     'numpy',
     'plumbum',
-    'python-gitlab',
+    'python-gitlab>=1.7.0',
     'pyyaml',
     'scipy',
     'uproot',
