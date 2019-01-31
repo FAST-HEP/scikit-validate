@@ -109,7 +109,7 @@ def download_artifact(job_id, path):
     CI_PROJECT_ID = os.environ.get('CI_PROJECT_ID')
     project = connection.projects.get(CI_PROJECT_ID)
     job = project.jobs.get(job_id, lazy=True)
-    return job.artifact(path)
+    return job.artifact(path, streamed=True)
 
 
 def get_artifact_url(local_path):
