@@ -6,14 +6,14 @@ variables:
   TWINE_REPOSITORY_URL: https://upload.pypi.org/legacy/
 
 before_script:
-  - curl -O https://bootstrap.pypa.io/get-pip.py
+  - curl -s -O https://bootstrap.pypa.io/get-pip.py
   - python get-pip.py
-  - pip install -r requirements_dev.txt
+  - pip install -q -r requirements_dev.txt
 
 after_script:
   - pip install codecov
-  - make install-dev
-  - detect_software_versions python -p build -o software_versions.json
+  - make install-dev &> /dev/null
+  - detect_software_versions python -q -p build -o software_versions.json
   # - codecov --token=<>
 
 stages:
@@ -161,6 +161,7 @@ report:
     paths:
       - ci_report.md
     expire_in: 1 week
+  after_script: []
 
 cleanup_pypirc:
    stage: cleanup
