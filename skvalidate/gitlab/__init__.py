@@ -42,7 +42,7 @@ def _get_auth_data():
     project_url = os.environ.get('CI_PROJECT_URL')
     project_path = os.environ.get('CI_PROJECT_PATH')
     server_url = project_url.replace(project_path, '')
-    auth_token = os.environ.get('CI_JOB_TOKEN')
+    auth_token = os.environ.get('READONLY_API_TOKEN')
     return server_url, auth_token
 
 
