@@ -99,6 +99,7 @@ class Section(object):
             except (UndefinedError, TemplateSyntaxError, TypeError) as e:
                 print('Unable to render section "{}": {}'.format(self.__name, e))
                 print('Section values:', self.__values)
+                print('Section properties:', self.__properties)
         return self.__content
 
 
