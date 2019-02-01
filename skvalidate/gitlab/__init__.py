@@ -53,11 +53,15 @@ def get_jobs_for_stages(stages, **kwargs):
 
     @return
     {
-        'status': 'passed|failed|warning',
-        'link': '<link to CI job>',
-        'link_raw': '<link to raw log file>,
-        'software_versions': <list of all recorded software versions (from JSON)>,
-        }
+        'name': 'job_name': {
+            'status': 'success|failed',
+            'web_url': '<link to CI job>',
+            'web_url_raw': '<link to raw log file>,
+            'software_versions': <list of all recorded software versions (from JSON)>,
+            'id': job id,
+        },
+        ...
+    }
     """
     software_versions = kwargs.pop('software_versions', '')
     jobs = _get_current_pipeline_jobs()
@@ -73,7 +77,7 @@ def get_jobs_for_stages(stages, **kwargs):
         for field in fields:
             result[name][field] = job.attributes[field]
         # extras
-        result[name][field]['web_url_raw'] = result[name]['web_url'] + '/raw'
+        result[name]['web_url_raw'] = result[name]['web_url'] + '/raw'
         if software_versions:
             result[name]['software_versions'] = collect_software_versions(name, job.id, software_versions)
     return result
