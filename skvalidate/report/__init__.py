@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os
 from importlib import import_module
 
@@ -8,10 +9,6 @@ from jinja2.exceptions import TemplateSyntaxError, UndefinedError
 
 from .. import __skvalidate_root__
 from ..compare import compare_metrics
-
-
-def make_report(config):
-    pass
 
 
 class Report(object):
@@ -102,6 +99,7 @@ class Section(object):
             except (UndefinedError, TemplateSyntaxError, TypeError) as e:
                 print('Unable to render section "{}": {}'.format(self.__name, e))
                 print('Section values:', self.__values)
+                print('Section properties:', self.__properties)
         return self.__content
 
 
@@ -151,6 +149,7 @@ def __repr_section__(name, section):
         str(section),
     )
 
+
 def get_metrics(metrics_json, metrics_ref_json, **kwargs):
     with open(metrics_json) as f:
         metrics = json.load(f)
@@ -177,3 +176,28 @@ def get_metrics(metrics_json, metrics_ref_json, **kwargs):
                 metric['symbol'] = symbol_same
 
     return comparison
+
+
+def get_jobs_for_stages(stages, source='gitlab', **kwargs):
+    symbol_success = 'success'
+    symbol_failed = 'failed'
+    if 'symbol_success' in kwargs:
+        symbol_success = kwargs.pop('symbol_success')
+    if 'symbol_failed' in kwargs:
+        symbol_failed = kwargs.pop('symbol_failed')
+    if source == 'gitlab':
+        from ..gitlab import get_jobs_for_stages
+        result = get_jobs_for_stages(stages, **kwargs)
+        return format_status(result, symbol_success, symbol_failed)
+
+
+def format_status(items, symbol_success='success', symbol_failed='failed'):
+    """Format the status field of pipeline jobs."""
+    result = {}
+    for name, content in items.items():
+        result[name] = content
+        if content['status'] == 'success':
+            result[name]['status'] = symbol_success
+        if content['status'] == 'failed':
+            result[name]['status'] = symbol_failed
+    return result

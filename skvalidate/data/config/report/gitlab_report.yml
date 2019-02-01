@@ -8,33 +8,27 @@ pipeline_url:
 title: "Default Gitlab Report"
 
 sections:
-  software_report:
-    template: {{scikit_validate}}/data/templates/report/default/software.md
-    versions:
-      function: skvalidate.report.software_versions
-
-  build_report:
-    template: {{scikit_validate}}/data/templates/report/default/builds.md
-    builds:
-      function: skvalidate.gitlab.get_jobs_for_stage
-      stage: build
-      symbol_ok: '&#9989;'
-      symbol_fail: '&#10060;'
-
-  test_report:
-    template: {{scikit_validate}}/data/templates/report/default/test.md
-    builds:
-      function: skvalidate.gitlab.get_jobs_for_stage
-      stage: test
-      symbol_ok: '&#9989;'
-      symbol_fail: '&#10060;'
+  pipeline_report:
+    template: {{scikit_validate}}/data/templates/report/default/pipeline.md
+    pipeline:
+      function: skvalidate.report.demo.get_pipeline_url
+    jobs:
+      function: skvalidate.report.get_jobs_for_stages
+      stages:
+        - build
+        - test
+        - validation
+      software_versions: {{scikit_validate}}/data/examples/software_versions.json
+      symbol_success: '&#9989;'
+      symbol_failed: '&#10060;'
+      symbol_unkown: '&#10067;'
 
   validation_report:
     template: {{scikit_validate}}/data/templates/report/default/validation.md
     validation:
-      function: skvalidate.gitlab.get_jobs_for_stage
+      function: skvalidate.gitlab.get_validation_report
       stage: validation
-      symbol_ok: '&#9989;'
+      symbol_success: '&#9989;'
       symbol_differ: '&#10060;'
       symbol_unkown: '&#10067;'
 

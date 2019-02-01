@@ -26,11 +26,13 @@ def get_file_metrics(input_file):
     metrics = dict(
         size_in_bytes=dict(
             value=size_in_bytes,
-            unit='B'
+            unit='B',
+            lower_is_better=True,
         ),
         size_in_mb=dict(
             value=round(size_in_mb, 1),
-            unit='MB'
+            unit='MB',
+            lower_is_better=True,
         ),
     )
     metrics = {input_file: metrics}

@@ -1,3 +1,6 @@
+{% macro format_number(variable) -%}
+{% if variable is number -%}{{ '%.2f'| format(variable) }} {% else -%} {{variable}} {% endif -%}
+{%- endmacro -%}
 ## Performance report
 {% if comparison -%}
 | cmd | metric | value | ref value | diff |
@@ -5,6 +8,6 @@
 {% endif -%}
 {% for cmd, metrics in comparison.items() -%}
 {% for name, metric in metrics.items() -%}
-| {{ cmd }} | {{ name }} {% if metric['unit'] -%} ({{ metric['unit'] }}) {%endif -%} | {{ '%.2f'| format(metric['value']) }} | {{ '%.2f'| format(metric['ref']) }} | {{ '%.2f'| format(metric['diff']) }} ({{ '%.2f'| format(metric['diff_pc']) }} %) {{metric['symbol']}} |
+| `{{ cmd }}` | {{ name | replace("_", "&#95;") }} {% if metric['unit'] -%} ({{ metric['unit'] }}) {%endif -%} | {{ format_number(metric['value']) }} | {{ format_number(metric['ref']) }} | {{ format_number(metric['diff']) }} ({{ format_number(metric['diff_pc']) }} %) {{metric['symbol']}} |
 {% endfor -%}
 {% endfor %}

@@ -8,12 +8,12 @@ sections:
     pipeline:
       function: skvalidate.report.demo.get_pipeline_url
     jobs:
-      function: skvalidate.report.demo.get_jobs_for_stages
+      function: skvalidate.report.get_jobs_for_stages
       stages:
         - build
         - test
         - validation
-      software_versions: {{scikit_validate}}/data/examples/software_versions.json
+      software_versions: software_versions.json
       symbol_success: '&#9989;'
       symbol_failed: '&#10060;'
       symbol_unkown: '&#10067;'

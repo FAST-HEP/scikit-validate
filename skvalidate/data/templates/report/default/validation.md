@@ -1,6 +1,8 @@
 ## Validation report
 {% if validation -%}
-{% endif -%}
-{% for name, desc in validation.items() -%}
- - [{{name}}]({{desc['url']}}) ([ref]({{desc['ref_url']}}), [comparison]({{desc['comparison_url']}})): {% if desc['result'] -%} <span style="color:green">**OK**</span> {% else -%} <span style="color:red">**DIFFER**</span> {% endif -%}
+| job | status | summary | details | mismatch |
+|-----|:-------|:--------|--------:|----------|
+{% for job, desc in validation.items() -%}
+| {{ job }} | {{ desc['status'] }} | {{ desc['differ']|length }}/{{ desc['distributions']|length }} distributions differ {% if desc['unknown']-%}({{desc['unknown']|length}} unknown) {% endif -%}| [details]({{ desc['link_to_details'] }}) | {{ desc['differ'] | join(', ') }} {% if desc['unknown']-%} ({{ desc['unknown'] | join(', ') }}) {% endif -%} |
 {% endfor -%}
+{% endif -%}

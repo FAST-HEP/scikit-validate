@@ -6,11 +6,24 @@ import uproot
 
 
 def save_metrics_to_file(metrics, metrics_file):
-    if os.path.exists(metrics_file):
-        with open(metrics_file) as f:
-            metrics.update(json.load(f))
-    with open(metrics_file, 'w') as f:
-        json.dump(metrics, f)
+    update_data_in_json(metrics, metrics_file)
+
+
+def update_data_in_json(data, json_file):
+    if os.path.exists(json_file):
+        with open(json_file) as f:
+            data.update(json.load(f))
+    write_data_to_json(data, json_file)
+
+
+def write_data_to_json(data, json_file):
+    with open(json_file, 'w') as f:
+        json.dump(data, f)
+
+
+def read_data_from_json(json_file):
+    with open(json_file, 'r') as f:
+        return json.load(f)
 
 
 def walk(path_to_root_file):

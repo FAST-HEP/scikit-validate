@@ -44,7 +44,6 @@ def compare_metrics(metrics, metrics_ref, keys=None):
             try:
                 results[metric][k]['diff'] = value - ref
                 results[metric][k]['diff_pc'] = (value - ref) / ref * 100
-                print(results[metric][k]['diff_pc'])
             except (TypeError, ValueError, ZeroDivisionError):
                 results[metric][k]['diff'] = missing
                 results[metric][k]['diff_pc'] = missing
