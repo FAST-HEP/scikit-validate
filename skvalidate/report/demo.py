@@ -1,5 +1,6 @@
 """Dummy package for testing & examples."""
 from ..io import read_data_from_json
+from . import format_status
 
 DEMO_SERVER = 'gitlab.example.com'
 DEMO_GROUP = 'secret'
@@ -70,7 +71,7 @@ def get_jobs_for_stage(stage, **kwargs):
     elif stage == 'validation':
         result = _get_validations(web_url, web_url_raw, software_versions)
 
-    return _format_status(result, symbol_success, symbol_failed)
+    return format_status(result, symbol_success, symbol_failed)
 
 
 def _get_builds(web_url, web_url_raw, software_versions):
@@ -127,18 +128,7 @@ def get_full_validations(**kwargs):
     if 'symbol_failed' in kwargs:
         symbol_failed = kwargs.pop('symbol_failed')
 
-    return _format_status(result, symbol_success, symbol_failed)
-
-
-def _format_status(items, symbol_success='success', symbol_failed='failed'):
-    result = {}
-    for name, content in items.items():
-        result[name] = content
-        if content['status'] == 'success':
-            result[name]['status'] = symbol_success
-        if content['status'] == 'failed':
-            result[name]['status'] = symbol_failed
-    return result
+    return format_status(result, symbol_success, symbol_failed)
 
 
 def _get_software_versions(software_versions):

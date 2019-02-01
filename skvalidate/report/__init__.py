@@ -149,6 +149,7 @@ def __repr_section__(name, section):
         str(section),
     )
 
+
 def get_metrics(metrics_json, metrics_ref_json, **kwargs):
     with open(metrics_json) as f:
         metrics = json.load(f)
@@ -175,3 +176,15 @@ def get_metrics(metrics_json, metrics_ref_json, **kwargs):
                 metric['symbol'] = symbol_same
 
     return comparison
+
+
+def format_status(items, symbol_success='success', symbol_failed='failed'):
+    """Format the status field of pipeline jobs."""
+    result = {}
+    for name, content in items.items():
+        result[name] = content
+        if content['status'] == 'success':
+            result[name]['status'] = symbol_success
+        if content['status'] == 'failed':
+            result[name]['status'] = symbol_failed
+    return result
