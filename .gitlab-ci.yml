@@ -13,7 +13,7 @@ before_script:
 after_script:
   - pip install codecov
   - make install-dev &> /dev/null
-  - detect_software_versions python -q -p build -o software_versions.json
+  - detect_software_versions python -q -p ${CI_JOB_NAME} -o software_versions.json
   # - codecov --token=<>
 
 stages:
