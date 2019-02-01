@@ -72,6 +72,8 @@ def get_jobs_for_stages(stages, **kwargs):
         result[name] = {}
         for field in fields:
             result[name][field] = job.attributes[field]
+        # extras
+        result[name][field]['web_url_raw'] = result[name]['web_url'] + '/raw'
         if software_versions:
             result[name]['software_versions'] = collect_software_versions(name, job.id, software_versions)
     return result

@@ -43,13 +43,13 @@ def get_jobs_for_stages(stages, **kwargs):
 def get_jobs_for_stage(stage, **kwargs):
     tmp = 'https://{server}/{group}/{project}/-/jobs/{j_id}'
     suffix_raw = '/raw'
-    link = tmp.format(
+    web_url = tmp.format(
         server=DEMO_SERVER,
         group=DEMO_GROUP,
         project=DEMO_PROJECT,
         j_id=1,
     )
-    link_raw = link + suffix_raw
+    web_url_raw = web_url + suffix_raw
 
     software_versions = {}
     if 'software_versions' in kwargs:
@@ -64,39 +64,39 @@ def get_jobs_for_stage(stage, **kwargs):
 
     result = {}
     if stage == 'build':
-        result = _get_builds(link, link_raw, software_versions)
+        result = _get_builds(web_url, web_url_raw, software_versions)
     elif stage == 'test':
-        result = _get_tests(link, link_raw, software_versions)
+        result = _get_tests(web_url, web_url_raw, software_versions)
     elif stage == 'validation':
-        result = _get_validations(link, link_raw, software_versions)
+        result = _get_validations(web_url, web_url_raw, software_versions)
 
     return _format_status(result, symbol_ok, symbol_fail)
 
 
-def _get_builds(link, link_raw, software_versions):
+def _get_builds(web_url, web_url_raw, software_versions):
     versions1 = software_versions['build1'] if 'build1' in software_versions else ['---']
     versions2 = software_versions['build2'] if 'build2' in software_versions else ['---']
     return {
-        'build1': {'status': 'passed', 'link': link, 'link_raw': link_raw, 'software_versions': versions1},
-        'build2': {'status': 'failed', 'link': link, 'link_raw': link_raw, 'software_versions': versions2},
+        'build1': {'status': 'passed', 'web_url': web_url, 'web_url_raw': web_url_raw, 'software_versions': versions1},
+        'build2': {'status': 'failed', 'web_url': web_url, 'web_url_raw': web_url_raw, 'software_versions': versions2},
     }
 
 
-def _get_tests(link, link_raw, software_versions):
+def _get_tests(web_url, web_url_raw, software_versions):
     versions1 = software_versions['test1'] if 'test1' in software_versions else ['---']
     versions2 = software_versions['test2'] if 'test2' in software_versions else ['---']
     return {
-        'test1': {'status': 'passed', 'link': link, 'link_raw': link_raw, 'software_versions': versions1},
-        'test2': {'status': 'failed', 'link': link, 'link_raw': link_raw, 'software_versions': versions2},
+        'test1': {'status': 'passed', 'web_url': web_url, 'web_url_raw': web_url_raw, 'software_versions': versions1},
+        'test2': {'status': 'failed', 'web_url': web_url, 'web_url_raw': web_url_raw, 'software_versions': versions2},
     }
 
 
-def _get_validations(link, link_raw, software_versions):
+def _get_validations(web_url, web_url_raw, software_versions):
     versions1 = software_versions['validation1'] if 'validation1' in software_versions else ['---']
     versions2 = software_versions['validation2'] if 'validation2' in software_versions else ['---']
     return {
-        'validation1': {'status': 'failed', 'link': link, 'link_raw': link_raw, 'software_versions': versions1},
-        'validation2': {'status': 'passed', 'link': link, 'link_raw': link_raw, 'software_versions': versions2},
+        'validation1': {'status': 'failed', 'web_url': web_url, 'web_url_raw': web_url_raw, 'software_versions': versions1},
+        'validation2': {'status': 'passed', 'web_url': web_url, 'web_url_raw': web_url_raw, 'software_versions': versions2},
     }
 
 
@@ -106,7 +106,7 @@ def get_full_validations(**kwargs):
 
     result = {}
     for name, info in data.items():
-        link = tmp.format(
+        web_url = tmp.format(
             server=DEMO_SERVER,
             group=DEMO_GROUP,
             project=DEMO_PROJECT,
@@ -114,7 +114,7 @@ def get_full_validations(**kwargs):
             output_dir=info['output_dir'],
         )
         result[name] = info
-        result[name]['link_to_details'] = link
+        result[name]['web_url_to_details'] = web_url
 
     symbol_ok = 'passed'
     symbol_fail = 'failed'
