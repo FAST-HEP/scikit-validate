@@ -101,7 +101,7 @@ def collect_software_versions(job_name, job_id, path):
         data = json.loads(software_versions)
     except json.decoder.JSONDecodeError as e:
         print('Cannot parse {}'.format(software_versions))
-        raise (json.decoder.JSONDecodeError)
+        raise json.decoder.JSONDecodeError(str(e))
     result = []
     for software, version in data[job_name].items():
         result.append('{}={}'.format(software, version))
@@ -143,7 +143,10 @@ def get_artifact_url(local_path):
 class _Streamer():
 
     def __init__(self):
-        self.content = ''
+        self.content = None
 
     def __call__(self, chunk):
-        self.content += str(chunk)
+        if self.content is None:
+            self.content = chunk
+        else:
+            self.content += chunk
