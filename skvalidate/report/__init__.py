@@ -178,6 +178,19 @@ def get_metrics(metrics_json, metrics_ref_json, **kwargs):
     return comparison
 
 
+def get_jobs_for_stages(stages, source='gitlab', **kwargs):
+    symbol_success = 'success'
+    symbol_failed = 'failed'
+    if 'symbol_success' in kwargs:
+        symbol_success = kwargs.pop('symbol_success')
+    if 'symbol_failed' in kwargs:
+        symbol_failed = kwargs.pop('symbol_failed')
+    if source == 'gitlab':
+        from ..gitlab import get_jobs_for_stages
+        result = get_jobs_for_stages(stages, **kwargs)
+        return format_status(result, symbol_success, symbol_failed)
+
+
 def format_status(items, symbol_success='success', symbol_failed='failed'):
     """Format the status field of pipeline jobs."""
     result = {}

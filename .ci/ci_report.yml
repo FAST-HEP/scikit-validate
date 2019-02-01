@@ -8,7 +8,7 @@ sections:
     pipeline:
       function: skvalidate.report.demo.get_pipeline_url
     jobs:
-      function: skvalidate.gitlab.get_jobs_for_stages
+      function: skvalidate.report.get_jobs_for_stages
       stages:
         - build
         - test
