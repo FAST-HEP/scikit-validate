@@ -110,9 +110,10 @@ def download_artifact(job_id, path):
     project = connection.projects.get(CI_PROJECT_ID)
     job = project.jobs.get(job_id, lazy=True)
     # workaround for https://github.com/python-gitlab/python-gitlab/issues/683, fixed in python-gitlab 1.8.0
-    streamer = _Streamer()
-    job.artifact(path, streamed=True, action=streamer)
-    return streamer.content
+    # streamer = _Streamer()
+    # job.artifact(path, streamed=True, action=streamer)
+    # return streamer.content
+    return job.artifact(path)
 
 
 def get_artifact_url(local_path):
