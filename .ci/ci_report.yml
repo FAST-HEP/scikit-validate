@@ -14,8 +14,8 @@ sections:
         - test
         - validation
       software_versions: software_versions.json
-      symbol_ok: '&#9989;'
-      symbol_fail: '&#10060;'
+      symbol_success: '&#9989;'
+      symbol_failed: '&#10060;'
       symbol_unkown: '&#10067;'
 
   validation_report:
@@ -23,8 +23,8 @@ sections:
     validation:
       function: skvalidate.report.demo.get_full_validations
       validation_json: {{scikit_validate}}/data/examples/validation.json
-      symbol_ok: '&#9989;'
-      symbol_fail: '&#10060;'
+      symbol_success: '&#9989;'
+      symbol_failed: '&#10060;'
       symbol_unkown: '&#10067;'
 
 

@@ -19,8 +19,8 @@ sections:
         - test
         - validation
       software_versions: {{scikit_validate}}/data/examples/software_versions.json
-      symbol_ok: '&#9989;'
-      symbol_fail: '&#10060;'
+      symbol_success: '&#9989;'
+      symbol_failed: '&#10060;'
       symbol_unkown: '&#10067;'
 
   validation_report:
@@ -28,7 +28,7 @@ sections:
     validation:
       function: skvalidate.gitlab.get_validation_report
       stage: validation
-      symbol_ok: '&#9989;'
+      symbol_success: '&#9989;'
       symbol_differ: '&#10060;'
       symbol_unkown: '&#10067;'
 

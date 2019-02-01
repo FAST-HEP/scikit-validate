@@ -55,12 +55,12 @@ def get_jobs_for_stage(stage, **kwargs):
     if 'software_versions' in kwargs:
         software_versions = kwargs.pop('software_versions')
 
-    symbol_ok = 'passed'
-    symbol_fail = 'failed'
-    if 'symbol_ok' in kwargs:
-        symbol_ok = kwargs.pop('symbol_ok')
-    if 'symbol_fail' in kwargs:
-        symbol_fail = kwargs.pop('symbol_fail')
+    symbol_success = 'success'
+    symbol_failed = 'failed'
+    if 'symbol_success' in kwargs:
+        symbol_success = kwargs.pop('symbol_success')
+    if 'symbol_failed' in kwargs:
+        symbol_failed = kwargs.pop('symbol_failed')
 
     result = {}
     if stage == 'build':
@@ -70,7 +70,7 @@ def get_jobs_for_stage(stage, **kwargs):
     elif stage == 'validation':
         result = _get_validations(web_url, web_url_raw, software_versions)
 
-    return _format_status(result, symbol_ok, symbol_fail)
+    return _format_status(result, symbol_success, symbol_failed)
 
 
 def _get_builds(web_url, web_url_raw, software_versions):
@@ -95,8 +95,12 @@ def _get_validations(web_url, web_url_raw, software_versions):
     versions1 = software_versions['validation1'] if 'validation1' in software_versions else ['---']
     versions2 = software_versions['validation2'] if 'validation2' in software_versions else ['---']
     return {
-        'validation1': {'status': 'failed', 'web_url': web_url, 'web_url_raw': web_url_raw, 'software_versions': versions1},
-        'validation2': {'status': 'passed', 'web_url': web_url, 'web_url_raw': web_url_raw, 'software_versions': versions2},
+        'validation1': {
+            'status': 'failed', 'web_url': web_url, 'web_url_raw': web_url_raw, 'software_versions': versions1
+        },
+        'validation2': {
+            'status': 'passed', 'web_url': web_url, 'web_url_raw': web_url_raw, 'software_versions': versions2
+        },
     }
 
 
@@ -116,24 +120,24 @@ def get_full_validations(**kwargs):
         result[name] = info
         result[name]['web_url_to_details'] = web_url
 
-    symbol_ok = 'passed'
-    symbol_fail = 'failed'
-    if 'symbol_ok' in kwargs:
-        symbol_ok = kwargs.pop('symbol_ok')
-    if 'symbol_fail' in kwargs:
-        symbol_fail = kwargs.pop('symbol_fail')
+    symbol_success = 'success'
+    symbol_failed = 'failed'
+    if 'symbol_success' in kwargs:
+        symbol_success = kwargs.pop('symbol_success')
+    if 'symbol_failed' in kwargs:
+        symbol_failed = kwargs.pop('symbol_failed')
 
-    return _format_status(result, symbol_ok, symbol_fail)
+    return _format_status(result, symbol_success, symbol_failed)
 
 
-def _format_status(items, symbol_ok, symbol_fail):
+def _format_status(items, symbol_success='success', symbol_failed='failed'):
     result = {}
     for name, content in items.items():
         result[name] = content
-        if content['status'] == 'passed':
-            result[name]['status'] = symbol_ok
+        if content['status'] == 'success':
+            result[name]['status'] = symbol_success
         if content['status'] == 'failed':
-            result[name]['status'] = symbol_fail
+            result[name]['status'] = symbol_failed
     return result
 
 
