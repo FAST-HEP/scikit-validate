@@ -103,8 +103,9 @@ def collect_software_versions(job_name, job_id, path):
         print('Cannot parse {}'.format(software_versions))
         raise json.decoder.JSONDecodeError(str(e))
     result = []
-    for software, version in data[job_name].items():
-        result.append('{}={}'.format(software, version))
+    if job_name in data:
+        for software, version in data[job_name].items():
+            result.append('{}={}'.format(software, version))
 
     return result
 
