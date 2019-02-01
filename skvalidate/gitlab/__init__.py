@@ -96,7 +96,12 @@ def collect_software_versions(job_name, job_id, path):
     # download software_versions.json
     software_versions = download_artifact(job_id, path)
     # load
-    data = json.loads(software_versions)
+    data = None
+    try:
+        data = json.loads(software_versions)
+    except json.decoder.JSONDecodeError as e:
+        print('Cannot parse {}'.format(software_versions))
+        raise (json.decoder.JSONDecodeError)
     result = []
     for software, version in data[job_name].items():
         result.append('{}={}'.format(software, version))
@@ -110,10 +115,10 @@ def download_artifact(job_id, path):
     project = connection.projects.get(CI_PROJECT_ID)
     job = project.jobs.get(job_id, lazy=True)
     # workaround for https://github.com/python-gitlab/python-gitlab/issues/683, fixed in python-gitlab 1.8.0
-    # streamer = _Streamer()
-    # job.artifact(path, streamed=True, action=streamer)
-    # return streamer.content
-    return job.artifact(path)
+    streamer = _Streamer()
+    job.artifact(path, streamed=True, action=streamer)
+    return streamer.content
+    # return job.artifact(path)
 
 
 def get_artifact_url(local_path):

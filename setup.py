@@ -62,7 +62,9 @@ requirements = [
     'plumbum',
     # 'python-gitlab>=1.8.0',
     # as long as 1.8.0 is not published, take master
-    'git+https://github.com/python-gitlab/python-gitlab.git@31bca2f9ee55ffa69d34f4584e90da01d3f6325e',
+    # 'python-gitlab @ https://api.github.com/repos/python-gitlab/python-gitlab/tarball/31bca2f9ee55ffa69d34f4584e90da01d3f6325e',
+    # 'git+https://github.com/python-gitlab/python-gitlab.git@31bca2f9ee55ffa69d34f4584e90da01d3f6325e',
+    'python-gitlab>=1.7.0',
     'pyyaml',
     'scipy',
     'uproot',
