@@ -18,7 +18,7 @@ def update_data_in_json(data, json_file):
 
 def write_data_to_json(data, json_file):
     with open(json_file, 'w') as f:
-        json.dump(data, f)
+        json.dump(data, f, indent=4)
 
 
 def read_data_from_json(json_file):
