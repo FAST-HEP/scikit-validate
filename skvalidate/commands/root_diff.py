@@ -31,7 +31,7 @@ def cli(file_under_test, reference_file, output_path, report_file):
     for name in sorted(comparison.keys()):
         values = comparison[name]
         status = values['status']
-        msg = 'ERROR'
+        msg = compare.ERROR
         color = colors.red
         if status == compare.FAILED:
             image = draw_diff(name, values, output_path)
@@ -52,7 +52,8 @@ def cli(file_under_test, reference_file, output_path, report_file):
         del values['diff']
         comparison[name] = values
 
-    write_data_to_json(comparison, report_file)
+    summary = _add_summary(comparison)
+    write_data_to_json(summary, report_file)
 
 
 def _reset_infinities(comparison):
@@ -62,3 +63,16 @@ def _reset_infinities(comparison):
         values['diff'][np.absolute(values['diff']) == np.Infinity] = 0
         comparison[name] = values
     return comparison
+
+def _add_summary(comparison):
+    summary = {}
+    summary['distributions'] = comparison
+    summary[compare.FAILED] = []
+    summary[compare.UNKNOWN] = []
+    summary[compare.SUCCESS] = []
+    summary[compare.ERROR] = []
+    for name, values in comparison.items():
+        status =  values['status']
+        summary[status].append(name)
+
+    return summary

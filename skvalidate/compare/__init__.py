@@ -8,6 +8,7 @@ from .metrics import compare_metrics
 SUCCESS = 'success'
 FAILED = 'failed'
 UNKNOWN = 'unknown'
+ERROR = 'error'
 
 
 def difference(a1, a2):
