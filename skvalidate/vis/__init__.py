@@ -27,9 +27,6 @@ def draw_diff(name, values, out_dir, bins=100):
 
     orig, ref, diff = values
     bins = 100
-    orig[np.absolute(orig) == np.Infinity] = 0
-    ref[np.absolute(ref) == np.Infinity] = 0
-    diff[np.absolute(diff) == np.Infinity] = 0
 
     min_x, max_x = find_limits(orig, ref)
     min_x, max_x = adjust_axis_limits(min_x, max_x, change=0.1)
