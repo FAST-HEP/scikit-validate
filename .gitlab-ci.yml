@@ -82,15 +82,26 @@ docs:
   script: make docs
 
 
-validate-root-diff:
+validate-root-diff-1_2:
   image: python:3.7
   stage: validation
   script:
     - make install
-    - mkdir -p output/validate/test_1_2
-    - mkdir -p output/validate/test_1_3
-    - skvalidate root_diff tests/samples/test_1.root tests/samples/test_2.root --out-dir=output/validate/test_1_2
-    - skvalidate root_diff tests/samples/test_1.root tests/samples/test_3.root --out-dir=output/validate/test_1_3
+    - mkdir -p output/validate
+    - skvalidate root_diff tests/samples/test_1.root tests/samples/test_2.root --output-path=output/validate -r output/validate/root_comparison.json
+  artifacts:
+    paths:
+      - output/validate
+      - software_versions.json
+    expire_in: 1 week
+
+validate-root-diff-1_3:
+  image: python:3.7
+  stage: validation
+  script:
+    - make install
+    - mkdir -p output/validate
+    - skvalidate root_diff tests/samples/test_1.root tests/samples/test_3.root --output-path=output/validate
   artifacts:
     paths:
       - output/validate
@@ -147,6 +158,7 @@ deploy_pypi:
     - tags
   except:
     - branches
+  after_script: []
 
 report:
   stage: report
@@ -168,3 +180,5 @@ cleanup_pypirc:
    when: always   # this is important; run even if preceding stages failed.
    script:
     - rm -vf ~/.pypirc  # we don't want to leave these around, but GitLab may clean up anyway.
+   after_script: []
+   before_script: []
