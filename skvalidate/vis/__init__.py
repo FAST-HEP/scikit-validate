@@ -3,9 +3,6 @@ import os
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-import numpy as np
-
-from scipy import stats
 
 
 def adjust_axis_limits(a_min, a_max, change=0.2, logy=False):
@@ -22,24 +19,21 @@ def find_limits(d_1, d2):
     return a_min, a_max
 
 
-def draw_diff(name, values, out_dir, bins=100):
+def draw_diff(name, values, output_path, bins=100):
     logy = False
 
-    orig, ref, diff = values
-    bins = 100
-
-    min_x, max_x = find_limits(orig, ref)
+    min_x, max_x = find_limits(values['original'], values['reference'])
     min_x, max_x = adjust_axis_limits(min_x, max_x, change=0.1)
 
     fig, (a0, a1) = plt.subplots(2, 1, gridspec_kw={'height_ratios': [5, 1]}, sharex=True)
     name = name.replace(';1', '')
-    output_file = os.path.join(out_dir, name + '.png')
+    output_file = os.path.join(output_path, name + '.png')
 
     h_ref, bin_edges, _ = a0.hist(
-        ref, label='reference', color='black', histtype='step', bins=bins, range=(min_x, max_x),
+        values['reference'], label='reference', color='black', histtype='step', bins=bins, range=(min_x, max_x),
     )
     h_orig, _, _ = a0.hist(
-        orig, label='this code', color='red', histtype='step', bins=bin_edges, linewidth=2, alpha=0.6,
+        values['original'], label='this code', color='red', histtype='step', bins=bin_edges, linewidth=2, alpha=0.6,
         range=(min_x, max_x),
     )
 
@@ -52,7 +46,7 @@ def draw_diff(name, values, out_dir, bins=100):
     a0.set_ylim(min_y, max_y)
     a0.legend()
 
-    ks_statistic, pvalue = stats.ks_2samp(ref, orig)
+    ks_statistic, pvalue = values['ks_statistic'], values['pvalue']
     a0.set_title('{0} \n KS statistic: {1:.3f}; p-value: {2:.3f}'.format(name, ks_statistic, pvalue))
 
     a1.plot(bin_edges[1:], h_ref - h_orig, label='difference', drawstyle='steps',)
