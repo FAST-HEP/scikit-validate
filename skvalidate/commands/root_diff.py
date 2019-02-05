@@ -15,9 +15,8 @@ from skvalidate.vis import draw_diff
 @click.command()
 @click.argument('file_under_test', type=click.Path(exists=True))
 @click.argument('reference_file', type=click.Path(exists=True))
-@click.option('--out-dir', type=click.Path(exists=True))
+@click.option('-o', '--out-dir', type=click.Path(exists=True), required=True)
 def cli(file_under_test, reference_file, out_dir):
-    assert out_dir is not None
     are_OK, are_not_OK = compare.compare_two_root_files(file_under_test, reference_file)
 
     outfiles = []
