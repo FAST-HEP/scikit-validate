@@ -188,7 +188,9 @@ def get_jobs_for_stages(stages, source='gitlab', **kwargs):
     if source == 'gitlab':
         from ..gitlab import get_jobs_for_stages
         result = get_jobs_for_stages(stages, **kwargs)
-        return format_status(result, symbol_success, symbol_failed)
+        result = format_status(result, symbol_success, symbol_failed)
+        result = format_software_versions(result)
+        return result
 
 
 def format_status(items, symbol_success='success', symbol_failed='failed'):
@@ -200,4 +202,17 @@ def format_status(items, symbol_success='success', symbol_failed='failed'):
             result[name]['status'] = symbol_success
         if content['status'] == 'failed':
             result[name]['status'] = symbol_failed
+    return result
+
+
+def format_software_versions(items):
+    """Format the software_versions field of pipeline jobs."""
+    result = {}
+    for name, content in items.items():
+        result[name] = content
+        if 'software_versions' in content:
+            result[name]['software_versions'] = []
+            for software, version in content['software_versions'][name].items():
+                result[name]['software_versions'].append('{}={}'.format(software, version))
+
     return result

@@ -63,7 +63,7 @@ def get_jobs_for_stages(stages, **kwargs):
         ...
     }
     """
-    software_versions = kwargs.pop('software_versions', '')
+    download_json = kwargs.pop('download_json', {})
     jobs = _get_current_pipeline_jobs()
 
     result = {}
@@ -78,8 +78,8 @@ def get_jobs_for_stages(stages, **kwargs):
             result[name][field] = job.attributes[field]
         # extras
         result[name]['web_url_raw'] = result[name]['web_url'] + '/raw'
-        if software_versions:
-            result[name]['software_versions'] = collect_software_versions(name, job.id, software_versions)
+        for j_name, j_path in download_json.items():
+            result[name][j_name] = download_json_from_job(j_path, job.id)
     return result
 
 
@@ -93,28 +93,20 @@ def _get_current_pipeline_jobs():
     return pipeline.jobs.list()
 
 
-def collect_software_versions(job_name, job_id, path):
-    """Collect software_versions.json from specified stages.
+def download_json_from_job(json_file, job_id):
+    """Collect JSON file from specified job and decode it.
 
+    @param json_file: local path where software versions are stored
     @param job_id: GitLab job ID for a pipeline job
-    @param path: local path where software versions are stored
     """
-    # download software_versions.json
-    software_versions = download_artifact(job_id, path)
+    raw_json = download_artifact(job_id, json_file)
     # load
-    data = None
     try:
-        data = json.loads(software_versions)
+        data = json.loads(raw_json)
     except json.decoder.JSONDecodeError as e:
-        print('Cannot parse {}'.format(software_versions))
+        print('Cannot parse {}'.format(raw_json))
         raise json.decoder.JSONDecodeError(str(e))
-    result = []
-    if job_name in data:
-        for software, version in data[job_name].items():
-            result.append('{}={}'.format(software, version))
-
-    return result
-
+    return data
 
 def download_artifact(job_id, path):
     connection = _connect()
