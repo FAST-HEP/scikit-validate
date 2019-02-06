@@ -6,6 +6,8 @@ TODO: separate functionality: plotting, recursive reading of ROOT files, diff ca
 TODO: allow for injection of user-defined high-level variables
 """
 from __future__ import print_function
+import os
+
 import click
 import numpy as np
 from plumbum import colors
@@ -20,7 +22,8 @@ from skvalidate.io import write_data_to_json
 @click.argument('reference_file', type=click.Path(exists=True))
 @click.option('-o', '--output-path', type=click.Path(exists=True), required=True)
 @click.option('-r', '--report-file', type=click.Path(), default='root_comparison.json')
-def cli(file_under_test, reference_file, output_path, report_file):
+@click.option('-p', '--prefix', default=os.environ.get('CI_JOB_NAME', 'root_diff'))
+def cli(file_under_test, reference_file, output_path, report_file, prefix):
     # TODO add verbosity setting
     # TODO: add parameter for distributions that are allowed to file (e.g. timestamps)
     # TODO: throw error if any distribution fails
@@ -52,7 +55,7 @@ def cli(file_under_test, reference_file, output_path, report_file):
         del values['diff']
         comparison[name] = values
 
-    summary = _add_summary(comparison)
+    summary = _add_summary(comparison, prefix)
     write_data_to_json(summary, report_file)
 
 
@@ -64,7 +67,7 @@ def _reset_infinities(comparison):
         comparison[name] = values
     return comparison
 
-def _add_summary(comparison):
+def _add_summary(comparison, prefix):
     summary = {}
     summary['distributions'] = comparison
     summary[compare.FAILED] = []
@@ -75,4 +78,4 @@ def _add_summary(comparison):
         status =  values['status']
         summary[status].append(name)
 
-    return summary
+    return {prefix: summary}
