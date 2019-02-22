@@ -1,6 +1,8 @@
 """Dummy package for testing & examples."""
+import os
+
 from ..io import read_data_from_json
-from . import format_status, format_software_versions
+from . import format_status, format_software_versions, validation
 
 DEMO_SERVER = 'gitlab.example.com'
 DEMO_GROUP = 'secret'
@@ -107,25 +109,21 @@ def _get_validations(web_url, web_url_raw, software_versions):
 
 def get_full_validations(**kwargs):
     data = read_data_from_json(kwargs.pop('validation_json'))
+    validation_detail = kwargs.pop('validation_detail')
     tmp = 'https://{server}/{group}/{project}/-/jobs/{j_id}/artifacts/file/{output_dir}/validation_report.html'
 
-    result = {}
-    for name, info in data.items():
-        web_url = tmp.format(
-            server=DEMO_SERVER,
-            group=DEMO_GROUP,
-            project=DEMO_PROJECT,
-            j_id=1,
-            output_dir=info['output_dir'],
-        )
-        result[name] = info
-        result[name]['web_url_to_details'] = web_url
-    # validation_detail = kwargs.pop('validation_detail')
+    data = {}
+    for name, directory in validation_detail.items():
+        json_file = os.path.join(directory, 'root_diff.json')
+        data[name] = read_data_from_json(json_file)
+        details = validation.create_detailed_report(data[name], output_dir='.', output_file='validation_report.html')
+        data[name]['web_url_to_details'] = details
+    summary = validation.create_summary(data)
 
     symbol_success = kwargs.pop('symbol_success', 'success')
     symbol_failed = kwargs.pop('symbol_failed', 'failed')
 
-    result = format_status(result, symbol_success, symbol_failed)
+    result = format_status(summary, symbol_success, symbol_failed)
     return format_software_versions(result)
 
 
