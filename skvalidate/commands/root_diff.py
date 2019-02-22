@@ -48,6 +48,7 @@ def cli(file_under_test, reference_file, output_path, report_file, prefix):
             color = colors.green
 
         values['msg'] = msg
+        # TODO: only print this for verbose option
         print(color | '{0} - {1}'.format(name, msg))
         # drop arrays from comparison
         del values['original']
@@ -56,6 +57,8 @@ def cli(file_under_test, reference_file, output_path, report_file, prefix):
         comparison[name] = values
 
     summary = _add_summary(comparison, prefix)
+    summary['output_path'] = output_path
+    # TODO: print nice summary
     write_data_to_json(summary, report_file)
 
 
@@ -66,6 +69,7 @@ def _reset_infinities(comparison):
         values['diff'][np.absolute(values['diff']) == np.Infinity] = 0
         comparison[name] = values
     return comparison
+
 
 def _add_summary(comparison, prefix):
     summary = {}
