@@ -1,6 +1,6 @@
 """Dummy package for testing & examples."""
 from ..io import read_data_from_json
-from . import format_status
+from . import format_status, format_software_versions
 
 DEMO_SERVER = 'gitlab.example.com'
 DEMO_GROUP = 'secret'
@@ -120,15 +120,13 @@ def get_full_validations(**kwargs):
         )
         result[name] = info
         result[name]['web_url_to_details'] = web_url
+    validation_detail = kwargs.pop('validation_detail')
 
-    symbol_success = 'success'
-    symbol_failed = 'failed'
-    if 'symbol_success' in kwargs:
-        symbol_success = kwargs.pop('symbol_success')
-    if 'symbol_failed' in kwargs:
-        symbol_failed = kwargs.pop('symbol_failed')
+    symbol_success = kwargs.pop('symbol_success', 'success')
+    symbol_failed = kwargs.pop('symbol_failed', 'failed')
 
-    return format_status(result, symbol_success, symbol_failed)
+    result = format_status(result, symbol_success, symbol_failed)
+    return format_software_versions(result)
 
 
 def _get_software_versions(software_versions):
