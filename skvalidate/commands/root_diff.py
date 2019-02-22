@@ -75,7 +75,7 @@ def _add_summary(comparison, prefix):
     summary[compare.SUCCESS] = []
     summary[compare.ERROR] = []
     for name, values in comparison.items():
-        status =  values['status']
+        status = values['status']
         summary[status].append(name)
 
     return {prefix: summary}

@@ -120,7 +120,7 @@ def get_full_validations(**kwargs):
         )
         result[name] = info
         result[name]['web_url_to_details'] = web_url
-    validation_detail = kwargs.pop('validation_detail')
+    # validation_detail = kwargs.pop('validation_detail')
 
     symbol_success = kwargs.pop('symbol_success', 'success')
     symbol_failed = kwargs.pop('symbol_failed', 'failed')
