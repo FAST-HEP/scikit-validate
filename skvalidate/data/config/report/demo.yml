@@ -23,9 +23,10 @@ sections:
     validation:
       function: skvalidate.report.demo.get_full_validations
       validation_json: {{scikit_validate}}/data/examples/validation.json
-      symbol_success: '&#9989;'
-      symbol_failed: '&#10060;'
-      symbol_unkown: '&#10067;'
+      validation_detail:
+        validation1: {{scikit_validate}}/data/examples/root_diff/test_1_2
+        validation2: {{scikit_validate}}/data/examples/root_diff/test_1_3
+        validation3: {{scikit_validate}}/data/examples/root_diff/test_1_3
 
 
   performance_report:
