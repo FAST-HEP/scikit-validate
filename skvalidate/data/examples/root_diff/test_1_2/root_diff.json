@@ -45,6 +45,7 @@
             "test;1.i",
             "test;1.v"
         ],
-        "error": []
+        "error": [],
+        "output_path": "skvalidate/data/examples/root_diff/test_1_2"
     }
 }
