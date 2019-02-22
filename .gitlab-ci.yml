@@ -167,7 +167,8 @@ report:
     - make install
     - make_report .ci/ci_report.yml -o ci_report.md
   dependencies:
-    - validate-root-diff
+    - validate-root-diff-1_2
+    - validate-root-diff-1_3
     - validate:metric_pipeline
   artifacts:
     paths:
