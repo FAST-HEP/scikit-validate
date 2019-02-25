@@ -64,6 +64,7 @@ def get_jobs_for_stages(stages, **kwargs):
     }
     """
     download_json = kwargs.pop('download_json', {})
+    job_filter = kwargs.pop('job_filter', [])
     jobs = _get_current_pipeline_jobs()
 
     result = {}
@@ -73,6 +74,8 @@ def get_jobs_for_stages(stages, **kwargs):
         if stage not in stages:
             continue
         name = job.attributes['name']
+        if job_filter and name not in job_filter:
+            continue
         result[name] = {}
         for field in fields:
             result[name][field] = job.attributes[field]
