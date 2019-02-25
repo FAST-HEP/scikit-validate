@@ -10,16 +10,11 @@ from .. import gitlab
 
 
 def produce_validation_report(stages, jobs, validation_json, **kwargs):
-    # 1. Get CI pipeline
-    # 2. for job in jobs: get the validation_json
-    # 3. construct validation data (dict of all validation_json)
-    # 4. create summary
-    # 5. create detailed report
     download_json = dict(validation_json=validation_json)
     jobs = gitlab.get_jobs_for_stages(stages, download_json=download_json, job_filter=jobs)
     data = {}
     for name, content in jobs.items():
-        data[name] = content['validation_json']
+        data[name] = content['validation_json'][name]
         validation_output_file = 'validation_report_{0}.html'.format(name)
         details = create_detailed_report(data[name], output_dir='.', output_file=validation_output_file)
         data[name]['web_url_to_details'] = details
