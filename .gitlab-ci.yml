@@ -101,7 +101,7 @@ validate-root-diff-1_3:
   script:
     - make install
     - mkdir -p output/validate
-    - skvalidate root_diff tests/samples/test_1.root tests/samples/test_3.root --output-path=output/validate
+    - skvalidate root_diff tests/samples/test_1.root tests/samples/test_3.root --output-path=output/validate -r output/validate/root_comparison.json
   artifacts:
     paths:
       - output/validate
