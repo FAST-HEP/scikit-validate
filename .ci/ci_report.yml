@@ -23,8 +23,7 @@ sections:
     template: {{scikit_validate}}/data/templates/report/default/validation.md
     validation:
       function: skvalidate.report.validation.produce_validation_report
-      download_json:
-        validation_json: {{scikit_validate}}/data/examples/validation.json
+      validation_json: output/validate/root_comparison.json
       stages:
         - validation
       jobs:

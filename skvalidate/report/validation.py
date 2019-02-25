@@ -6,11 +6,25 @@ import markdown2
 from .. import __skvalidate_root__
 
 from .. import compare
+from .. import gitlab
 
 
 def produce_validation_report(stages, jobs, validation_json, **kwargs):
-    # 1. for job in jobs: get the validation_json
-    pass
+    # 1. Get CI pipeline
+    # 2. for job in jobs: get the validation_json
+    # 3. construct validation data (dict of all validation_json)
+    # 4. create summary
+    # 5. create detailed report
+    download_json = dict(validation_json=validation_json)
+    jobs = get_jobs_for_stages(stages, download_json=download_json, job_filter=jobs)
+    data = {}
+    for name, content in jobs.items():
+        data[name] = content['validation_json']
+        validation_output_file = 'validation_report_{0}.html'.format(name)
+        details = validation.create_detailed_report(data[name], output_dir='.', output_file=validation_output_file)
+        data[name]['web_url_to_details'] = details
+    summary = validation.create_summary(data)
+    return summary
 
 
 def create_detailed_report(data, output_dir='.', output_file='validation_report_detail.html'):
@@ -23,12 +37,12 @@ def create_detailed_report(data, output_dir='.', output_file='validation_report_
     full_path = os.path.join(os.path.abspath(output_dir), output_file)
     with open(full_path, 'w') as f:
         f.write(content)
-    # if not in CI --> localhost link
-    local = True
-    protocol = 'file://'
-    link = protocol + os.path.join(os.path.abspath(output_dir), output_file)
-    if not local:
-        pass
+    local = 'CI' not in os.environ
+    if local:
+        protocol = 'file://'
+        link = protocol + os.path.join(os.path.abspath(output_dir), output_file)
+    else:
+        link = get_artifact_url(os.path.join(output_dir, output_file))
     return link
 
 
@@ -36,12 +50,12 @@ def create_summary(data):
     """Create validation summary."""
     summary = {}
     for name, info in data.items():
-        distributions = info['root_diff']['distributions']
+        distributions = info['distributions']
         status = compare.SUCCESS
 
-        failed = info['root_diff'][compare.FAILED]
-        error = info['root_diff'][compare.ERROR]
-        unknown = info['root_diff'][compare.UNKNOWN]
+        failed = info[compare.FAILED]
+        error = info[compare.ERROR]
+        unknown = info[compare.UNKNOWN]
         n_bad = len(failed) + len(error)
 
         if n_bad > 0:
