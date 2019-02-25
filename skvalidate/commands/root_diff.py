@@ -57,7 +57,7 @@ def cli(file_under_test, reference_file, output_path, report_file, prefix):
         comparison[name] = values
 
     summary = _add_summary(comparison, prefix)
-    summary['output_path'] = output_path
+    summary[prefix]['output_path'] = output_path
     # TODO: print nice summary
     write_data_to_json(summary, report_file)
 
