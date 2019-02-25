@@ -1,6 +1,8 @@
-# {{ title }}
-TODO: add table of contents
-{% for name, values in summary['distributions'].items() -%}
-# {{ name }} {{(KS statistic: {1:.3f}; p-value: {2:.3f}) | format(values['ks_statistic'], values['pvalue']) }}
-[[!image]({{values['image']}})]({{values['image']}})
+# Detailed validation report
+{{table_of_contents}}
+{% for name, values in root_diff['distributions'].items() -%}
+## {{ name }} ({{"KS statistic: %0.3f; p-value: %0.3f" | format(values['ks_statistic'], values['pvalue'])}} - {{values['status']}}
+{% if values['status'] != 'success' -%}
+[![image]({{values['image']}})]({{values['image']}})
+{% endif -%}
 {% endfor -%}

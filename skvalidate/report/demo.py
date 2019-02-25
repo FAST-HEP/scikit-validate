@@ -110,7 +110,7 @@ def _get_validations(web_url, web_url_raw, software_versions):
 def get_full_validations(**kwargs):
     data = read_data_from_json(kwargs.pop('validation_json'))
     validation_detail = kwargs.pop('validation_detail')
-    tmp = 'https://{server}/{group}/{project}/-/jobs/{j_id}/artifacts/file/{output_dir}/validation_report.html'
+    # tmp = 'https://{server}/{group}/{project}/-/jobs/{j_id}/artifacts/file/{output_dir}/validation_report.html'
 
     data = {}
     for name, directory in validation_detail.items():
