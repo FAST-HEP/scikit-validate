@@ -16,14 +16,14 @@ def produce_validation_report(stages, jobs, validation_json, **kwargs):
     # 4. create summary
     # 5. create detailed report
     download_json = dict(validation_json=validation_json)
-    jobs = get_jobs_for_stages(stages, download_json=download_json, job_filter=jobs)
+    jobs = gitlab.get_jobs_for_stages(stages, download_json=download_json, job_filter=jobs)
     data = {}
     for name, content in jobs.items():
         data[name] = content['validation_json']
         validation_output_file = 'validation_report_{0}.html'.format(name)
-        details = validation.create_detailed_report(data[name], output_dir='.', output_file=validation_output_file)
+        details = create_detailed_report(data[name], output_dir='.', output_file=validation_output_file)
         data[name]['web_url_to_details'] = details
-    summary = validation.create_summary(data)
+    summary = create_summary(data)
     return summary
 
 
@@ -42,7 +42,7 @@ def create_detailed_report(data, output_dir='.', output_file='validation_report_
         protocol = 'file://'
         link = protocol + os.path.join(os.path.abspath(output_dir), output_file)
     else:
-        link = get_artifact_url(os.path.join(output_dir, output_file))
+        link = gitlab.get_artifact_url(os.path.join(output_dir, output_file))
     return link
 
 

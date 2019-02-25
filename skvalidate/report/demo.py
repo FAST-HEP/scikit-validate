@@ -1,6 +1,4 @@
 """Dummy package for testing & examples."""
-import os
-
 from ..io import read_data_from_json
 from . import format_status, format_software_versions, validation
 
