@@ -108,15 +108,13 @@ def _get_validations(web_url, web_url_raw, software_versions):
 
 
 def get_full_validations(**kwargs):
-    data = read_data_from_json(kwargs.pop('validation_json'))
     validation_detail = kwargs.pop('validation_detail')
-    # tmp = 'https://{server}/{group}/{project}/-/jobs/{j_id}/artifacts/file/{output_dir}/validation_report.html'
 
     data = {}
-    for name, directory in validation_detail.items():
-        json_file = os.path.join(directory, 'root_diff.json')
-        data[name] = read_data_from_json(json_file)
-        details = validation.create_detailed_report(data[name], output_dir='.', output_file='validation_report.html')
+    for name, json_file in validation_detail.items():
+        data[name] = read_data_from_json(json_file)['root_diff']
+        validation_output_file = 'validation_report_{0}.html'.format(name)
+        details = validation.create_detailed_report(data[name], output_dir='.', output_file=validation_output_file)
         data[name]['web_url_to_details'] = details
     summary = validation.create_summary(data)
 
