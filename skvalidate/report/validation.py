@@ -14,18 +14,33 @@ def produce_validation_report(stages, jobs, validation_json, **kwargs):
     jobs = gitlab.get_jobs_for_stages(stages, download_json=download_json, job_filter=jobs)
     data = {}
     for name, job in jobs.items():
+        outputs = download_validation_outputs(job)
         data[name] = job['validation_json'][name]
-        distributions = data[name]['distributions']
-        for d_name, info in distributions.items():
-            if 'image' in info:
-                image = info['image']
-                image = gitlab.path_and_job_id_to_artifact_url(image, job_id=job['id'])
-                data[name]['distributions']['image'] = image
+        data[name]['distributions'].update(outputs)
         validation_output_file = 'validation_report_{0}.html'.format(name)
         details = create_detailed_report(data[name], output_dir='.', output_file=validation_output_file)
         data[name]['web_url_to_details'] = details
     summary = create_summary(data)
     return summary
+
+
+def download_validation_outputs(job):
+    name = job['name']
+    data = job['validation_json'][name]
+    base_output_dir = os.path.join(data['output_path'], name)
+    if not os.path.exists(base_output_dir):
+        os.makedirs(base_output_dir)
+
+    distributions = data[name]['distributions']
+    results = {}
+    for d_name, info in distributions.items():
+        if 'image' not in info:
+            continue
+        image = info['image']
+        output_file = image.replace(data['output_path'], base_output_dir)
+        gitlab.download_artifact(job['id'], image, output_file=output_file)
+        results[d_name] = {'image': output_file}
+    return results
 
 
 def create_detailed_report(data, output_dir='.', output_file='validation_report_detail.html'):
