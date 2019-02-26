@@ -172,7 +172,8 @@ report:
     - validate:metric_pipeline
   artifacts:
     paths:
-      - ci_report.md
+      - "*.md"
+      - "*.html"
     expire_in: 1 week
   after_script: []
 
