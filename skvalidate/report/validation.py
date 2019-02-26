@@ -10,6 +10,14 @@ from .. import gitlab
 
 
 def produce_validation_report(stages, jobs, validation_json, **kwargs):
+    """Produce validation report inside CI pipeline.
+
+    @param stages: the GitLab CI stages to consider
+    @param jobs: the job names to consider
+    @param validation_json: local job path to validation JSON output
+
+    @return summary of validation findings with pointers to details
+    """
     download_json = dict(validation_json=validation_json)
     jobs = gitlab.get_jobs_for_stages(stages, download_json=download_json, job_filter=jobs)
     data = {}
@@ -26,6 +34,12 @@ def produce_validation_report(stages, jobs, validation_json, **kwargs):
 
 
 def download_validation_outputs(job):
+    """Download validation specific outputs.
+
+    @param job: single GitLab CI job as produced by gitlab.get_jobs_for_stages
+
+    @return dictionary of job distribution names and image paths
+    """
     name = job['name']
     data = job['validation_json'][name]
     base_output_dir = os.path.join(data['output_path'], name)
@@ -61,7 +75,14 @@ def update_image_urls(outputs):
 
 
 def create_detailed_report(data, output_dir='.', output_file='validation_report_detail.html'):
-    """Create detailed report (with plots)"""
+    """Create detailed (HTML) report (with plots)
+
+    @param data: the validation data
+    @param output_dir: the output directory for the report. Default: .
+    @param output_file: name of output file (HTML format)
+
+    @return: link to produced validation report
+    """
     template = os.path.join(__skvalidate_root__, 'data', 'templates', 'report', 'default', 'validation_detail.md')
     with open(template) as f:
         content = f.read()
@@ -82,7 +103,12 @@ def create_detailed_report(data, output_dir='.', output_file='validation_report_
 
 
 def create_summary(data):
-    """Create validation summary."""
+    """Create validation summary.
+
+    @param data: validation data
+
+    @return: markdown content of validation summary
+    """
     summary = {}
     for name, info in data.items():
         distributions = info['distributions']
@@ -107,13 +133,24 @@ def create_summary(data):
 
 
 def _add_table_of_contents(content, data):
+    """Add table of contents to template
+
+    @param content: markdown template content
+    @param data: data to fill the template
+
+    @return HTML version of HTML content
+    """
+    # render once to get the structure
     template = Template(content)
     data['table_of_contents'] = ''
     tmp = template.render(**data)
+    # create table of contents
     tmp = markdown2.markdown(tmp, extras=["toc"])
     table_of_contents = tmp.toc_html
 
+    # render with table of contents
     template = Template(content)
     data['table_of_contents'] = table_of_contents
     tmp = template.render(**data)
+
     return markdown2.markdown(tmp)
