@@ -112,13 +112,17 @@ def download_json_from_job(json_file, job_id):
     return data
 
 
-def download_artifact(job_id, path):
+def download_artifact(job_id, path, output_file=None):
     connection = _connect()
     CI_PROJECT_ID = os.environ.get('CI_PROJECT_ID')
     project = connection.projects.get(CI_PROJECT_ID)
     job = project.jobs.get(job_id, lazy=True)
     # workaround for https://github.com/python-gitlab/python-gitlab/issues/683, fixed in python-gitlab 1.8.0
-    streamer = _Streamer()
+    streamer = None
+    if output_file is None:
+        streamer = _Streamer()
+    else:
+        streamer = _DiskStreamer(output_file)
     try:
         job.artifact(path, streamed=True, action=streamer)
         return streamer.content
@@ -160,3 +164,12 @@ class _Streamer():
             self.content = chunk
         else:
             self.content += chunk
+
+
+class _DiskStreamer():
+    def __init__(self, output_file):
+        self._f = open(output_file, 'wb')
+        self.content = output_file
+
+    def __call__(self, chunk):
+        self._f.write(chunk)
