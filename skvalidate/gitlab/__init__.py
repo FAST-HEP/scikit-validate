@@ -111,6 +111,7 @@ def download_json_from_job(json_file, job_id):
         raise json.decoder.JSONDecodeError(str(e))
     return data
 
+
 def download_artifact(job_id, path):
     connection = _connect()
     CI_PROJECT_ID = os.environ.get('CI_PROJECT_ID')
@@ -130,19 +131,22 @@ def download_artifact(job_id, path):
 def get_artifact_url(local_path):
     CI_PROJECT_PATH = os.environ.get('CI_PROJECT_PATH', os.getcwd())
     CI_JOB_ID = os.environ.get('CI_JOB_ID')
-    CI_PROJECT_URL = os.environ.get('CI_PROJECT_URL')
-    url_template = '{CI_PROJECT_URL}/-/jobs/{CI_JOB_ID}/artifacts/{path_type}/{path}'
-
     local_path = local_path.replace(CI_PROJECT_PATH, '')
 
     path_type = 'browse'
     if os.path.isfile(local_path):
         path_type = 'file'
+    return path_and_job_id_to_artifact_url(local_path, CI_JOB_ID, path_type)
+
+
+def path_and_job_id_to_artifact_url(path, job_id, path_type='file'):
+    CI_PROJECT_URL = os.environ.get('CI_PROJECT_URL')
+    url_template = '{CI_PROJECT_URL}/-/jobs/{job_id}/artifacts/{path_type}/{path}'
     return url_template.format(
         CI_PROJECT_URL=CI_PROJECT_URL,
-        CI_JOB_ID=CI_JOB_ID,
+        job_id=job_id,
         path_type=path_type,
-        path=local_path,
+        path=path,
     )
 
 

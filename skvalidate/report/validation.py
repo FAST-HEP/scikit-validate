@@ -13,8 +13,13 @@ def produce_validation_report(stages, jobs, validation_json, **kwargs):
     download_json = dict(validation_json=validation_json)
     jobs = gitlab.get_jobs_for_stages(stages, download_json=download_json, job_filter=jobs)
     data = {}
-    for name, content in jobs.items():
-        data[name] = content['validation_json'][name]
+    for name, job in jobs.items():
+        data[name] = job['validation_json'][name]
+        for d_name, info in data[name]['distributions'].items():
+            if 'image' in info:
+                image = info['image']
+                image = gitlab.path_and_job_id_to_artifact_url(image, job_id=job['id'])
+                data[name]['distributions']['image'] = image
         validation_output_file = 'validation_report_{0}.html'.format(name)
         details = create_detailed_report(data[name], output_dir='.', output_file=validation_output_file)
         data[name]['web_url_to_details'] = details
