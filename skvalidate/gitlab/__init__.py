@@ -154,6 +154,40 @@ def path_and_job_id_to_artifact_url(path, job_id, path_type='file'):
     )
 
 
+def add_report_to_merge_request(report_file):
+    with open(report_file) as f:
+        content = f.read()
+
+    project_id = os.environ.get('CI_PROJECT_ID')
+    merge_request_id = os.environ.get('CI_MERGE_REQUEST_ID', None)
+    if merge_request_id is None:
+        print('This is not run as part of a merge request -- aborting ...')
+        return
+    project = GITLAB_CONNECTION.projects.get(project_id)
+    mr = project.mergerequests.get(merge_request_id)
+    # TODO: check if comment from user already exists, if yes --> update
+
+    mr.notes.create(dict(
+        body=content,
+    ))
+
+    mr.save()
+
+
+def get_merge_request(project, mr_id):
+    mr = project.mergerequests.get(mr_id)
+    return mr
+
+def add_label_to_merge_request(label, merge_request):
+    merge_request.labels.append(label)
+    merge_request.save()
+
+
+def remove_label_from_merge_request(label, merge_request):
+    merge_request.labels.remove(label)
+    merge_request.save()
+
+
 class _Streamer():
 
     def __init__(self):
