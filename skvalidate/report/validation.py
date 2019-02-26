@@ -15,7 +15,8 @@ def produce_validation_report(stages, jobs, validation_json, **kwargs):
     data = {}
     for name, job in jobs.items():
         data[name] = job['validation_json'][name]
-        for d_name, info in data[name]['distributions'].items():
+        distributions = data[name]['distributions']
+        for d_name, info in distributions.items():
             if 'image' in info:
                 image = info['image']
                 image = gitlab.path_and_job_id_to_artifact_url(image, job_id=job['id'])

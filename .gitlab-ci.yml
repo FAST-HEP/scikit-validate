@@ -164,6 +164,7 @@ report:
   stage: report
   when: always
   script:
+    - ls -lah . && ls -lah output/validate/*
     - make install
     - make_report .ci/ci_report.yml -o ci_report.md
   dependencies:
