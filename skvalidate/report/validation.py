@@ -15,6 +15,7 @@ def produce_validation_report(stages, jobs, validation_json, **kwargs):
     data = {}
     for name, job in jobs.items():
         outputs = download_validation_outputs(job)
+        outputs = update_image_urls(outputs)
         data[name] = job['validation_json'][name]
         data[name]['distributions'].update(outputs)
         validation_output_file = 'validation_report_{0}.html'.format(name)
@@ -43,6 +44,22 @@ def download_validation_outputs(job):
     return results
 
 
+def update_image_urls(outputs):
+    """Update image URLs for this CI job
+
+    @param outputs: dictionary of {'name': {'image':path}}
+
+    @return aritfact path with RAW url for each image path
+    """
+    results = {}
+    job_id = os.environ.get('CI_JOB_ID')
+    for name, info in outputs.items():
+        image_path = info['image']
+        path = gitlab.path_and_job_id_to_artifact_url(image_path, job_id, 'raw')
+        results[name] = dict(image=path)
+    return results
+
+
 def create_detailed_report(data, output_dir='.', output_file='validation_report_detail.html'):
     """Create detailed report (with plots)"""
     template = os.path.join(__skvalidate_root__, 'data', 'templates', 'report', 'default', 'validation_detail.md')
@@ -58,7 +75,9 @@ def create_detailed_report(data, output_dir='.', output_file='validation_report_
         protocol = 'file://'
         link = protocol + os.path.join(os.path.abspath(output_dir), output_file)
     else:
-        link = gitlab.get_artifact_url(os.path.join(output_dir, output_file))
+        path = os.path.join(output_dir, output_file)
+        job_id = os.environ.get('CI_JOB_ID')
+        link = gitlab.path_and_job_id_to_artifact_url(path, job_id, 'raw')
     return link
 
 
