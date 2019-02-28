@@ -172,6 +172,7 @@ report:
     paths:
       - "*.md"
       - "*.html"
+      - "*.pdf"
       - output
     expire_in: 1 week
   after_script: []

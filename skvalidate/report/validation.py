@@ -2,6 +2,7 @@ import os
 
 from jinja2 import Template
 import markdown2
+import pdfkit
 
 from .. import __skvalidate_root__
 
@@ -46,7 +47,7 @@ def download_validation_outputs(job):
     if not os.path.exists(base_output_dir):
         os.makedirs(base_output_dir)
 
-    distributions = data[name]['distributions']
+    distributions = data['distributions']
     results = {}
     for d_name, info in distributions.items():
         if 'image' not in info:
@@ -91,6 +92,7 @@ def create_detailed_report(data, output_dir='.', output_file='validation_report_
     full_path = os.path.join(os.path.abspath(output_dir), output_file)
     with open(full_path, 'w') as f:
         f.write(content)
+    pdfkit.from_file(full_path, full_path + '.pdf')
     local = 'CI' not in os.environ
     if local:
         protocol = 'file://'
