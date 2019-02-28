@@ -59,7 +59,6 @@ requirements = [
     'markdown2',
     'matplotlib',
     'numpy',
-    'pdfkit',
     'plumbum',
     # 'python-gitlab>=1.8.0',
     # as long as 1.8.0 is not published, take master
@@ -69,6 +68,7 @@ requirements = [
     'pyyaml',
     'scipy',
     'uproot',
+    'xhtml2pdf',
 ]
 
 setup_requirements = [

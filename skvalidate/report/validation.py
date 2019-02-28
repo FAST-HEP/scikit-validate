@@ -2,7 +2,8 @@ import os
 
 from jinja2 import Template
 import markdown2
-import pdfkit
+import six
+from xhtml2pdf import pisa
 
 from .. import __skvalidate_root__
 
@@ -92,7 +93,11 @@ def create_detailed_report(data, output_dir='.', output_file='validation_report_
     full_path = os.path.join(os.path.abspath(output_dir), output_file)
     with open(full_path, 'w') as f:
         f.write(content)
-    pdfkit.from_file(full_path, full_path + '.pdf')
+    pdf_result = six.StringIO()
+    pdf = pisa.pisaDocument(six.StringIO(content), dest=pdf_result)
+    if not pdf.err:
+        with open(full_path + '.pdf', 'wb') as f:
+            f.write(pdf_result.getvalue())
     local = 'CI' not in os.environ
     if local:
         protocol = 'file://'
