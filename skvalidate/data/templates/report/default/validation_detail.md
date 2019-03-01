@@ -1,4 +1,4 @@
-# Detailed validation report
+# Detailed validation report for {{job_name}}
 {{table_of_contents}}
 {% for name, values in distributions.items() -%}
 {% if 'ks_statistic' in values -%}
