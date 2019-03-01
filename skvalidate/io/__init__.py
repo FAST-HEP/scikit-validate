@@ -1,8 +1,11 @@
 """Module for any IO operations."""
+import glob
 import json
 import os
+
 import numpy as np
 import uproot
+
 
 
 def save_metrics_to_file(metrics, metrics_file):
@@ -69,3 +72,9 @@ def unpack(name, obj):
 def save_array_to_file(array, name, output_dir):
     output_file = os.path.join(output_dir, name + '.npy')
     np.save(output_file, array)
+
+
+def resolve_wildcard_path(wildcard_path):
+    files = glob.glob(wildcard_path)
+    for f in files:
+        yield os.path.abspath(f)
