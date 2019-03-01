@@ -8,6 +8,7 @@ from .. import __skvalidate_root__
 
 from .. import compare
 from .. import gitlab
+from .. import logger
 
 
 def produce_validation_report(stages, jobs, validation_json, **kwargs):

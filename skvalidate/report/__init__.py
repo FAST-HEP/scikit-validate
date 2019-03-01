@@ -8,6 +8,7 @@ from jinja2 import Template
 from jinja2.exceptions import TemplateSyntaxError, UndefinedError
 
 from .. import __skvalidate_root__
+from .. import logger
 from ..compare import compare_metrics
 
 
@@ -97,9 +98,10 @@ class Section(object):
             try:
                 self.__fill__()
             except (UndefinedError, TemplateSyntaxError, TypeError) as e:
-                print('Unable to render section "{}": {}'.format(self.__name, e))
-                print('Section values:', self.__values)
-                print('Section properties:', self.__properties)
+                logger.error('Unable to render section "{}": {}'.format(self.__name, e))
+                logger.error('Section values: {0}'.format(self.__values))
+                logger.error('Section properties:'.format(self.__properties))
+                raise e
         return self.__content
 
 
