@@ -24,11 +24,11 @@ def produce_validation_report(stages, jobs, validation_json, **kwargs):
     jobs = gitlab.get_jobs_for_stages(stages, download_json=download_json, job_filter=jobs)
     data = {}
     for name, job in jobs.items():
-        data[name]['job_name'] = name
         outputs = download_validation_outputs(job)
-        # write out .md with full paths, HTML with local paths and PDF with local paths
         outputs = update_image_urls(outputs)
+        # write out .md with full paths, HTML with local paths and PDF with local paths
         data[name] = job['validation_json'][name]
+        data[name]['job_name'] = name
         validation_output_file = 'validation_report_{0}'.format(name)
 
         details = create_detailed_report(
