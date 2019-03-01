@@ -25,6 +25,8 @@ import os
 import gitlab
 import json
 
+from .. import logger
+
 
 GITLAB_CONNECTION = None
 
@@ -72,9 +74,11 @@ def get_jobs_for_stages(stages, **kwargs):
     for job in jobs:
         stage = job.attributes['stage']
         if stage not in stages:
+            logger.debug('Stage {0} not in [{1}]'.format(stage, ','.join(stage)))
             continue
         name = job.attributes['name']
         if job_filter and name not in job_filter:
+            logger.debug('Job {0} not in [{1}]'.format(name, ','.join(job_filter)))
             continue
         result[name] = {}
         for field in fields:
@@ -107,12 +111,13 @@ def download_json_from_job(json_file, job_id):
     try:
         data = json.loads(raw_json)
     except json.decoder.JSONDecodeError as e:
-        print('Cannot parse {}'.format(raw_json))
+        logger.error('Cannot parse {}'.format(raw_json))
         raise json.decoder.JSONDecodeError(str(e))
     return data
 
 
 def download_artifact(job_id, path, output_file=None):
+    logger.debug('Downloading {0} from job #{1}'.format(path, job_id))
     connection = _connect()
     CI_PROJECT_ID = os.environ.get('CI_PROJECT_ID')
     project = connection.projects.get(CI_PROJECT_ID)
@@ -122,12 +127,13 @@ def download_artifact(job_id, path, output_file=None):
     if output_file is None:
         streamer = _Streamer()
     else:
+        logger.debug('Saving {0} from job #{1} to {2}'.format(path, job_id, output_file))
         streamer = _DiskStreamer(output_file)
     try:
         job.artifact(path, streamed=True, action=streamer)
         return streamer.content
     except gitlab.exceptions.GitlabGetError as e:
-        print('Could not find artifact {} for job ID {}'.format(path, job_id))
+        logger.error('Could not find artifact {} for job ID {}'.format(path, job_id))
         raise gitlab.exceptions.GitlabGetError(e)
     return None
 
@@ -161,7 +167,7 @@ def add_report_to_merge_request(report_file):
     project_id = os.environ.get('CI_PROJECT_ID')
     merge_request_id = os.environ.get('CI_MERGE_REQUEST_ID', None)
     if merge_request_id is None:
-        print('This is not run as part of a merge request -- aborting ...')
+        logger.warn('This is not run as part of a merge request -- aborting ...')
         return
     project = GITLAB_CONNECTION.projects.get(project_id)
     mr = project.mergerequests.get(merge_request_id)

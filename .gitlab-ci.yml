@@ -4,6 +4,7 @@ variables:
   TWINE_USERNAME: SECURE
   TWINE_PASSWORD: SECURE
   TWINE_REPOSITORY_URL: https://upload.pypi.org/legacy/
+  SK_DEBUG: 1
 
 before_script:
   - curl -s -O https://bootstrap.pypa.io/get-pip.py
