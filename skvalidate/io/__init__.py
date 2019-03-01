@@ -7,7 +7,6 @@ import numpy as np
 import uproot
 
 
-
 def save_metrics_to_file(metrics, metrics_file):
     update_data_in_json(metrics, metrics_file)
 

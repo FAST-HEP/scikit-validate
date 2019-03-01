@@ -160,29 +160,42 @@ def path_and_job_id_to_artifact_url(path, job_id, path_type='file'):
     )
 
 
-def add_report_to_merge_request(report_file):
-    with open(report_file) as f:
-        content = f.read()
-
-    project_id = os.environ.get('CI_PROJECT_ID')
+def add_or_update_comment_in_this_mr(content):
     merge_request_id = os.environ.get('CI_MERGE_REQUEST_ID', None)
     if merge_request_id is None:
-        logger.warn('This is not run as part of a merge request -- aborting ...')
+        logger.warn('This is not run as part of a merge request -- skipping ...')
         return
+    project_id = os.environ.get('CI_PROJECT_ID')
+
+    connection = _connect()
     project = GITLAB_CONNECTION.projects.get(project_id)
     mr = project.mergerequests.get(merge_request_id)
-    # TODO: check if comment from user already exists, if yes --> update
+    mr_notes = mr.notes.list()
 
-    mr.notes.create(dict(
-        body=content,
-    ))
+    current_user = connection.user
+    existing_note = _note_from_user_exists(current_user.id, mr_notes)
 
+    if existing_note is None:
+        mr.notes.create(dict(body=content,))
+    else:
+        existing_note.body = content
     mr.save()
+
+
+def _note_from_user_exists(user_id, notes):
+    note_found = None
+    for note in notes:
+        note_user_id = note.author.id
+        if note_user_id == user_id:
+            note_found = note
+            break
+    return note_found
 
 
 def get_merge_request(project, mr_id):
     mr = project.mergerequests.get(mr_id)
     return mr
+
 
 def add_label_to_merge_request(label, merge_request):
     merge_request.labels.append(label)

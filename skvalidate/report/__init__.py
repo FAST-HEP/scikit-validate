@@ -11,6 +11,7 @@ from .. import __skvalidate_root__
 from .. import logger
 from ..compare import compare_metrics
 from .. import gitlab
+from ..io import resolve_wildcard_path
 
 
 class Report(object):
@@ -221,3 +222,15 @@ def format_software_versions(items):
             result[name]['software_versions'] = software_versions
 
     return result
+
+
+def add_report_to_merge_request(report_files):
+    files = []
+    for report_file in report_files:
+        files += resolve_wildcard_path(report_file)
+    content = []
+    for report_file in files:
+        with open(report_file) as f:
+            content.append(f.read())
+    content = '\n\n'.join(content)
+    gitlab.add_or_update_comment_in_this_mr(content)

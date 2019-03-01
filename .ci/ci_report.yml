@@ -29,9 +29,12 @@ sections:
       jobs:
         - validate-root-diff-1_2
         - validate-root-diff-1_3
-    # publish_report:
-    #   function: skvalidate.gitlab.add_report_to_merge_request
-    #   report_file: ci_report.md
+    publish_report:
+      function: skvalidate.report.add_report_to_merge_request
+      report_files:
+        - ci_report.md
+        - validation_report_*.md
+
 
 
   performance_report:
