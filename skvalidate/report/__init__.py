@@ -227,7 +227,7 @@ def format_software_versions(items):
 def add_report_to_merge_request(report_files):
     files = []
     for report_file in report_files:
-        files += resolve_wildcard_path(report_file)
+        files += list(resolve_wildcard_path(report_file))
     content = []
     for report_file in files:
         with open(report_file) as f:
