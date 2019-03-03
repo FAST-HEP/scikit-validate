@@ -37,7 +37,10 @@ def produce_validation_report(stages, jobs, validation_json, **kwargs):
             formats=['pdf']
         )
 
-        data[name]['distributions'].update(outputs)
+        # data[name]['distributions'].update(outputs)
+        for d, info in data[name]['distributions'].items():
+            if 'image' in info:
+                info['image'] = outputs[d]['image']
         details = create_detailed_report(
             data[name], output_dir='.',
             output_file=validation_output_file,
