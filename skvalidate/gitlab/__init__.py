@@ -161,19 +161,19 @@ def path_and_job_id_to_artifact_url(path, job_id, path_type='file'):
 
 
 def add_or_update_comment_in_this_mr(content):
-    merge_request_id = os.environ.get('CI_MERGE_REQUEST_ID', None)
-    if merge_request_id is None:
+    is_ci = os.environ.get('GITLAB_CI', None)
+    if is_ci is None:
+        logger.warn('This is not run as part of the GitLab CI -- skipping ...')
+        return
+    mr = _get_merge_request()
+    if mr is None:
         logger.warn('This is not run as part of a merge request -- skipping ...')
         return
-    project_id = os.environ.get('CI_PROJECT_ID')
-
-    connection = _connect()
-    project = GITLAB_CONNECTION.projects.get(project_id)
-    mr = project.mergerequests.get(merge_request_id)
     mr_notes = mr.notes.list()
 
+    connection = _connect()
     current_user = connection.user
-    existing_note = _note_from_user_exists(current_user.id, mr_notes)
+    existing_note = _note_from_user_exists(int(current_user.id), mr_notes)
 
     if existing_note is None:
         mr.notes.create(dict(body=content,))
@@ -182,10 +182,40 @@ def add_or_update_comment_in_this_mr(content):
     mr.save()
 
 
+def _get_merge_request():
+    is_ci = os.environ.get('GITLAB_CI', None)
+    if is_ci is None:
+        return None
+    # CI_MERGE_REQUEST_ID is only available in runner version 11.6 and above
+    # see https://docs.gitlab.com/ee/ci/variables/
+    merge_request_id = os.environ.get('CI_MERGE_REQUEST_IID', None)
+
+    project_id = os.environ.get('CI_PROJECT_ID')
+    connection = _connect()
+    project = connection.projects.get(project_id)
+
+    if merge_request_id is not None:
+        return project.mergerequests.get(merge_request_id)
+    # otherwise, take the long way
+    logger.warn('Running an outdated version of GitLab runner -- for full support use version >= 11.6')
+    mrs = project.mergerequests.list(state='opened', order_by='updated_at')
+    logger.debug('Found {0} open merge request(s)'.format(len(mrs)))
+    ci_pipeline_id = int(os.environ.get('CI_PIPELINE_ID'))
+    for mr in mrs:
+        pipelines = mr.pipelines()
+        for pipeline in pipelines:
+            p_id = int(pipeline['id'])
+            logger.debug('Found pipeline {0} for MR {1} (!{2})'.format(p_id, mr.id, mr.iid))
+            if ci_pipeline_id == p_id:
+                return mr
+    logger.warn('No matching merge request found for pipeline {0}'.format(ci_pipeline_id))
+    return None
+
+
 def _note_from_user_exists(user_id, notes):
     note_found = None
     for note in notes:
-        note_user_id = note.author.id
+        note_user_id = int(note.author['id'])
         if note_user_id == user_id:
             note_found = note
             break
