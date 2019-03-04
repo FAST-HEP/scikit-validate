@@ -1,0 +1,59 @@
+{
+    "root_diff": {
+        "distributions": {
+            "test;1.a": {
+                "status": "failed",
+                "ks_statistic": 1.0,
+                "pvalue": 0.0970481335976695,
+                "image": "skvalidate/data/examples/root_diff/test_1_3/test.a.png",
+                "msg": "FAILED: skvalidate/data/examples/root_diff/test_1_3/test.a.png"
+            },
+            "test;1.i": {
+                "status": "success",
+                "ks_statistic": 0.0,
+                "pvalue": 1.0,
+                "msg": "OK"
+            },
+            "test;1.v": {
+                "status": "success",
+                "ks_statistic": 0.003489999999999993,
+                "pvalue": 0.5756592515545158,
+                "msg": "OK"
+            },
+            "test;1.x": {
+                "status": "failed",
+                "ks_statistic": 0.009500000000000008,
+                "pvalue": 0.7557343977716486,
+                "image": "skvalidate/data/examples/root_diff/test_1_3/test.x.png",
+                "msg": "FAILED: skvalidate/data/examples/root_diff/test_1_3/test.x.png"
+            },
+            "test;1.y": {
+                "status": "failed",
+                "ks_statistic": 0.012600000000000056,
+                "pvalue": 0.4031884421022744,
+                "image": "skvalidate/data/examples/root_diff/test_1_3/test.y.png",
+                "msg": "FAILED: skvalidate/data/examples/root_diff/test_1_3/test.y.png"
+            },
+            "test;1.z": {
+                "status": "failed",
+                "ks_statistic": 0.01200000000000001,
+                "pvalue": 0.4653392661960092,
+                "image": "skvalidate/data/examples/root_diff/test_1_3/test.z.png",
+                "msg": "FAILED: skvalidate/data/examples/root_diff/test_1_3/test.z.png"
+            }
+        },
+        "failed": [
+            "test;1.a",
+            "test;1.x",
+            "test;1.y",
+            "test;1.z"
+        ],
+        "unknown": [],
+        "success": [
+            "test;1.i",
+            "test;1.v"
+        ],
+        "error": [],
+        "output_path": "skvalidate/data/examples/root_diff/test_1_3"
+    }
+}

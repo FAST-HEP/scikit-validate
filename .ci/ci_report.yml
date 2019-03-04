@@ -13,7 +13,8 @@ sections:
         - build
         - test
         - validation
-      software_versions: software_versions.json
+      download_json:
+        software_versions: software_versions.json
       symbol_success: '&#9989;'
       symbol_failed: '&#10060;'
       symbol_unkown: '&#10067;'
@@ -21,11 +22,13 @@ sections:
   validation_report:
     template: {{scikit_validate}}/data/templates/report/default/validation.md
     validation:
-      function: skvalidate.report.demo.get_full_validations
-      validation_json: {{scikit_validate}}/data/examples/validation.json
-      symbol_success: '&#9989;'
-      symbol_failed: '&#10060;'
-      symbol_unkown: '&#10067;'
+      function: skvalidate.report.validation.produce_validation_report
+      validation_json: output/validate/root_comparison.json
+      stages:
+        - validation
+      jobs:
+        - validate-root-diff-1_2
+        - validate-root-diff-1_3
 
 
   performance_report:

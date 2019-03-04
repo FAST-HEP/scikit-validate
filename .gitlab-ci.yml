@@ -4,6 +4,7 @@ variables:
   TWINE_USERNAME: SECURE
   TWINE_PASSWORD: SECURE
   TWINE_REPOSITORY_URL: https://upload.pypi.org/legacy/
+  SK_DEBUG: 1
 
 before_script:
   - curl -s -O https://bootstrap.pypa.io/get-pip.py
@@ -82,15 +83,26 @@ docs:
   script: make docs
 
 
-validate-root-diff:
+validate-root-diff-1_2:
   image: python:3.7
   stage: validation
   script:
     - make install
-    - mkdir -p output/validate/test_1_2
-    - mkdir -p output/validate/test_1_3
-    - skvalidate root_diff tests/samples/test_1.root tests/samples/test_2.root --out-dir=output/validate/test_1_2
-    - skvalidate root_diff tests/samples/test_1.root tests/samples/test_3.root --out-dir=output/validate/test_1_3
+    - mkdir -p output/validate
+    - skvalidate root_diff tests/samples/test_1.root tests/samples/test_2.root --output-path=output/validate -r output/validate/root_comparison.json
+  artifacts:
+    paths:
+      - output/validate
+      - software_versions.json
+    expire_in: 1 week
+
+validate-root-diff-1_3:
+  image: python:3.7
+  stage: validation
+  script:
+    - make install
+    - mkdir -p output/validate
+    - skvalidate root_diff tests/samples/test_1.root tests/samples/test_3.root --output-path=output/validate -r output/validate/root_comparison.json
   artifacts:
     paths:
       - output/validate
@@ -147,6 +159,7 @@ deploy_pypi:
     - tags
   except:
     - branches
+  after_script: []
 
 report:
   stage: report
@@ -154,12 +167,15 @@ report:
   script:
     - make install
     - make_report .ci/ci_report.yml -o ci_report.md
+    - submit_report_to_mr ci_report.md validation_report_*.md
   dependencies:
-    - validate-root-diff
     - validate:metric_pipeline
   artifacts:
     paths:
-      - ci_report.md
+      - "*.md"
+      - "*.html"
+      - "*.pdf"
+      - output
     expire_in: 1 week
   after_script: []
 
@@ -168,3 +184,5 @@ cleanup_pypirc:
    when: always   # this is important; run even if preceding stages failed.
    script:
     - rm -vf ~/.pypirc  # we don't want to leave these around, but GitLab may clean up anyway.
+   after_script: []
+   before_script: []

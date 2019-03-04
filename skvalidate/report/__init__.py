@@ -8,7 +8,10 @@ from jinja2 import Template
 from jinja2.exceptions import TemplateSyntaxError, UndefinedError
 
 from .. import __skvalidate_root__
+from .. import logger
 from ..compare import compare_metrics
+from .. import gitlab
+from ..io import resolve_wildcard_path
 
 
 class Report(object):
@@ -97,9 +100,10 @@ class Section(object):
             try:
                 self.__fill__()
             except (UndefinedError, TemplateSyntaxError, TypeError) as e:
-                print('Unable to render section "{}": {}'.format(self.__name, e))
-                print('Section values:', self.__values)
-                print('Section properties:', self.__properties)
+                logger.error('Unable to render section "{}": {}'.format(self.__name, e))
+                logger.error('Section values: {0}'.format(self.__values))
+                logger.error('Section properties:'.format(self.__properties))
+                raise e
         return self.__content
 
 
@@ -185,10 +189,12 @@ def get_jobs_for_stages(stages, source='gitlab', **kwargs):
         symbol_success = kwargs.pop('symbol_success')
     if 'symbol_failed' in kwargs:
         symbol_failed = kwargs.pop('symbol_failed')
+    result = {}
     if source == 'gitlab':
-        from ..gitlab import get_jobs_for_stages
-        result = get_jobs_for_stages(stages, **kwargs)
-        return format_status(result, symbol_success, symbol_failed)
+        result = gitlab.get_jobs_for_stages(stages, **kwargs)
+    result = format_status(result, symbol_success, symbol_failed)
+    result = format_software_versions(result)
+    return result
 
 
 def format_status(items, symbol_success='success', symbol_failed='failed'):
@@ -201,3 +207,31 @@ def format_status(items, symbol_success='success', symbol_failed='failed'):
         if content['status'] == 'failed':
             result[name]['status'] = symbol_failed
     return result
+
+
+def format_software_versions(items):
+    """Format the software_versions field of pipeline jobs."""
+    result = {}
+    for name, content in items.items():
+        result[name] = content
+        if 'software_versions' in content:
+            logger.debug('Formatting {0} for {1}'.format(content['software_versions'], name))
+            software_versions = []
+            for software, version in content['software_versions'][name].items():
+                software_versions.append('{}={}'.format(software, version))
+            result[name]['software_versions'] = software_versions
+
+    return result
+
+
+def add_report_to_merge_request(report_files):
+    files = []
+    for report_file in report_files:
+        files += list(resolve_wildcard_path(report_file))
+    logger.debug('Adding files {0} to merge request'.format(','.join(files)))
+    content = []
+    for report_file in files:
+        with open(report_file) as f:
+            content.append(f.read())
+    content = '\n\n'.join(content)
+    gitlab.add_or_update_comment_in_this_mr(content)

@@ -68,6 +68,7 @@ requirements = [
     'pyyaml',
     'scipy',
     'uproot',
+    'xhtml2pdf',
 ]
 
 setup_requirements = [

@@ -1,7 +1,14 @@
 from __future__ import division
 import numpy as np
+from scipy import stats
+
 from skvalidate.io import walk
 from .metrics import compare_metrics
+
+SUCCESS = 'success'
+FAILED = 'failed'
+UNKNOWN = 'unknown'
+ERROR = 'error'
 
 
 def difference(a1, a2):
@@ -28,8 +35,8 @@ def is_ok(diff, normalisation, tolerance=0.02):
 
 
 def compare_two_root_files(file1, file2, tolerance=0.02):
-    are_ok = []
-    are_not_ok = []
+    """Compare two ROOT(.cern.ch) files and return dictionary of comparison."""
+    comparison = {}
 
     content1 = dict((key, value) for (key, value) in walk(file1))
     content2 = dict((key, value) for (key, value) in walk(file2))
@@ -39,19 +46,30 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
     all_keys = sorted(keys1 | keys2)
 
     for name in all_keys:
+        comparison[name] = {}
         value1 = content1[name] if name in content1 else np.array([np.Infinity])
         value2 = content2[name] if name in content2 else np.array([np.Infinity])
 
         diff = difference(value2, value1)
+        status = FAILED
+        ks_statistic, pvalue = stats.ks_2samp(value2, value1)
+
         if not len(diff):
-            are_not_ok.append((name, (value1, value2, diff)))
-            continue
-        norm = np.sqrt(np.sum(value2**2))
-        if not is_ok(diff, normalisation=norm, tolerance=tolerance):
-            are_not_ok.append((name, (value1, value2, diff)))
+            status = UNKNOWN
         else:
-            are_ok.append((name, (value1, value2, diff)))
-    return are_ok, are_not_ok
+            norm = np.sqrt(np.sum(value2**2))
+            if is_ok(diff, normalisation=norm, tolerance=tolerance):
+                status = SUCCESS
+
+        comparison[name] = dict(
+            status=status,
+            original=value1,
+            reference=value2,
+            diff=diff,
+            ks_statistic=ks_statistic,
+            pvalue=pvalue,
+        )
+    return comparison
 
 
 __all__ = [

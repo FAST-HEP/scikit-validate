@@ -1,6 +1,7 @@
 import numpy as np
 import pytest
 from skvalidate.compare import compare_two_root_files, difference, is_ok
+import skvalidate.compare as skcmp
 
 
 @pytest.mark.parametrize("a1,a2,expected", [
@@ -124,6 +125,8 @@ def test_is_ok(diff, normalisation, tolerance, expected):
     ),
 ])
 def test_compare_two_root_files(file1, file2, tolerance, n_ok, n_not_ok):
-    ok, not_ok = compare_two_root_files(file1, file2, tolerance=tolerance)
-    assert len(ok) == n_ok
-    assert len(not_ok) == n_not_ok
+    comparison = compare_two_root_files(file1, file2, tolerance=tolerance)
+    n_cmp_ok = sum([v['status'] == skcmp.SUCCESS for v in comparison.values()])
+    n_cmp_not_ok = len(comparison) - n_cmp_ok
+    assert n_cmp_ok == n_ok
+    assert n_cmp_not_ok == n_not_ok

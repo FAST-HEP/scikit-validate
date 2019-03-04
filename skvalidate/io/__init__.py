@@ -1,6 +1,8 @@
 """Module for any IO operations."""
+import glob
 import json
 import os
+
 import numpy as np
 import uproot
 
@@ -18,7 +20,7 @@ def update_data_in_json(data, json_file):
 
 def write_data_to_json(data, json_file):
     with open(json_file, 'w') as f:
-        json.dump(data, f)
+        json.dump(data, f, indent=4)
 
 
 def read_data_from_json(json_file):
@@ -69,3 +71,9 @@ def unpack(name, obj):
 def save_array_to_file(array, name, output_dir):
     output_file = os.path.join(output_dir, name + '.npy')
     np.save(output_file, array)
+
+
+def resolve_wildcard_path(wildcard_path):
+    files = glob.glob(wildcard_path)
+    for f in files:
+        yield os.path.abspath(f)
