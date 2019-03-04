@@ -176,9 +176,14 @@ def add_or_update_comment_in_this_mr(content):
     existing_note = _note_from_user_exists(int(current_user.id), mr_notes)
 
     if existing_note is None:
+        logger.debug('No existing comment found - creating new one ...')
         mr.notes.create(dict(body=content,))
     else:
-        existing_note.body = content
+        logger.debug('Found existing comment - modifying ...')
+        # get editable note
+        note = mr.notes.get(existing_note.id)
+        note.body = content
+        note.save()
     mr.save()
 
 
@@ -207,7 +212,10 @@ def _get_merge_request():
             p_id = int(pipeline['id'])
             logger.debug('Found pipeline {0} for MR {1} (!{2})'.format(p_id, mr.id, mr.iid))
             if ci_pipeline_id == p_id:
-                return mr
+                # It is not possible to edit or delete MergeRequest and GroupMergeRequest objects.
+                # You need to create a ProjectMergeRequest object to apply changes:
+                editable_mr = project.mergerequests.get(mr.iid, lazy=True)
+                return editable_mr
     logger.warn('No matching merge request found for pipeline {0}'.format(ci_pipeline_id))
     return None
 
