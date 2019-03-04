@@ -167,6 +167,7 @@ report:
   script:
     - make install
     - make_report .ci/ci_report.yml -o ci_report.md
+    - submit_report_to_mr ci_report.md validation_report_*.md
   dependencies:
     - validate:metric_pipeline
   artifacts:
