@@ -42,7 +42,7 @@ def find_commands(path='skvalidate/commands'):
             continue
         command_path = file_name.replace('.py', '').replace(os.path.sep, '.')
         name = command_path.split('.')[-1]
-        yield'{name}={path}:cli'.format(name=name, path=command_path)
+        yield'sv_{name}={path}:cli'.format(name=name, path=command_path)
 
         # execute_with_metrics=skvalidate.commands.execute_with_metrics:cli
 
@@ -95,7 +95,7 @@ setup(
     description="Science validation toolkit",
     entry_points={
         'console_scripts': [
-            'skvalidate=skvalidate.cli:main',
+            # 'skvalidate=skvalidate.cli:main',
             'run-clang-tidy=skvalidate.clang_tidy:main',
         ] + list(find_commands()),
     },
