@@ -5,7 +5,7 @@ Command that wraps and monitors another command.
 For testing install 'stress' package and run
 
 \b
-    skvalidate execute_with_metrics 'stress --cpu 1 --io 1 --vm 1 --vm-bytes 128M --timeout 10s --verbose' \
+    sv_execute 'stress --cpu 1 --io 1 --vm 1 --vm-bytes 128M --timeout 10s --verbose' \
                                     -m resource_metrics.json
 
 If the output file, default resource_metrics.json, already exists it will be read first and results will be appended.
@@ -96,6 +96,8 @@ def print_metrics(metrics, command):
     ))
 
 
+# TODO: check if click can to quargs
+# TODO: add verbose option
 @click.command(help=__doc__)
 @click.argument('command')
 @click.option('-m', '--metrics-file', default='resource_metrics.json')

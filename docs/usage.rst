@@ -4,12 +4,12 @@ Usage
 
 After installation scikit-validate will provide several commands, all starting with `sv_`:
 
-sv_add_file_metrics
+sv_file_info
 ----------------------------
 The first subcommand will simply record the file size of a given file and record it in a JSON file::
 
-    sv_add_file_metrics --help
-    Usage: sv_add_file_metrics [OPTIONS] [INPUT_FILES]...
+    sv_file_info --help
+    Usage: sv_file_info [OPTIONS] [INPUT_FILES]...
 
     Script to record file metrics.
 
@@ -25,19 +25,19 @@ The first subcommand will simply record the file size of a given file and record
     -m, --metrics-file TEXT  file for JSON output
     --help                   Show this message and exit.
 
-sv_execute_with_metrics
+sv_execute
 -------------------------------
 This subcommand will execute the parameters passed to it as a shell command and monitor its resource usage.
 At the moment only (simple) CPU time and RAM usage are supported::
 
-    sv_execute_with_metrics --help
-    Usage: sv_execute_with_metrics [OPTIONS] COMMAND
+    sv_execute --help
+    Usage: sv_execute [OPTIONS] COMMAND
 
       Command that wraps and monitors another command.
 
       For testing install 'stress' package and run
 
-          sv_execute_with_metrics 'stress --cpu 1 --io 1 --vm 1 --vm-bytes 128M --timeout 10s --verbose' -m resource_metrics.json
+          sv_execute 'stress --cpu 1 --io 1 --vm 1 --vm-bytes 128M --timeout 10s --verbose' -m resource_metrics.json
 
       If the output file, default resource_metrics.json, already exists it will
       be read first and results will be appended.

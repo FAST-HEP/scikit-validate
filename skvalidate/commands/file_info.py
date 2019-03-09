@@ -6,7 +6,7 @@ For testing pick or create a file:
 \n
     # create 10 MB file
     dd if=/dev/zero of=test.file bs=10485760 count=1
-    skvalidate add_file_metrics test.file -m file_metrics.json
+    sv_file_info test.file -m file_metrics.json
 
 If the output file, default file_metrics.json, already exists it will be read first and results will be appended.
 """
@@ -56,6 +56,7 @@ def print_metrics(metrics, input_file):
     ))
 
 
+# TODO: add verbose option
 @click.command(help=__doc__)
 @click.argument('input_files', type=click.Path(exists=True), nargs=-1)
 @click.option('-m', '--metrics-file', default='file_metrics.json', help='file for JSON output')

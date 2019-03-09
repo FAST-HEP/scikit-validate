@@ -23,6 +23,7 @@ import click
 import gitlab
 
 
+# TODO: move gitlab bits to skvalidate.gitlab
 @click.command(help=__doc__)
 @click.option('--gitlab-server', default='gitlab.com')
 @click.option('-t', '--tracked-branches', default=None)
