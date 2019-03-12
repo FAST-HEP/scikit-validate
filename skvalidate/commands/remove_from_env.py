@@ -1,7 +1,7 @@
 """Removes a path from an ENV variable.
 
 Usage:
-    skvalidate remove_from_env $PATH $TO_BE_REMOVED
+    sv_remove_from_env $PATH $TO_BE_REMOVED
 returns $PATH without paths _starting_ with $TO_BE_REMOVED
 """
 import click

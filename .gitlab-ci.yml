@@ -14,7 +14,7 @@ before_script:
 after_script:
   - pip install codecov
   - make install-dev &> /dev/null
-  - detect_software_versions python -q -p ${CI_JOB_NAME} -o software_versions.json
+  - sv_detect_software_versions python -q -p ${CI_JOB_NAME} -o software_versions.json
   # - codecov --token=<>
 
 stages:
@@ -89,7 +89,7 @@ validate-root-diff-1_2:
   script:
     - make install
     - mkdir -p output/validate
-    - skvalidate root_diff tests/samples/test_1.root tests/samples/test_2.root --output-path=output/validate -r output/validate/root_comparison.json
+    - sv_root_diff tests/samples/test_1.root tests/samples/test_2.root --output-path=output/validate -r output/validate/root_comparison.json
   artifacts:
     paths:
       - output/validate
@@ -102,7 +102,7 @@ validate-root-diff-1_3:
   script:
     - make install
     - mkdir -p output/validate
-    - skvalidate root_diff tests/samples/test_1.root tests/samples/test_3.root --output-path=output/validate -r output/validate/root_comparison.json
+    - sv_root_diff tests/samples/test_1.root tests/samples/test_3.root --output-path=output/validate -r output/validate/root_comparison.json
   artifacts:
     paths:
       - output/validate
@@ -114,7 +114,7 @@ validate:demo_report:
   stage: validation
   script:
     - make install
-    - make_demo_report
+    - sv_make_demo_report
     - test -f demo_report.md
   artifacts:
     paths:
@@ -129,7 +129,7 @@ validate:metric_pipeline:
     - make install-dev
     - apt update && apt install stress
     - ./.ci/test_metric_pipeline.sh
-    - make_demo_report
+    - sv_make_demo_report
     - test -f demo_report.md
   artifacts:
     paths:
@@ -166,8 +166,8 @@ report:
   when: always
   script:
     - make install
-    - make_report .ci/ci_report.yml -o ci_report.md
-    - submit_report_to_mr ci_report.md validation_report_*.md
+    - sv_make_report .ci/ci_report.yml -o ci_report.md
+    - sv_submit_report_to_mr ci_report.md validation_report_*.md
   dependencies:
     - validate:metric_pipeline
   artifacts:

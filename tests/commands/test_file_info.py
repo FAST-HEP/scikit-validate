@@ -1,5 +1,5 @@
 import pytest
-from skvalidate.commands.add_file_metrics import print_metrics
+from skvalidate.commands.file_info import print_metrics
 
 
 @pytest.mark.parametrize('metrics,input_file', [
