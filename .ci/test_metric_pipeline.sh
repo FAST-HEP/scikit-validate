@@ -5,11 +5,15 @@ dd if=/dev/zero of=file1 bs=1048576 count=10
 dd if=/dev/zero of=file2 bs=1048576 count=42
 sv_file_info file1 file2 --metrics-file=file_metrics_ref.json
 
-sv_execute -m performance_metrics_ref.json -- \
+sv_execute -m performance_metrics_ref.json \
+  -m performance_metrics_ref.json --memprof-file stress_1_ref.dat \
+  -- \
   stress --cpu 1 --io 1 --vm 1 --vm-bytes 128M --timeout 10s --verbose
 
-sv_execute -m performance_metrics_ref.json -- \
-    stress --cpu 1 --io 1 --vm 1 --vm-bytes 200M --timeout 15s --verbose
+sv_execute -m performance_metrics_ref.json \
+  -m performance_metrics_ref.json --memprof-file stress_2_ref.dat \
+  -- \
+  stress --cpu 1 --io 1 --vm 1 --vm-bytes 200M --timeout 15s --verbose
 
 rm -f file1 file2
 
@@ -18,10 +22,14 @@ dd if=/dev/zero of=file1 bs=1048576 count=12
 dd if=/dev/zero of=file2 bs=1048576 count=20
 sv_file_info file1 file2 --metrics-file=file_metrics.json
 
-sv_execute -m performance_metrics.json -- \
+sv_execute -m performance_metrics.json \
+  -m performance_metrics.json --memprof-file stress_1.dat \
+  -- \
   stress --cpu 1 --io 1 --vm 1 --vm-bytes 128M --timeout 10s --verbose
 
-sv_execute -m performance_metrics.json -- \
+sv_execute -m performance_metrics.json \
+  -m performance_metrics.json --memprof-file stress_2.dat \
+  -- \
     stress --cpu 1 --io 1 --vm 1 --vm-bytes 200M --timeout 15s --verbose
 
 rm -f file1 file2

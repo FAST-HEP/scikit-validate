@@ -136,6 +136,8 @@ validate:metric_pipeline:
       - demo_report.md
       - skvalidate/data/examples/*.json
       - software_versions.json
+      - performance_metrics_ref.json
+      - *.dat
     expire_in: 1 week
 
 failed:validation:
