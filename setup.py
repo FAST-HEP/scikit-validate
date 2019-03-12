@@ -58,6 +58,7 @@ requirements = [
     'jinja2',
     'markdown2',
     'matplotlib',
+    'memory_profiler',
     'numpy',
     'plumbum',
     # 'python-gitlab>=1.8.0',
