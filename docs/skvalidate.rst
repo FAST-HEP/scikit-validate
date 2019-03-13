@@ -8,7 +8,10 @@ Subpackages
 
     skvalidate.commands
     skvalidate.compare
+    skvalidate.gitlab
     skvalidate.io
+    skvalidate.report
+    skvalidate.software
     skvalidate.vis
 
 Submodules

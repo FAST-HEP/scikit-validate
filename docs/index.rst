@@ -8,6 +8,7 @@ Welcome to the scikit-validate documentation!
    readme
    installation
    usage
+   reporting
    modules
    contributing
    authors
