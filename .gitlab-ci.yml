@@ -191,6 +191,7 @@ report:
       - "*.md"
       - "*.html"
       - "*.pdf"
+      - input
       - output
     expire_in: 1 week
   after_script: []
