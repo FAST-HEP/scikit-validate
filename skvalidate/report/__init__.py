@@ -11,7 +11,7 @@ from .. import __skvalidate_root__
 from .. import logger
 from ..compare import compare_metrics
 from .. import gitlab
-from ..io import resolve_wildcard_path
+from ..io import resolve_wildcard_path, download_file
 
 
 class Report(object):
@@ -64,6 +64,7 @@ class Section(object):
         """
         sections = kwargs.pop('sections', {})
         self.__template = kwargs.pop('template')
+        self.__download = kwargs.pop('download', {})
         self.__name = section_name
         # TODO: not just general
         __check_template__(self.__template, 'general')
@@ -79,6 +80,9 @@ class Section(object):
 
     def __fill__(self):
         """Read template and fill with values"""
+        if self.__download:
+            for output, url in self.__download.items():
+                download_file(url, output)
         with open(self.__template) as f:
             self.__content = Template(f.read())
 
