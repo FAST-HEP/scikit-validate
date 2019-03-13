@@ -2,9 +2,12 @@
 import glob
 import json
 import os
+import requests
 
 import numpy as np
 import uproot
+
+from .. import gitlab
 
 
 def save_metrics_to_file(metrics, metrics_file):
@@ -77,3 +80,37 @@ def resolve_wildcard_path(wildcard_path):
     files = glob.glob(wildcard_path)
     for f in files:
         yield os.path.abspath(f)
+
+
+def download_file(url, output):
+    if url.startswith('gitlab://'):
+        download_from_gitlab(url, output)
+    else:
+        _download_file(url, output)
+
+
+def download_from_gitlab(url, output):
+    url = url.replace('gitlab://', '')
+    tokens = url.split('/')
+    job_name = tokens[0]
+    file_path = os.path.join(tokens[1:])
+
+    job = gitlab.get_pipeline_job(job_name)
+    gitlab.download_artifact(job.id, path=file_path, output_file=output)
+
+
+def _download_file(url, output):
+    r = requests.get(url)
+    r.raise_for_status()
+
+    directory = os.path.split(output)[:-1]
+    directory = os.path.join(directory)
+    create_directory(directory)
+
+    with open(output, 'wb') as f:
+        f.write(r.content)
+
+
+def create_directory(directory):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
