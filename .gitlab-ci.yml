@@ -134,10 +134,24 @@ validate:metric_pipeline:
   artifacts:
     paths:
       - demo_report.md
-      - skvalidate/data/examples/*.json
       - software_versions.json
-      - performance_metrics_ref.json
-      - *.dat
+      - output
+    expire_in: 1 week
+
+validate:metric_pipeline_ref:
+  image: python:3.7
+  stage: validation
+  script:
+    - make install-dev
+    - apt update && apt install stress
+    - ./.ci/test_metric_pipeline_ref.sh
+    - sv_make_demo_report
+    - test -f demo_report.md
+  artifacts:
+    paths:
+      - demo_report.md
+      - software_versions.json
+      - output
     expire_in: 1 week
 
 failed:validation:
