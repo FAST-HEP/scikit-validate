@@ -90,6 +90,15 @@ def get_jobs_for_stages(stages, **kwargs):
     return result
 
 
+def get_pipeline_job(job_name):
+    jobs = _get_current_pipeline_jobs()
+    for job in jobs:
+        name = job.attributes['name']
+        if name == job_name:
+            return job
+    return None
+
+
 def _get_current_pipeline_jobs():
     connection = _connect()
     # get current pipeline
