@@ -4,10 +4,12 @@ import json
 import os
 import requests
 
+from mprof import read_mprofile_file
 import numpy as np
 import uproot
 
 from .. import gitlab
+from .. import logger
 
 
 def save_metrics_to_file(metrics, metrics_file):
@@ -114,3 +116,29 @@ def _download_file(url, output):
 def create_directory(directory):
     if not os.path.exists(directory):
         os.makedirs(directory)
+
+
+def split_memory_profile_output(profile_file):
+    profiles = {}
+    command = None
+    command_token = 'CMDLINE '
+    with open(profile_file) as f:
+        for line in f.readlines(command_token):
+            if line.startswith():
+                command = line.replace(command_token, '')
+                profiles[command] = []
+                continue
+            if command:
+                profiles[command].append(line)
+    file_nr = 0
+    results = {}
+    for command, lines in profiles.items():
+        output_file = profile_file + '.' + str(file_nr)
+        file_nr += 1
+        logger.debug('Splitting {0} into {1}'.format(profile_file, output_file))
+        with open(output_file, 'w') as f:
+            f.write(command_token + command + '\n')
+            f.write('\n'.join(lines))
+        profile = read_mprofile_file(output_file)
+        results[command] = dict(mem_usage=profile['mem_usage'], timestamp=profile['timestamp'])
+    return results
