@@ -9,9 +9,10 @@ from jinja2.exceptions import TemplateSyntaxError, UndefinedError
 
 from .. import __skvalidate_root__
 from .. import logger
-from ..compare import compare_metrics
+from ..compare import compare_metrics, absolute_to_relative_timestamps
 from .. import gitlab
-from ..io import resolve_wildcard_path, download_file
+from ..io import resolve_wildcard_path, download_file, split_memory_profile_output
+from ..vis import profile
 
 
 class Report(object):
@@ -159,6 +160,9 @@ def __repr_section__(name, section):
 
 
 def get_metrics(metrics_json, metrics_ref_json, **kwargs):
+    profile = kwargs.pop('profile', '')
+    profile_ref = kwargs.pop('profile_ref', '')
+
     with open(metrics_json) as f:
         metrics = json.load(f)
     with open(metrics_ref_json) as f:
@@ -166,6 +170,19 @@ def get_metrics(metrics_json, metrics_ref_json, **kwargs):
 
     keys = kwargs.pop('keys', None)
     comparison = compare_metrics(metrics, metrics_ref, keys=keys)
+    comparison = __format_comparison(comparison, kwargs)
+
+    if not profile or not profile_ref:
+        return comparison
+
+    profiles = process_memory_profiles(profile, profile_ref)
+    for name in profiles.keys():
+        comparison[name]['profile'] = profiles[name]
+
+    return comparison
+
+
+def __format_comparison(comparison, **kwargs):
     # format metrics
     symbol_up = kwargs.pop('symbol_up', '')
     symbol_down = kwargs.pop('symbol_down', '')
@@ -184,6 +201,18 @@ def get_metrics(metrics_json, metrics_ref_json, **kwargs):
                 metric['symbol'] = symbol_same
 
     return comparison
+
+
+def process_memory_profiles(profile, profile_ref):
+    profiles = split_memory_profile_output(profile)
+    profiles_ref = split_memory_profile_output(profile_ref)
+    # absolute to relative timestamps
+    for name in profiles.keys():
+        profiles[name] = absolute_to_relative_timestamps(profiles[name])
+        profiles_ref[name] = absolute_to_relative_timestamps(profiles_ref[name])
+
+    images = draw_profiles(profiles, profiles_ref)
+    return images
 
 
 def get_jobs_for_stages(stages, source='gitlab', **kwargs):
