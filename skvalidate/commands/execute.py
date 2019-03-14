@@ -60,7 +60,7 @@ def execute(cmd, memprof_file, sample_interval):
         raise OSError(errno.ENOENT, os.strerror(errno.ENOENT), cmd[0])
     popen = subprocess.Popen(
         cmd, stdout=subprocess.PIPE, universal_newlines=True)
-    memory_profile(exe, popen, memprof_file, sample_interval)
+    memory_profile(' '.join(cmd), popen, memprof_file, sample_interval)
     for stdout_line in iter(popen.stdout.readline, ""):
         yield stdout_line
     popen.stdout.close()
@@ -70,9 +70,9 @@ def execute(cmd, memprof_file, sample_interval):
             logging.error(popen.stderr.read())
         raise subprocess.CalledProcessError(return_code, cmd)
 
-def memory_profile(exe, process, memprof_file, sample_interval):
+def memory_profile(cmd, process, memprof_file, sample_interval):
     with open(memprof_file, "a") as f:
-        f.write("CMDLINE {0}\n".format(exe))
+        f.write("CMDLINE {0}\n".format(cmd))
         mp.memory_usage(proc=process, interval=sample_interval, timestamps=True, include_children=True, stream=f)
 
 def which(program):
