@@ -42,8 +42,10 @@ sections:
       input/stress_2_ref.dat: gitlab://validate:metric_pipeline/output/metrics/stress_2_ref.dat
     comparison:
       function: skvalidate.report.get_metrics
-      metrics_json: input/performance_metrics.json
-      metrics_ref_json: input/performance_metrics_ref.json
+      metric_json: input/performance_metrics.json
+      metric_ref_json: input/performance_metrics_ref.json
+      profile: input/stress.dat
+      profile_ref: input/stress.dat
       symbol_up: '&#10138;'
       symbol_down: '&#10136;'
       symbol_same: '&#10134;'
