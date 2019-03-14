@@ -3,7 +3,7 @@ import numpy as np
 from scipy import stats
 
 from skvalidate.io import walk
-from .metrics import compare_metrics
+from .metrics import compare_metrics, absolute_to_relative_timestamps
 
 SUCCESS = 'success'
 FAILED = 'failed'
@@ -73,6 +73,7 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
 
 
 __all__ = [
+    'absolute_to_relative_timestamps',
     'compare_metrics',
     'compare_two_root_files',
 ]
