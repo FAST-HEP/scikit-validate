@@ -108,8 +108,6 @@ def print_metrics(metrics, command):
 @click.option('--memprof-file', default='mprofile.dat')
 def cli(command, metrics_file, memprof_file):
     if len(command) == 1:
-        # TODO: Removing this approach so that white-space in the command is
-        # handled at the invocation of this script by the actual shell
         command = command[0].split()
     metrics = monitor_command(command)
     print_metrics(metrics, " ".join(command))
