@@ -36,7 +36,7 @@ def _is_valid_command(file_name):
 def find_commands(path='skvalidate/commands'):
     """ Scans path for valid commands """
     command_files = glob.glob(os.path.join(path, '*.py'))
-    commands = []
+    # commands = []
     for file_name in command_files:
         if not _is_valid_command(file_name):
             continue

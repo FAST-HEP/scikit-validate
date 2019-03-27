@@ -9,6 +9,10 @@ For testing install 'stress' package and run
                                     -m resource_metrics.json
 
 If the output file, default resource_metrics.json, already exists it will be read first and results will be appended.
+
+If a single string argument is provided as the command then it will be split using white-space, however if multiple
+arguments are provided then no additional splitting is performed.  In this case though, use `--` before the command
+so that options are passed to the command, rather than this script.
 """
 from __future__ import print_function
 
@@ -50,7 +54,7 @@ def execute(cmd):
     """https://stackoverflow.com/questions/4417546/constantly-print-subprocess-output-while-process-is-running"""
     exe = which(cmd[0])
     if exe is None:
-        logging.error('Could not find executable "{0}"'.format(cmd[0]))
+        logging.error('Could not find executable "%s"', cmd[0])
         raise OSError(errno.ENOENT, os.strerror(errno.ENOENT), cmd[0])
     popen = subprocess.Popen(
         cmd, stdout=subprocess.PIPE, universal_newlines=True)
@@ -67,7 +71,7 @@ def execute(cmd):
 def which(program):
     def is_exe(fpath):
         return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
-    fpath, fname = os.path.split(program)
+    fpath, _ = os.path.split(program)
     if fpath:
         if is_exe(program):
             return program
@@ -99,16 +103,20 @@ def print_metrics(metrics, command):
 # TODO: check if click can to quargs
 # TODO: add verbose option
 @click.command(help=__doc__)
-@click.argument('command')
+@click.argument('command', nargs=-1)
 @click.option('-m', '--metrics-file', default='resource_metrics.json')
 @click.option('--memprof-file', default='mprofile.dat')
 def cli(command, metrics_file, memprof_file):
-    metrics = monitor_command(command.split())
-    print_metrics(metrics, command)
+    if len(command) == 1:
+        # TODO: Removing this approach so that white-space in the command is
+        # handled at the invocation of this script by the actual shell
+        command = command[0].split()
+    metrics = monitor_command(command)
+    print_metrics(metrics, " ".join(command))
     try:
         save_metrics_to_file(metrics, metrics_file)
     except IOError:
-        logging.exception("Could not create metrics file {0}".format(metrics_file))
+        logging.exception("Could not create metrics file '%s'", metrics_file)
 
 
 # add mprof
