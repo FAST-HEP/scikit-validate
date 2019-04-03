@@ -95,7 +95,7 @@ def download_from_gitlab(url, output):
     url = url.replace('gitlab://', '')
     tokens = url.split('/')
     job_name = tokens[0]
-    file_path = os.path.join(tokens[1:])
+    file_path = os.path.join(*tokens[1:])
 
     job = gitlab.get_pipeline_job(job_name)
     gitlab.download_artifact(job.id, path=file_path, output_file=output)
