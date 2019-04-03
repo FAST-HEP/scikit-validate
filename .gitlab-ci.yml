@@ -128,7 +128,7 @@ validate:metric_pipeline:
   script:
     - make install-dev
     - apt update && apt install stress
-    - ./.ci/test_metric_pipeline.sh
+    - source .ci/test_metric_pipeline.sh
     - sv_make_demo_report
     - test -f demo_report.md
   artifacts:
@@ -144,7 +144,7 @@ validate:metric_pipeline_ref:
   script:
     - make install-dev
     - apt update && apt install stress
-    - ./.ci/test_metric_pipeline_ref.sh
+    - source .ci/test_metric_pipeline_ref.sh
     - sv_make_demo_report
     - test -f demo_report.md
   artifacts:
