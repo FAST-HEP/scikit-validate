@@ -19,13 +19,13 @@ Useful Gitlab variables (https://docs.gitlab.com/ee/ci/variables/):
  - CI_PROJECT_NAME
  - CI_PROJECT_URL
 """
-
 import os
 
 import gitlab
 import json
 
 from .. import logger
+from skvalidate.io import create_directory
 
 
 GITLAB_CONNECTION = None
@@ -74,7 +74,7 @@ def get_jobs_for_stages(stages, **kwargs):
     for job in jobs:
         stage = job.attributes['stage']
         if stage not in stages:
-            logger.debug('Stage {0} not in [{1}]'.format(stage, ','.join(stage)))
+            logger.debug('Stage {0} not in [{1}]'.format(stage, ','.join(stages)))
             continue
         name = job.attributes['name']
         if job_filter and name not in job_filter:
@@ -88,6 +88,15 @@ def get_jobs_for_stages(stages, **kwargs):
         for j_name, j_path in download_json.items():
             result[name][j_name] = download_json_from_job(j_path, job.id)
     return result
+
+
+def get_pipeline_job(job_name):
+    jobs = _get_current_pipeline_jobs()
+    for job in jobs:
+        name = job.attributes['name']
+        if name == job_name:
+            return job
+    return None
 
 
 def _get_current_pipeline_jobs():
@@ -258,7 +267,12 @@ class _Streamer():
 
 
 class _DiskStreamer():
+
     def __init__(self, output_file):
+        directory = os.path.split(output_file)[:-1]
+        directory = os.path.join(*directory)
+        create_directory(directory)
+
         self._f = open(output_file, 'wb')
         self.content = output_file
 

@@ -128,14 +128,30 @@ validate:metric_pipeline:
   script:
     - make install-dev
     - apt update && apt install stress
-    - ./.ci/test_metric_pipeline.sh
+    - source .ci/test_metric_pipeline.sh
     - sv_make_demo_report
     - test -f demo_report.md
   artifacts:
     paths:
       - demo_report.md
-      - skvalidate/data/examples/*.json
       - software_versions.json
+      - output
+    expire_in: 1 week
+
+validate:metric_pipeline_ref:
+  image: python:3.7
+  stage: validation
+  script:
+    - make install-dev
+    - apt update && apt install stress
+    - source .ci/test_metric_pipeline_ref.sh
+    - sv_make_demo_report
+    - test -f demo_report.md
+  artifacts:
+    paths:
+      - demo_report.md
+      - software_versions.json
+      - output
     expire_in: 1 week
 
 failed:validation:
@@ -166,6 +182,7 @@ report:
   when: always
   script:
     - make install
+    - echo "sleeping for 60s to wait for artifacts to be uploaded for previous stages"; sleep 60
     - sv_make_report .ci/ci_report.yml -o ci_report.md
     - sv_submit_report_to_mr ci_report.md validation_report_*.md
   dependencies:
@@ -175,6 +192,8 @@ report:
       - "*.md"
       - "*.html"
       - "*.pdf"
+      - "*.png"
+      - input
       - output
     expire_in: 1 week
   after_script: []

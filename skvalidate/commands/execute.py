@@ -23,13 +23,15 @@ import resource
 import subprocess
 
 import click
+import memory_profiler as mp
+
 
 from skvalidate.io import save_metrics_to_file
 
 
-def monitor_command(command):
+def monitor_command(command, memprof_file, sample_interval):
     usage_start = resource.getrusage(resource.RUSAGE_CHILDREN)
-    for line in execute(command):
+    for line in execute(command, memprof_file, sample_interval):
         print(line, end="")
     usage_end = resource.getrusage(resource.RUSAGE_CHILDREN)
 
@@ -50,7 +52,7 @@ def monitor_command(command):
     return metrics
 
 
-def execute(cmd):
+def execute(cmd, memprof_file, sample_interval):
     """https://stackoverflow.com/questions/4417546/constantly-print-subprocess-output-while-process-is-running"""
     exe = which(cmd[0])
     if exe is None:
@@ -58,6 +60,7 @@ def execute(cmd):
         raise OSError(errno.ENOENT, os.strerror(errno.ENOENT), cmd[0])
     popen = subprocess.Popen(
         cmd, stdout=subprocess.PIPE, universal_newlines=True)
+    memory_profile(' '.join(cmd), popen, memprof_file, sample_interval)
     for stdout_line in iter(popen.stdout.readline, ""):
         yield stdout_line
     popen.stdout.close()
@@ -67,6 +70,10 @@ def execute(cmd):
             logging.error(popen.stderr.read())
         raise subprocess.CalledProcessError(return_code, cmd)
 
+def memory_profile(cmd, process, memprof_file, sample_interval):
+    with open(memprof_file, "a") as f:
+        f.write("CMDLINE {0}\n".format(cmd))
+        mp.memory_usage(proc=process, interval=sample_interval, timestamps=True, include_children=True, stream=f)
 
 def which(program):
     def is_exe(fpath):
@@ -104,21 +111,15 @@ def print_metrics(metrics, command):
 # TODO: add verbose option
 @click.command(help=__doc__)
 @click.argument('command', nargs=-1)
-@click.option('-m', '--metrics-file', default='resource_metrics.json')
-@click.option('--memprof-file', default='mprofile.dat')
-def cli(command, metrics_file, memprof_file):
+@click.option('-m', '--metrics-file', default='resource_metrics.json', type=click.Path())
+@click.option('--memprof-file', default='mprofile.dat', type=click.Path())
+@click.option('--sample-interval', default=0.1, type=float, help="Sampling period (in seconds), defaults to 0.1")
+def cli(command, metrics_file, memprof_file, sample_interval):
     if len(command) == 1:
         command = command[0].split()
-    metrics = monitor_command(command)
+    metrics = monitor_command(command, memprof_file, sample_interval)
     print_metrics(metrics, " ".join(command))
     try:
         save_metrics_to_file(metrics, metrics_file)
     except IOError:
-        logging.exception("Could not create metrics file '%s'", metrics_file)
-
-
-# add mprof
-# with open(mprofile_output, "a") as f:
-#         f.write("CMDLINE {0}\n".format(cmd_line))
-#         mp.memory_usage(proc=p, interval=options.interval, timestamps=True,
-#                          include_children=options.include_children, stream=f)
+        logging.exception("Could not create metrics file {0}".format(metrics_file))

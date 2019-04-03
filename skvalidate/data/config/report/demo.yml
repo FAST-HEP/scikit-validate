@@ -34,6 +34,8 @@ sections:
       function: skvalidate.report.get_metrics
       metrics_json: {{scikit_validate}}/data/examples/performance_metrics.json
       metrics_ref_json: {{scikit_validate}}/data/examples/performance_metrics_ref.json
+      profile: {{scikit_validate}}/data/examples/memory_profile.dat
+      profile_ref: {{scikit_validate}}/data/examples/memory_profile_ref.dat
       symbol_up: '&#10138;'
       symbol_down: '&#10136;'
       symbol_same: '&#10134;'

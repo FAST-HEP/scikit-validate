@@ -1,13 +1,13 @@
-skvalidate.compare package
-==========================
+skvalidate.software package
+===========================
 
 Submodules
 ----------
 
-skvalidate.compare.metrics module
+skvalidate.software.detect module
 ---------------------------------
 
-.. automodule:: skvalidate.compare.metrics
+.. automodule:: skvalidate.software.detect
     :members:
     :undoc-members:
     :show-inheritance:
@@ -16,7 +16,7 @@ skvalidate.compare.metrics module
 Module contents
 ---------------
 
-.. automodule:: skvalidate.compare
+.. automodule:: skvalidate.software
     :members:
     :undoc-members:
     :show-inheritance:

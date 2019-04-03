@@ -52,6 +52,7 @@ def compare_metrics(metrics, metrics_ref, keys=None):
 
 def convert_old_to_new(metrics_collection):
     """Convert old metric format to new oneself.
+
     Old:
     {
         "file1": {
@@ -81,3 +82,14 @@ def convert_old_to_new(metrics_collection):
                 new_style_metrics[name][metric_name]['unit'] = ''
 
     return new_style_metrics
+
+
+def absolute_to_relative_timestamps(profile):
+    """Change timestamps from absolute to relative times.
+
+    @param profile: a memory profile dictionary from memory_profiler
+    """
+    timestamps = profile['timestamp']
+    baseline = timestamps[0]
+    profile['timestamp'][:] = [x - baseline for x in timestamps]
+    return profile

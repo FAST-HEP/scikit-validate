@@ -4,18 +4,26 @@ skvalidate.commands package
 Submodules
 ----------
 
-skvalidate.commands.add\_file\_metrics module
----------------------------------------------
+skvalidate.commands.detect\_software\_versions module
+-----------------------------------------------------
 
-.. automodule:: skvalidate.commands.add_file_metrics
+.. automodule:: skvalidate.commands.detect_software_versions
     :members:
     :undoc-members:
     :show-inheritance:
 
-skvalidate.commands.execute\_with\_metrics module
--------------------------------------------------
+skvalidate.commands.execute module
+----------------------------------
 
-.. automodule:: skvalidate.commands.execute_with_metrics
+.. automodule:: skvalidate.commands.execute
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+skvalidate.commands.file\_info module
+-------------------------------------
+
+.. automodule:: skvalidate.commands.file_info
     :members:
     :undoc-members:
     :show-inheritance:
@@ -32,6 +40,22 @@ skvalidate.commands.get\_target\_branch module
 ----------------------------------------------
 
 .. automodule:: skvalidate.commands.get_target_branch
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+skvalidate.commands.make\_demo\_report module
+---------------------------------------------
+
+.. automodule:: skvalidate.commands.make_demo_report
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+skvalidate.commands.make\_report module
+---------------------------------------
+
+.. automodule:: skvalidate.commands.make_report
     :members:
     :undoc-members:
     :show-inheritance:
@@ -56,6 +80,14 @@ skvalidate.commands.root\_diff module
 -------------------------------------
 
 .. automodule:: skvalidate.commands.root_diff
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+skvalidate.commands.submit\_report\_to\_mr module
+-------------------------------------------------
+
+.. automodule:: skvalidate.commands.submit_report_to_mr
     :members:
     :undoc-members:
     :show-inheritance:

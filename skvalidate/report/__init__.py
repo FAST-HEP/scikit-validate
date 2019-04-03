@@ -9,9 +9,10 @@ from jinja2.exceptions import TemplateSyntaxError, UndefinedError
 
 from .. import __skvalidate_root__
 from .. import logger
-from ..compare import compare_metrics
+from ..compare import compare_metrics, absolute_to_relative_timestamps
 from .. import gitlab
-from ..io import resolve_wildcard_path
+from ..io import resolve_wildcard_path, download_file, split_memory_profile_output
+from .. import vis
 
 
 class Report(object):
@@ -64,6 +65,7 @@ class Section(object):
         """
         sections = kwargs.pop('sections', {})
         self.__template = kwargs.pop('template')
+        self.__download = kwargs.pop('download', {})
         self.__name = section_name
         # TODO: not just general
         __check_template__(self.__template, 'general')
@@ -79,6 +81,9 @@ class Section(object):
 
     def __fill__(self):
         """Read template and fill with values"""
+        if self.__download:
+            for output, url in self.__download.items():
+                download_file(url, output)
         with open(self.__template) as f:
             self.__content = Template(f.read())
 
@@ -155,6 +160,9 @@ def __repr_section__(name, section):
 
 
 def get_metrics(metrics_json, metrics_ref_json, **kwargs):
+    profile = kwargs.pop('profile', '')
+    profile_ref = kwargs.pop('profile_ref', '')
+
     with open(metrics_json) as f:
         metrics = json.load(f)
     with open(metrics_ref_json) as f:
@@ -162,6 +170,24 @@ def get_metrics(metrics_json, metrics_ref_json, **kwargs):
 
     keys = kwargs.pop('keys', None)
     comparison = compare_metrics(metrics, metrics_ref, keys=keys)
+    comparison = __format_comparison(comparison, **kwargs)
+
+    if not profile or not profile_ref:
+        return comparison
+
+    profiles = process_memory_profiles(profile, profile_ref)
+
+    for name in profiles:
+        # currenlty only memory profile
+        for metric in comparison[name]:
+            if 'rss' not in metric.lower():
+                continue
+            comparison[name][metric]['profile'] = profiles[name]
+
+    return comparison
+
+
+def __format_comparison(comparison, **kwargs):
     # format metrics
     symbol_up = kwargs.pop('symbol_up', '')
     symbol_down = kwargs.pop('symbol_down', '')
@@ -180,6 +206,29 @@ def get_metrics(metrics_json, metrics_ref_json, **kwargs):
                 metric['symbol'] = symbol_same
 
     return comparison
+
+
+def process_memory_profiles(profile, profile_ref):
+    profiles = split_memory_profile_output(profile)
+    profiles_ref = split_memory_profile_output(profile_ref)
+    outputs = {}
+    # absolute to relative timestamps
+    for name in profiles.keys():
+        profiles[name] = absolute_to_relative_timestamps(profiles[name])
+        profiles_ref[name] = absolute_to_relative_timestamps(profiles_ref[name])
+        output = name.replace(' ', '_') + '.png'
+        outputs[name] = output
+
+    vis.draw_profiles(profiles, profiles_ref, outputs)
+
+    # convert outputs to URLs
+    is_ci = os.environ.get('GITLAB_CI', None)
+    for name, image in outputs.items():
+        if is_ci:
+            outputs[name] = gitlab.get_artifact_url(image)
+        else:
+            outputs[name] = 'file://' + os.path.abspath(image)
+    return outputs
 
 
 def get_jobs_for_stages(stages, source='gitlab', **kwargs):
