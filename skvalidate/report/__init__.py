@@ -180,7 +180,7 @@ def get_metrics(metrics_json, metrics_ref_json, **kwargs):
     for name in profiles:
         # currenlty only memory profile
         for metric in comparison[name]:
-            if not 'rss' in metric.lower():
+            if 'rss' not in metric.lower():
                 continue
             comparison[name][metric]['profile'] = profiles[name]
 
@@ -218,7 +218,6 @@ def process_memory_profiles(profile, profile_ref):
         profiles_ref[name] = absolute_to_relative_timestamps(profiles_ref[name])
         output = name.replace(' ', '_') + '.png'
         outputs[name] = output
-
 
     vis.draw_profiles(profiles, profiles_ref, outputs)
     return outputs
