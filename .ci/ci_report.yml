@@ -37,7 +37,7 @@ sections:
       input/performance_metrics.json: gitlab://validate:metric_pipeline/output/metrics/performance_metrics.json
       input/performance_metrics_ref.json: gitlab://validate:metric_pipeline_ref/output/metrics/performance_metrics.json
       input/stress.dat: gitlab://validate:metric_pipeline/output/metrics/stress.dat
-      input/stress_ref.dat: gitlab://validate:metric_pipeline/output/metrics/stress_ref.dat
+      input/stress_ref.dat: gitlab://validate:metric_pipeline_ref/output/metrics/stress.dat
     comparison:
       function: skvalidate.report.get_metrics
       metric_json: input/performance_metrics.json
