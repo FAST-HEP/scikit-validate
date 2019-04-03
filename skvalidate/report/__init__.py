@@ -12,7 +12,7 @@ from .. import logger
 from ..compare import compare_metrics, absolute_to_relative_timestamps
 from .. import gitlab
 from ..io import resolve_wildcard_path, download_file, split_memory_profile_output
-from ..vis import profile
+from .. import vis
 
 
 class Report(object):
@@ -170,7 +170,7 @@ def get_metrics(metrics_json, metrics_ref_json, **kwargs):
 
     keys = kwargs.pop('keys', None)
     comparison = compare_metrics(metrics, metrics_ref, keys=keys)
-    comparison = __format_comparison(comparison, kwargs)
+    comparison = __format_comparison(comparison, **kwargs)
 
     if not profile or not profile_ref:
         return comparison
@@ -206,12 +206,16 @@ def __format_comparison(comparison, **kwargs):
 def process_memory_profiles(profile, profile_ref):
     profiles = split_memory_profile_output(profile)
     profiles_ref = split_memory_profile_output(profile_ref)
+    outputs = {}
     # absolute to relative timestamps
     for name in profiles.keys():
         profiles[name] = absolute_to_relative_timestamps(profiles[name])
         profiles_ref[name] = absolute_to_relative_timestamps(profiles_ref[name])
+        output = name.replace(' ', '_')
+        outputs[name] = output
 
-    images = draw_profiles(profiles, profiles_ref)
+
+    images = vis.draw_profiles(profiles, profiles_ref)
     return images
 
 

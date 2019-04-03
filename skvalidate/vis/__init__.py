@@ -4,6 +4,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
+from .profile import draw_profiles
 
 def adjust_axis_limits(a_min, a_max, change=0.2, logy=False):
     a_min = a_min * (1 + change) if a_min < 0 else a_min * (1 - change)
@@ -66,3 +67,9 @@ def draw_diff(name, values, output_path, bins=100):
     plt.savefig(output_file)
     plt.close()
     return output_file
+
+
+__all__ = [
+    'draw_diff',
+    'draw_profiles',
+]
