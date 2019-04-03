@@ -26,6 +26,7 @@ import gitlab
 import json
 
 from .. import logger
+from .. import io
 
 
 GITLAB_CONNECTION = None
@@ -267,7 +268,12 @@ class _Streamer():
 
 
 class _DiskStreamer():
+
     def __init__(self, output_file):
+        directory = os.path.split(output_file)[:-1]
+        directory = os.path.join(*directory)
+        create_directory(directory)
+
         self._f = open(output_file, 'wb')
         self.content = output_file
 
