@@ -74,7 +74,7 @@ def get_jobs_for_stages(stages, **kwargs):
     for job in jobs:
         stage = job.attributes['stage']
         if stage not in stages:
-            logger.debug('Stage {0} not in [{1}]'.format(stage, ','.join(stage)))
+            logger.debug('Stage {0} not in [{1}]'.format(stage, ','.join(stages)))
             continue
         name = job.attributes['name']
         if job_filter and name not in job_filter:
