@@ -220,6 +220,14 @@ def process_memory_profiles(profile, profile_ref):
         outputs[name] = output
 
     vis.draw_profiles(profiles, profiles_ref, outputs)
+
+    # convert outputs to URLs
+    is_ci = os.environ.get('GITLAB_CI', None)
+    for name, image in outputs.items():
+        if is_ci:
+            outputs[name] = gitlab.get_artifact_url(image)
+        else:
+            outputs[name] = 'file://' + os.path.abspath(image)
     return outputs
 
 
