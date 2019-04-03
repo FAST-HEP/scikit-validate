@@ -134,6 +134,7 @@ def split_memory_profile_output(profile_file):
     file_nr = 0
     results = {}
     for command, lines in profiles.items():
+        # TODO: move to /tmp
         output_file = profile_file + '.' + str(file_nr)
         file_nr += 1
         logger.debug('Splitting {0} into {1}'.format(profile_file, output_file))
@@ -141,5 +142,8 @@ def split_memory_profile_output(profile_file):
             f.write(command_token + command)
             f.write(''.join(lines))
         profile = read_mprofile_file(output_file)
-        results[command.strip('\n')] = dict(mem_usage=profile['mem_usage'], timestamp=profile['timestamp'])
+        results[command.strip('\n')] = dict(
+            mem_usage=profile['mem_usage'],
+            timestamp=profile['timestamp']
+        )
     return results
