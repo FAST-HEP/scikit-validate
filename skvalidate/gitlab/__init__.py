@@ -19,14 +19,13 @@ Useful Gitlab variables (https://docs.gitlab.com/ee/ci/variables/):
  - CI_PROJECT_NAME
  - CI_PROJECT_URL
 """
-
 import os
 
 import gitlab
 import json
 
 from .. import logger
-from .. import io
+from skvalidate.io import create_directory
 
 
 GITLAB_CONNECTION = None

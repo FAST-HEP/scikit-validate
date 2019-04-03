@@ -8,7 +8,6 @@ from mprof import read_mprofile_file
 import numpy as np
 import uproot
 
-from .. import gitlab
 from .. import logger
 
 
@@ -92,6 +91,7 @@ def download_file(url, output):
 
 
 def download_from_gitlab(url, output):
+    from skvalidate import gitlab
     url = url.replace('gitlab://', '')
     tokens = url.split('/')
     job_name = tokens[0]
