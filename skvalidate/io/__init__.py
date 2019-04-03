@@ -122,9 +122,10 @@ def split_memory_profile_output(profile_file):
     profiles = {}
     command = None
     command_token = 'CMDLINE '
+    logger.debug('Opening memory profile file: {0}'.format(profile_file))
     with open(profile_file) as f:
-        for line in f.readlines(command_token):
-            if line.startswith():
+        for line in f.readlines():
+            if line.startswith(command_token):
                 command = line.replace(command_token, '')
                 profiles[command] = []
                 continue
@@ -137,8 +138,8 @@ def split_memory_profile_output(profile_file):
         file_nr += 1
         logger.debug('Splitting {0} into {1}'.format(profile_file, output_file))
         with open(output_file, 'w') as f:
-            f.write(command_token + command + '\n')
-            f.write('\n'.join(lines))
+            f.write(command_token + command)
+            f.write(''.join(lines))
         profile = read_mprofile_file(output_file)
-        results[command] = dict(mem_usage=profile['mem_usage'], timestamp=profile['timestamp'])
+        results[command.strip('\n')] = dict(mem_usage=profile['mem_usage'], timestamp=profile['timestamp'])
     return results
