@@ -2,6 +2,15 @@ import os
 
 import matplotlib
 matplotlib.use('Agg')
+matplotlib.rcParams['lines.linewidth'] = 4
+matplotlib.rcParams['axes.titlesize'] = 40
+matplotlib.rcParams['axes.labelsize'] = 32
+matplotlib.rcParams['figure.titlesize'] = 40
+matplotlib.rcParams['legend.fontsize'] = 32
+matplotlib.rcParams['patch.linewidth'] = 4
+matplotlib.rcParams['xtick.labelsize'] = 32
+matplotlib.rcParams['ytick.labelsize'] = 32
+
 import matplotlib.pyplot as plt
 
 from .profile import draw_profiles
@@ -26,7 +35,7 @@ def draw_diff(name, values, output_path, bins=100):
     min_x, max_x = find_limits(values['original'], values['reference'])
     min_x, max_x = adjust_axis_limits(min_x, max_x, change=0.1)
 
-    fig, (a0, a1) = plt.subplots(2, 1, gridspec_kw={'height_ratios': [5, 1]}, sharex=True)
+    fig, (a0, a1) = plt.subplots(2, 1, gridspec_kw={'height_ratios': [5, 1]}, sharex=True, figsize=(20, 20))
     name = name.replace(';1', '')
     output_file = os.path.join(output_path, name + '.png')
 
@@ -45,7 +54,7 @@ def draw_diff(name, values, output_path, bins=100):
         logy = False
     min_y, max_y = adjust_axis_limits(min_y, max_y, logy=logy)
     a0.set_ylim(min_y, max_y)
-    a0.legend()
+    a0.legend(loc='upper center', bbox_to_anchor=(0.5, 1.00), ncol=2)
 
     ks_statistic, pvalue = values['ks_statistic'], values['pvalue']
     a0.set_title('{0} \n KS statistic: {1:.3f}; p-value: {2:.3f}'.format(name, ks_statistic, pvalue))
@@ -57,7 +66,7 @@ def draw_diff(name, values, output_path, bins=100):
     min_y, max_y = adjust_axis_limits(min_y, max_y)
     a1.set_ylim(min_y, max_y)
     a1.locator_params(axis='y', nbins=4)
-    a1.legend()
+    a1.legend(loc='upper center', bbox_to_anchor=(0.5, 1.00))
 
     if logy:
         a0.set_yscale('log', nonposy='clip')

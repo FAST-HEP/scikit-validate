@@ -1,13 +1,6 @@
 from plumbum import local
 import matplotlib
 matplotlib.use('Agg')
-matplotlib.rcParams['lines.linewidth'] = 4
-matplotlib.rcParams['axes.titlesize'] = 40
-matplotlib.rcParams['axes.labelsize'] = 32
-matplotlib.rcParams['xtick.labelsize'] = 32
-matplotlib.rcParams['ytick.labelsize'] = 32
-matplotlib.rcParams['legend.fontsize'] = 32
-
 import matplotlib.pyplot as plt
 
 
@@ -43,9 +36,9 @@ def draw_profile(profile, profile_ref, title, output, **kwargs):
     ax = plt.subplot(111)
     this, = ax.plot(profile['timestamp'], profile['mem_usage'], label='this code')
     ref, = ax.plot(profile_ref['timestamp'], profile_ref['mem_usage'], label='reference')
-    plt.title(title, fontsize=40)
-    plt.xlabel('time [s]', fontsize=40)
-    plt.ylabel('RSS [MB]', fontsize=40)
+    plt.title(title)
+    plt.xlabel('time [s]')
+    plt.ylabel('RSS [MB]')
     ax.legend(loc='upper center', bbox_to_anchor=(0.5, 1.00), ncol=2)
 
     max_y = max(profile['mem_usage'] + profile_ref['mem_usage']) * 1.1
