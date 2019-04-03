@@ -176,8 +176,13 @@ def get_metrics(metrics_json, metrics_ref_json, **kwargs):
         return comparison
 
     profiles = process_memory_profiles(profile, profile_ref)
-    for name in profiles.keys():
-        comparison[name]['profile'] = profiles[name]
+
+    for name in profiles:
+        # currenlty only memory profile
+        for metric in comparison[name]:
+            if not 'rss' in metric.lower():
+                continue
+            comparison[name][metric]['profile'] = profiles[name]
 
     return comparison
 
@@ -211,12 +216,12 @@ def process_memory_profiles(profile, profile_ref):
     for name in profiles.keys():
         profiles[name] = absolute_to_relative_timestamps(profiles[name])
         profiles_ref[name] = absolute_to_relative_timestamps(profiles_ref[name])
-        output = name.replace(' ', '_')
+        output = name.replace(' ', '_') + '.png'
         outputs[name] = output
 
 
-    images = vis.draw_profiles(profiles, profiles_ref)
-    return images
+    vis.draw_profiles(profiles, profiles_ref, outputs)
+    return outputs
 
 
 def get_jobs_for_stages(stages, source='gitlab', **kwargs):
