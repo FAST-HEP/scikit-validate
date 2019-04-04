@@ -113,6 +113,7 @@ setup(
         'skvalidate.gitlab',
         'skvalidate.io',
         'skvalidate.report',
+        'skvalidate.software',
         'skvalidate.vis',
     ]),
     setup_requires=setup_requirements,
