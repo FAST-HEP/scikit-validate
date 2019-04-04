@@ -49,6 +49,17 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
         comparison[name] = {}
         value1 = content1[name] if name in content1 else np.array([np.Infinity])
         value2 = content2[name] if name in content2 else np.array([np.Infinity])
+        value1 = np.array(value1)
+        value2 = np.array(value2)
+
+        dimension = max(np.ndim(value1), np.ndim(value2))
+        if dimension > 1:
+            value1 = value1.flatten()
+            value2 = value2.flatten()
+        if len(value1) == 0:
+            value1 = np.array([np.Infinity])
+        if len(value2) == 0:
+            value2 = np.array([np.Infinity])
 
         diff = difference(value2, value1)
         status = FAILED

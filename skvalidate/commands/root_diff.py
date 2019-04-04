@@ -64,6 +64,8 @@ def cli(file_under_test, reference_file, output_path, report_file, prefix):
 
 def _reset_infinities(comparison):
     for name, values in comparison.items():
+        if values['original'].dtype.kind in {'U', 'S', 'O'}:
+            continue
         values['original'][np.absolute(values['original']) == np.Infinity] = 0
         values['reference'][np.absolute(values['reference']) == np.Infinity] = 0
         values['diff'][np.absolute(values['diff']) == np.Infinity] = 0
