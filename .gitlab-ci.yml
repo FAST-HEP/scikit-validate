@@ -182,7 +182,7 @@ report:
   when: always
   script:
     - make install
-    - echo "sleeping for 60s to wait for artifacts to be uploaded for previous stages"; sleep 60
+    - echo "sleeping for 60s to wait for artifacts to be uploaded for previous stages"; sleep 180
     - sv_make_report .ci/ci_report.yml -o ci_report.md
     - sv_submit_report_to_mr ci_report.md validation_report_*.md
   dependencies:
