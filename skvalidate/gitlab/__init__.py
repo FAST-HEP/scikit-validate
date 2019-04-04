@@ -254,6 +254,21 @@ def remove_label_from_merge_request(label, merge_request):
     merge_request.save()
 
 
+def get_pipeline_url():
+    is_ci = os.environ.get('GITLAB_CI', None)
+    if is_ci is None:
+        return "Pipeline URL not found"
+    # try via new variable (Gitlab > 11.0)
+    pipeline_url = os.environ.get('CI_PIPELINE_URL', None)
+    if pipeline_url is not None:
+        return pipeline_url
+    # try via project URL and pipeline ID
+    project_url = os.environ.get('CI_PROJECT_URL')
+    pipeline_id = os.environ.get('CI_PIPELINE_ID')
+    pipeline_url = project_url + '/pipelines/' + str(pipeline_id)
+    return pipeline_url
+
+
 class _Streamer():
 
     def __init__(self):
