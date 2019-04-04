@@ -20,7 +20,7 @@ import errno
 import logging
 import os
 import resource
-import six
+import six.moves._thread as thread
 import subprocess
 
 import click
@@ -61,7 +61,7 @@ def execute(cmd, memprof_file, sample_interval):
         raise OSError(errno.ENOENT, os.strerror(errno.ENOENT), cmd[0])
     popen = subprocess.Popen(
         cmd, stdout=subprocess.PIPE, universal_newlines=True)
-    six._thread.start_new_thread(memory_profile, (' '.join(cmd), popen, memprof_file, sample_interval))
+    thread.start_new_thread(memory_profile, (' '.join(cmd), popen, memprof_file, sample_interval))
     for stdout_line in iter(popen.stdout.readline, ""):
         yield stdout_line
     popen.stdout.close()
