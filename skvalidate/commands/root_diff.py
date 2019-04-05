@@ -67,9 +67,12 @@ def _reset_infinities(comparison):
     for name, values in comparison.items():
         if values['original'].dtype.kind in {'U', 'S', 'O'}:
             continue
-        values['original'][np.absolute(values['original']) == np.Infinity] = 0
-        values['reference'][np.absolute(values['reference']) == np.Infinity] = 0
-        values['diff'][np.absolute(values['diff']) == np.Infinity] = 0
+        if len(values['original']) > 0:
+            values['original'][np.absolute(values['original']) == np.Infinity] = 0
+        if len(values['reference']) > 0:
+            values['reference'][np.absolute(values['reference']) == np.Infinity] = 0
+        if len(values['diff']) > 0:
+            values['diff'][np.absolute(values['diff']) == np.Infinity] = 0
         comparison[name] = values
     return comparison
 
