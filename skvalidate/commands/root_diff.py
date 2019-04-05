@@ -42,7 +42,7 @@ def cli(file_under_test, reference_file, output_path, report_file, prefix):
             msg = 'FAILED: ' + image
         if status == compare.UNKNOWN:
             msg = 'WARNING: Unable to compare'
-            color = colors.orange
+            color = colors.Orange3
         if status == compare.SUCCESS:
             msg = 'OK'
             color = colors.green
