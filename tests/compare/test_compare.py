@@ -27,8 +27,9 @@ def test_difference(a1, a2, expected):
     assert np.array_equal(result, expected)
 
 
-@pytest.mark.parametrize("diff,normalisation,tolerance,expected", [
+@pytest.mark.parametrize("value1,value2,normalisation,tolerance,expected", [
     (
+        np.array([0, 0, 0]),
         np.array([0, 0, 0]),
         1,
         0,
@@ -36,95 +37,112 @@ def test_difference(a1, a2, expected):
     ),
     (
         np.array([1, 2, 3]),
+        np.array([2, 4, 6]),
         1,
         0,
         False
     ),
     (
         np.array([1, 2, 3]),
+        np.array([2, 4, 6]),
         6,
         0.1,
         False
     ),
     (
         np.array([1, 2, 3]),
+        np.array([2, 4, 6]),
         50,
         0.1,
         True
     ),
     (
         np.array([1, 2, 3]),
+        np.array([2, 4, 6]),
         np.Infinity,
         0.1,
         False
     ),
     (
         np.array([np.Infinity, np.Infinity, np.Infinity]),
+        np.array([2, 4, 6]),
         1,
         0.02,
         False
     ),
     (
         np.array([np.Infinity, np.Infinity, np.Infinity]),
+        np.array([2, 4, 6]),
         np.Infinity,
         0.1,
         False
     ),
     (
         np.array([np.Infinity, np.Infinity, np.Infinity]),
+        np.array([2, 4, 6]),
         0,
         0.1,
         False
     ),
 ])
-def test_is_ok(diff, normalisation, tolerance, expected):
+def test_is_ok(value1, value2, normalisation, tolerance, expected):
     cut = 'value <= {0}'.format(tolerance)
-    assert is_ok(maxRelativeDifference, cut=cut, diff=diff, normalisation=normalisation) == expected
+    assert is_ok(maxRelativeDifference, cut=cut, value1=value1, value2=value2, normalisation=normalisation) == expected
 
-@pytest.mark.parametrize("diff,normalisation,expected", [
+
+@pytest.mark.parametrize("value1,value2,normalisation,expected", [
     (
         np.array([0, 0, 0]),
-        1,
+        np.array([0, 0, 0]),
+        None,
         0
     ),
     (
         np.array([1, 2, 3]),
+        np.array([2, 4, 6]),
         1,
         3,
     ),
     (
         np.array([1, 2, 3]),
+        np.array([2, 4, 6]),
         6,
-        3/6,
+        3 / 6,
     ),
     (
         np.array([1, 2, 3]),
+        np.array([2, 4, 6]),
         50,
-        3/50,
+        3 / 50,
     ),
     (
         np.array([1, 2, 3]),
+        np.array([2, 4, 6]),
         np.Infinity,
         np.Infinity
     ),
     (
         np.array([np.Infinity, np.Infinity, np.Infinity]),
+        np.array([2, 4, 6]),
         1,
         np.Infinity,
     ),
     (
         np.array([np.Infinity, np.Infinity, np.Infinity]),
+        np.array([2, 4, 6]),
         np.Infinity,
         np.Infinity,
     ),
     (
         np.array([np.Infinity, np.Infinity, np.Infinity]),
+        np.array([2, 4, 6]),
         0,
         np.Infinity,
     ),
 ])
-def test_maxRelativeDifference(diff, normalisation, expected):
-    assert maxRelativeDifference(diff, normalisation) == expected
+def test_maxRelativeDifference(value1, value2, normalisation, expected):
+    assert maxRelativeDifference(value1, value2, normalisation) == expected
+
 
 @pytest.mark.parametrize("file1,file2,tolerance,n_ok,n_not_ok", [
     (

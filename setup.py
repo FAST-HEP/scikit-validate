@@ -59,6 +59,7 @@ requirements = [
     'markdown2',
     'matplotlib',
     'memory_profiler>=0.54',
+    'numexpr',
     'numpy',
     'plumbum',
     # 'python-gitlab>=1.8.0',
