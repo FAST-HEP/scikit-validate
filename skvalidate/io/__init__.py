@@ -24,7 +24,19 @@ def update_data_in_json(data, json_file):
 
 def write_data_to_json(data, json_file):
     with open(json_file, 'w') as f:
-        json.dump(data, f, indent=4)
+        json.dump(data, f, indent=4, default=_unpack_numpy_arrays)
+
+
+def _unpack_numpy_arrays(obj):
+    '''
+        From https://stackoverflow.com/questions/26646362/numpy-array-is-not-json-serializable
+    '''
+    if type(obj).__module__ == np.__name__:
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        else:
+            return obj.item()
+    raise TypeError('Unknown type:', type(obj))
 
 
 def read_data_from_json(json_file):
