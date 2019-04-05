@@ -34,15 +34,16 @@ def cli(file_under_test, reference_file, output_path, report_file, prefix):
     for name in sorted(comparison.keys()):
         values = comparison[name]
         status = values['status']
+        evaluationValue = values['evaluationValue']
         msg = compare.ERROR
         color = colors.red
         if status == compare.FAILED:
             image = draw_diff(name, values, output_path)
             values['image'] = image
-            msg = 'FAILED: ' + image
+            msg = 'FAILED (test: {:0.3f}): {}'.format(evaluationValue, image)
         if status == compare.UNKNOWN:
-            msg = 'WARNING: Unable to compare'
-            color = colors.orange
+            msg = 'WARNING: Unable to compare (value type: {})'.format(values['original'].dtype)
+            color = colors.Orange3
         if status == compare.SUCCESS:
             msg = 'OK'
             color = colors.green
@@ -64,6 +65,8 @@ def cli(file_under_test, reference_file, output_path, report_file, prefix):
 
 def _reset_infinities(comparison):
     for name, values in comparison.items():
+        if values['original'].dtype.kind in {'U', 'S', 'O'}:
+            continue
         values['original'][np.absolute(values['original']) == np.Infinity] = 0
         values['reference'][np.absolute(values['reference']) == np.Infinity] = 0
         values['diff'][np.absolute(values['diff']) == np.Infinity] = 0

@@ -12,6 +12,7 @@ matplotlib.rcParams['xtick.labelsize'] = 32
 matplotlib.rcParams['ytick.labelsize'] = 32
 
 import matplotlib.pyplot as plt
+import numpy as np
 
 from .profile import draw_profiles
 
@@ -23,9 +24,9 @@ def adjust_axis_limits(a_min, a_max, change=0.2, logy=False):
     return a_min, a_max
 
 
-def find_limits(d_1, d2):
-    a_min = min(min(d_1), min(d2))
-    a_max = max(max(d_1), max(d2))
+def find_limits(d1, d2):
+    a_min = min(np.amin(d1, initial=0), np.amin(d2, initial=0))
+    a_max = max(np.amax(d1, initial=0), np.amax(d2, initial=0))
     return a_min, a_max
 
 

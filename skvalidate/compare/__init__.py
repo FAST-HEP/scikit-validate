@@ -1,4 +1,5 @@
 from __future__ import division
+import numexpr as ne
 import numpy as np
 from scipy import stats
 
@@ -23,15 +24,9 @@ def difference(a1, a2):
         return []
 
 
-def is_ok(diff, normalisation, tolerance=0.02):
-    d = np.absolute(diff)
-
-    if abs(normalisation) == np.Infinity or np.Infinity in d:
-        return False
-    if normalisation == 0:
-        return True
-
-    return max(d / normalisation) <= tolerance
+def is_ok(evaluationFunc, cut, *args, **kwargs):
+    value = evaluationFunc(*args, **kwargs)  # noqa: F841
+    return np.all(ne.evaluate(cut))
 
 
 def compare_two_root_files(file1, file2, tolerance=0.02):
@@ -47,29 +42,77 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
 
     for name in all_keys:
         comparison[name] = {}
-        value1 = content1[name] if name in content1 else np.array([np.Infinity])
-        value2 = content2[name] if name in content2 else np.array([np.Infinity])
-
-        diff = difference(value2, value1)
         status = FAILED
-        ks_statistic, pvalue = stats.ks_2samp(value2, value1)
+        evaluationValue, ks_statistic, pvalue = 0, 0, 0
+        diff = np.array([])
 
-        if not len(diff):
-            status = UNKNOWN
+        evaluationFunc = maxRelativeDifference
+        cut = 'value <= {}'.format(tolerance)
+
+        value1, value2 = load_values(name, content1, content2)
+
+        if len(value1) == 0 and len(value2) == 0:
+            status = SUCCESS
+            pvalue = 1
+        elif (len(value1) == 0 and len(value2) > 0) or (len(value1) > 0 and len(value2) == 0):
+            status = FAILED
+            diff = value1 if len(value1) > 0 else value2
         else:
-            norm = np.sqrt(np.sum(value2**2))
-            if is_ok(diff, normalisation=norm, tolerance=tolerance):
-                status = SUCCESS
+            ks_statistic, pvalue = stats.ks_2samp(value2, value1)
+            diff = difference(value2, value1)
+
+            if not len(diff):
+                status = UNKNOWN
+            else:
+                evaluationValue = evaluationFunc(value1, value2)
+                status = evaluateStatus(value1, value2, evaluationFunc, cut)
 
         comparison[name] = dict(
             status=status,
             original=value1,
             reference=value2,
             diff=diff,
+            evaluationValue=evaluationValue,
             ks_statistic=ks_statistic,
             pvalue=pvalue,
         )
     return comparison
+
+
+def load_values(name, content1, content2):
+    value1 = content1[name] if name in content1 else np.array([])
+    value2 = content2[name] if name in content2 else np.array([])
+    value1 = np.array(value1)
+    value2 = np.array(value2)
+
+    # if len(value1) == 0 and len(value2) == 0:
+
+    dimension = max(np.ndim(value1), np.ndim(value2))
+    if dimension > 1:
+        value1 = value1.flatten()
+        value2 = value2.flatten()
+    return value1, value2
+
+
+def evaluateStatus(value1, value2, evaluationFunc, cut):
+    status = FAILED
+    if is_ok(evaluationFunc, cut=cut, value1=value1, value2=value2):
+        status = SUCCESS
+    return status
+
+
+def maxRelativeDifference(value1, value2, normalisation=None):
+    diff = difference(value2, value1)
+    d = np.absolute(diff)
+    if normalisation is None:
+        normalisation = np.sqrt(np.sum(value2**2))
+
+    if abs(normalisation) == np.Infinity or np.Infinity in d:
+        return np.Infinity
+    if normalisation == 0:
+        return 0
+
+    return max(d / normalisation)
 
 
 __all__ = [
