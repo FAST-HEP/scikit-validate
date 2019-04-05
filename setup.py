@@ -60,7 +60,7 @@ requirements = [
     'matplotlib',
     'memory_profiler>=0.54',
     'numexpr',
-    'numpy',
+    'numpy>=1.15.0',
     'plumbum',
     # 'python-gitlab>=1.8.0',
     # as long as 1.8.0 is not published, take master
