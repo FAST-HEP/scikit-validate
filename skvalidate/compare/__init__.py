@@ -23,15 +23,9 @@ def difference(a1, a2):
         return []
 
 
-def is_ok(diff, normalisation, tolerance=0.02):
-    d = np.absolute(diff)
-
-    if abs(normalisation) == np.Infinity or np.Infinity in d:
-        return False
-    if normalisation == 0:
-        return True
-
-    return max(d / normalisation) <= tolerance
+def is_ok(evaluationFunc, cut, *args, **kwargs):
+    value = evaluationFunc(*args, **kwargs)
+    return eval(cut)
 
 
 def compare_two_root_files(file1, file2, tolerance=0.02):
@@ -69,7 +63,9 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
             status = UNKNOWN
         else:
             norm = np.sqrt(np.sum(value2**2))
-            if is_ok(diff, normalisation=norm, tolerance=tolerance):
+            func = maxRelativeDifference
+            cut = 'value <= {}'.format(tolerance)
+            if is_ok(maxRelativeDifference, cut=cut, diff=diff, normalisation=norm):
                 status = SUCCESS
 
         comparison[name] = dict(
@@ -82,6 +78,15 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
         )
     return comparison
 
+def maxRelativeDifference(diff, normalisation):
+    d = np.absolute(diff)
+
+    if abs(normalisation) == np.Infinity or np.Infinity in d:
+        return np.Infinity
+    if normalisation == 0:
+        return 0
+
+    return max(d / normalisation)
 
 __all__ = [
     'absolute_to_relative_timestamps',

@@ -1,6 +1,7 @@
+from __future__ import division
 import numpy as np
 import pytest
-from skvalidate.compare import compare_two_root_files, difference, is_ok
+from skvalidate.compare import compare_two_root_files, difference, is_ok, maxRelativeDifference
 import skvalidate.compare as skcmp
 
 
@@ -77,8 +78,53 @@ def test_difference(a1, a2, expected):
     ),
 ])
 def test_is_ok(diff, normalisation, tolerance, expected):
-    assert is_ok(diff, normalisation, tolerance=tolerance) == expected
+    cut = 'value <= {0}'.format(tolerance)
+    assert is_ok(maxRelativeDifference, cut=cut, diff=diff, normalisation=normalisation) == expected
 
+@pytest.mark.parametrize("diff,normalisation,expected", [
+    (
+        np.array([0, 0, 0]),
+        1,
+        0
+    ),
+    (
+        np.array([1, 2, 3]),
+        1,
+        3,
+    ),
+    (
+        np.array([1, 2, 3]),
+        6,
+        3/6,
+    ),
+    (
+        np.array([1, 2, 3]),
+        50,
+        3/50,
+    ),
+    (
+        np.array([1, 2, 3]),
+        np.Infinity,
+        np.Infinity
+    ),
+    (
+        np.array([np.Infinity, np.Infinity, np.Infinity]),
+        1,
+        np.Infinity,
+    ),
+    (
+        np.array([np.Infinity, np.Infinity, np.Infinity]),
+        np.Infinity,
+        np.Infinity,
+    ),
+    (
+        np.array([np.Infinity, np.Infinity, np.Infinity]),
+        0,
+        np.Infinity,
+    ),
+])
+def test_maxRelativeDifference(diff, normalisation, expected):
+    assert maxRelativeDifference(diff, normalisation) == expected
 
 @pytest.mark.parametrize("file1,file2,tolerance,n_ok,n_not_ok", [
     (
