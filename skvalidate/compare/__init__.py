@@ -59,13 +59,15 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
         status = FAILED
         ks_statistic, pvalue = stats.ks_2samp(value2, value1)
 
+        evaluationFunc = maxRelativeDifference
+        cut = 'value <= {}'.format(tolerance)
+        norm = 0
+
         if not len(diff):
             status = UNKNOWN
         else:
             norm = np.sqrt(np.sum(value2**2))
-            func = maxRelativeDifference
-            cut = 'value <= {}'.format(tolerance)
-            if is_ok(maxRelativeDifference, cut=cut, diff=diff, normalisation=norm):
+            if is_ok(evaluationFunc, cut=cut, diff=diff, normalisation=norm):
                 status = SUCCESS
 
         comparison[name] = dict(
@@ -73,6 +75,7 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
             original=value1,
             reference=value2,
             diff=diff,
+            evaluationValue=maxRelativeDifference(diff, norm),
             ks_statistic=ks_statistic,
             pvalue=pvalue,
         )
