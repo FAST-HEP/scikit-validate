@@ -216,7 +216,8 @@ def process_memory_profiles(profile, profile_ref):
     for name in profiles.keys():
         profiles[name] = absolute_to_relative_timestamps(profiles[name])
         profiles_ref[name] = absolute_to_relative_timestamps(profiles_ref[name])
-        output = name.replace(' ', '_') + '.png'
+        output = name.replace(' ', '_').replace(os.sep, '_')
+        output += '.png'
         outputs[name] = output
 
     vis.draw_profiles(profiles, profiles_ref, outputs)
