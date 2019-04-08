@@ -45,6 +45,7 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
         status = FAILED
         evaluationValue, ks_statistic, pvalue = 0, 0, 0
         diff = np.array([])
+        reason = ''
 
         evaluationFunc = maxRelativeDifference
         cut = 'value <= {}'.format(tolerance)
@@ -56,16 +57,18 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
             pvalue = 1
         elif (len(value1) == 0 and len(value2) > 0) or (len(value1) > 0 and len(value2) == 0):
             status = FAILED
+            reason = 'file1 is empty' if len(value1) > 0 else 'reference file is empty'
             diff = value1 if len(value1) > 0 else value2
         else:
             ks_statistic, pvalue = stats.ks_2samp(value2, value1)
-            diff = difference(value2, value1)
 
-            if not len(diff):
-                status = UNKNOWN
-            else:
+            try:
+                diff = difference(value2, value1)
                 evaluationValue = evaluationFunc(value1, value2)
                 status = evaluateStatus(value1, value2, evaluationFunc, cut)
+            except Exception as e:
+                reason = str(e)
+                status = UNKNOWN
 
         comparison[name] = dict(
             status=status,
@@ -75,6 +78,7 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
             evaluationValue=evaluationValue,
             ks_statistic=ks_statistic,
             pvalue=pvalue,
+            reason=reason,
         )
     return comparison
 
