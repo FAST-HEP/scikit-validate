@@ -79,7 +79,7 @@ class MultiProcessStatus(object):
     def runSingleCore(self):
         print('Testing {0} distributions'.format(self.n_comparisons))
         for name in sorted(self.comparison.keys()):
-            result = self.__process(name, self.comparison[name], self.output_path)
+            result = _process(name, self.comparison[name], self.output_path)
             self.comparison[name] = result
 
     def run(self):
@@ -92,7 +92,7 @@ class MultiProcessStatus(object):
         print('Testing {0} distributions'.format(self.n_comparisons))
         threads = {}
         for name in sorted(self.comparison.keys()):
-            thread = threading.Thread(target=self.__process, args=(name, self.comparison[name], self.output_path))
+            thread = threading.Thread(target=_process, args=(name, self.comparison[name], self.output_path))
             thread.daemon = True
             thread.start()
             threads[name] = thread
