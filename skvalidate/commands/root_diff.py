@@ -7,6 +7,7 @@ TODO: allow for injection of user-defined high-level variables
 """
 from __future__ import print_function
 import os
+import threading
 
 import click
 import numpy as np
@@ -15,6 +16,40 @@ from plumbum import colors
 from skvalidate import compare
 from skvalidate.vis import draw_diff
 from skvalidate.io import write_data_to_json
+
+LOCK = threading.Lock()
+
+
+class ProcessStatus(threading.Thread):
+
+    def __init__(self, name, values, output_path):
+        threading.Thread.__init__(self)
+        self.name = name
+        self.values = values
+        self.output_path = output_path
+
+    def run(self):
+        evaluationValue = self.values['evaluationValue']
+        status = self.values['status']
+        msg = compare.ERROR
+        color = colors.red
+        if status == compare.FAILED:
+            image = draw_diff(self.name, self.values, self.output_path)
+            self.values['image'] = image
+            msg = 'FAILED (test: {:0.3f}): {}'.format(evaluationValue, image)
+        if status == compare.UNKNOWN:
+            msg = 'WARNING: Unable to compare (value type: {})'.format(self.values['original'].dtype)
+            color = colors.Orange3
+        if status == compare.SUCCESS:
+            msg = 'OK'
+            color = colors.green
+        self.values['msg'] = msg
+        LOCK.acquire()
+        print(color | '{0} - {1}'.format(self.name, msg))
+        LOCK.release()
+        del self.values['original']
+        del self.values['reference']
+        del self.values['diff']
 
 
 @click.command()
@@ -31,31 +66,16 @@ def cli(file_under_test, reference_file, output_path, report_file, prefix):
     comparison = _reset_infinities(comparison)
 
     print('Testing {0} distributions'.format(len(comparison)))
+    threads = {}
     for name in sorted(comparison.keys()):
         values = comparison[name]
-        status = values['status']
-        evaluationValue = values['evaluationValue']
-        msg = compare.ERROR
-        color = colors.red
-        if status == compare.FAILED:
-            image = draw_diff(name, values, output_path)
-            values['image'] = image
-            msg = 'FAILED (test: {:0.3f}): {}'.format(evaluationValue, image)
-        if status == compare.UNKNOWN:
-            msg = 'WARNING: Unable to compare (value type: {})'.format(values['original'].dtype)
-            color = colors.Orange3
-        if status == compare.SUCCESS:
-            msg = 'OK'
-            color = colors.green
+        thread = ProcessStatus(name, values, output_path)
+        thread.start()
+        threads[name] = thread
 
-        values['msg'] = msg
-        # TODO: only print this for verbose option
-        print(color | '{0} - {1}'.format(name, msg))
-        # drop arrays from comparison
-        del values['original']
-        del values['reference']
-        del values['diff']
-        comparison[name] = values
+    for name, thread in threads.items():
+        thread.join()
+        comparison[name] = thread.values
 
     summary = _add_summary(comparison, prefix)
     summary[prefix]['output_path'] = output_path
