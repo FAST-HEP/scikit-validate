@@ -69,6 +69,7 @@ requirements = [
     'python-gitlab>=1.7.0',
     'pyyaml',
     'scipy',
+    'tqdm',
     'uproot',
     'xhtml2pdf',
 ]

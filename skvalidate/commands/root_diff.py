@@ -12,12 +12,11 @@ import threading
 import click
 import numpy as np
 from plumbum import colors
+from tqdm import tqdm
 
 from skvalidate import compare
 from skvalidate.vis import draw_diff
 from skvalidate.io import write_data_to_json
-
-LOCK = threading.Lock()
 
 
 class ProcessStatus(threading.Thread):
@@ -27,26 +26,23 @@ class ProcessStatus(threading.Thread):
         self.name = name
         self.values = values
         self.output_path = output_path
+        self.color = colors.red
+        self.msg = compare.ERROR
 
     def run(self):
         evaluationValue = self.values['evaluationValue']
         status = self.values['status']
-        msg = compare.ERROR
-        color = colors.red
         if status == compare.FAILED:
             image = draw_diff(self.name, self.values, self.output_path)
             self.values['image'] = image
-            msg = 'FAILED (test: {:0.3f}): {}'.format(evaluationValue, image)
+            self.msg = 'FAILED (test: {:0.3f}): {}'.format(evaluationValue, image)
         if status == compare.UNKNOWN:
-            msg = 'WARNING: Unable to compare (value type: {})'.format(self.values['original'].dtype)
-            color = colors.Orange3
+            self.msg = 'WARNING: Unable to compare (value type: {})'.format(self.values['original'].dtype)
+            self.color = colors.Orange3
         if status == compare.SUCCESS:
-            msg = 'OK'
-            color = colors.green
-        self.values['msg'] = msg
-        LOCK.acquire()
-        print(color | '{0} - {1}'.format(self.name, msg))
-        LOCK.release()
+            self.msg = 'OK'
+            self.color = colors.green
+        self.values['msg'] = self.msg
         del self.values['original']
         del self.values['reference']
         del self.values['diff']
@@ -73,8 +69,9 @@ def cli(file_under_test, reference_file, output_path, report_file, prefix):
         thread.start()
         threads[name] = thread
 
-    for name, thread in threads.items():
+    for name, thread in tqdm(threads.items()):
         thread.join()
+        print(thread.color | '{0} - {1}'.format(thread.name, thread.msg))
         comparison[name] = thread.values
 
     summary = _add_summary(comparison, prefix)
