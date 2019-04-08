@@ -148,10 +148,7 @@ def download_artifact(job_id, path, output_file=None):
 
 
 def get_artifact_url(local_path):
-    CI_PROJECT_PATH = os.environ.get('CI_PROJECT_PATH', os.getcwd())
     CI_JOB_ID = os.environ.get('CI_JOB_ID')
-    local_path = local_path.replace(CI_PROJECT_PATH, '')
-
     path_type = 'browse'
     if os.path.isfile(local_path):
         path_type = 'file'
@@ -159,8 +156,11 @@ def get_artifact_url(local_path):
 
 
 def path_and_job_id_to_artifact_url(path, job_id, path_type='file'):
+    CI_PROJECT_PATH = os.environ.get('CI_PROJECT_PATH', os.getcwd())
     CI_PROJECT_URL = os.environ.get('CI_PROJECT_URL')
     url_template = '{CI_PROJECT_URL}/-/jobs/{job_id}/artifacts/{path_type}/{path}'
+    path = os.path.relpath(path, CI_PROJECT_PATH)
+
     return url_template.format(
         CI_PROJECT_URL=CI_PROJECT_URL,
         job_id=job_id,
