@@ -38,12 +38,12 @@ def monitor_command(command, memprof_file, sample_interval):
 
     max_rss_in_mb = (usage_end.ru_maxrss - usage_start.ru_maxrss) / 1024.
     metrics = dict(
-        cpu_time_in_s=dict(
+        cpu_time=dict(
             value=usage_end.ru_utime - usage_start.ru_utime,
             unit='s',
             lower_is_better=True,
         ),
-        max_rss_in_mb=dict(
+        max_rss=dict(
             value=round(max_rss_in_mb, 1),
             unit='MB',
             lower_is_better=True,
@@ -101,10 +101,10 @@ def print_metrics(metrics, command):
     msg = '\n'.join(msg)
     print(msg.format(
         params['command'],
-        params['cpu_time_in_s']['value'],
-        params['cpu_time_in_s']['unit'],
-        params['max_rss_in_mb']['value'],
-        params['max_rss_in_mb']['unit'],
+        params['cpu_time']['value'],
+        params['cpu_time']['unit'],
+        params['max_rss']['value'],
+        params['max_rss']['unit'],
     ))
 
 
