@@ -29,6 +29,10 @@ def produce_validation_report(stages, jobs, validation_json, **kwargs):
         # write out .md with full paths, HTML with local paths and PDF with local paths
         data[name] = job['validation_json'][name]
         data[name]['job_name'] = name
+        data[name]['images'] = []
+        for name, info in data[name]['distributions'].items():
+            if 'image' in info:
+                data[name]['images'].append(info['image'])
         validation_output_file = 'validation_report_{0}'.format(name)
 
         details = create_detailed_report(
@@ -38,9 +42,11 @@ def produce_validation_report(stages, jobs, validation_json, **kwargs):
         )
 
         # data[name]['distributions'].update(outputs)
+        data[name]['images'] = []
         for d, info in data[name]['distributions'].items():
             if 'image' in info:
                 info['image'] = outputs[d]['image']
+                data[name]['images'].append(info['image'])
         details = create_detailed_report(
             data[name], output_dir='.',
             output_file=validation_output_file,
@@ -155,7 +161,7 @@ def _create_pdf(input_file, output_file):
             pisa.pisaDocument(f.read(), dest=o)
 
 
-def _create_detailed_report_html(template_path, data, output_file):
+def _create_detailed_report_html(template_path, data, output_file, table_of_contents=False):
     """Add table of contents to template
 
     @param template_path: path to template
@@ -167,14 +173,15 @@ def _create_detailed_report_html(template_path, data, output_file):
     template = _read_template(template_path)
     # render once to get the structure
     data['table_of_contents'] = ''
-    tmp = template.render(**data)
-    # create table of contents
-    tmp = markdown2.markdown(tmp, extras=["toc"])
-    table_of_contents = tmp.toc_html
+    if table_of_contents:
+        tmp = template.render(**data)
+        # create table of contents
+        tmp = markdown2.markdown(tmp, extras=["toc"])
+        table_of_contents = tmp.toc_html
 
-    # render with table of contents
-    template = _read_template(template_path)
-    data['table_of_contents'] = table_of_contents
+        # render with table of contents
+        template = _read_template(template_path)
+        data['table_of_contents'] = table_of_contents
     tmp = template.render(**data)
 
     content = markdown2.markdown(tmp)
