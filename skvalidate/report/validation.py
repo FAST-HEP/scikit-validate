@@ -30,12 +30,12 @@ def produce_validation_report(stages, jobs, validation_json, **kwargs):
         data[name] = job['validation_json'][name]
         data[name]['job_name'] = name
         data[name]['images'] = []
-        for info in data[name]['distributions'].values():
+        for d, info in data[name]['distributions'].items():
             if 'image' in info:
-                data[name]['images'].append(info['image'])
+                data[name]['images'].append(outputs[d]['image'])
         validation_output_file = 'validation_report_{0}'.format(name)
 
-        details = create_detailed_report(
+        details_pdf = create_detailed_report(
             data[name], output_dir='.',
             output_file=validation_output_file,
             formats=['pdf']
@@ -46,13 +46,12 @@ def produce_validation_report(stages, jobs, validation_json, **kwargs):
         for d, info in data[name]['distributions'].items():
             if 'image' in info:
                 info['image'] = outputs[d]['image']
-                data[name]['images'].append(info['image'])
-        details = create_detailed_report(
+        create_detailed_report(
             data[name], output_dir='.',
             output_file=validation_output_file,
             formats=['md', 'html']
         )
-        data[name]['web_url_to_details'] = details
+        data[name]['web_url_to_details'] = details_pdf
     summary = create_summary(data)
     return summary
 
