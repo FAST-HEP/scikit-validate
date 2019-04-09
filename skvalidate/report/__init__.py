@@ -83,7 +83,10 @@ class Section(object):
         """Read template and fill with values"""
         if self.__download:
             for output, url in self.__download.items():
-                download_file(url, output)
+                try:
+                    download_file(url, output)
+                except Exception as e:
+                    logger.error('Unable to download {0}: {1}'.format(url, e))
         with open(self.__template) as f:
             self.__content = Template(f.read())
 
