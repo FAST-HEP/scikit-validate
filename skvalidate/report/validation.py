@@ -25,14 +25,13 @@ def produce_validation_report(stages, jobs, validation_json, **kwargs):
     data = {}
     for name, job in jobs.items():
         outputs = download_validation_outputs(job)
-        outputs = update_image_urls(outputs)
         # write out .md with full paths, HTML with local paths and PDF with local paths
         data[name] = job['validation_json'][name]
         data[name]['job_name'] = name
         data[name]['images'] = []
-        for info in data[name]['distributions'].values():
+        for d, info in data[name]['distributions'].items():
             if 'image' in info:
-                image = info['image']
+                image = outputs[d]['image']
                 logger.debug('Loading image {0} for PDF validation report'.format(image))
                 data[name]['images'].append(image)
         validation_output_file = 'validation_report_{0}'.format(name)
@@ -43,13 +42,13 @@ def produce_validation_report(stages, jobs, validation_json, **kwargs):
             formats=['pdf']
         )
 
-        # data[name]['distributions'].update(outputs)
+        outputs = update_image_urls(outputs)
         data[name]['images'] = []
         for d, info in data[name]['distributions'].items():
             if 'image' in info:
                 image = outputs[d]['image']
-                logger.debug('Loading image {0} for HTML/MD validation report'.format(image))
                 info['image'] = image
+                logger.debug('Loading image {0} for HTML/MD validation report'.format(image))
                 data[name]['images'].append(image)
         details.update(create_detailed_report(
             data[name], output_dir='.',
