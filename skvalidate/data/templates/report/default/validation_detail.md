@@ -4,7 +4,7 @@
 ## Overview
 
 {% for subset in images | batch(5, '') -%}
-{%for image in subset -%}{% if image -%}<img width="100" src="{{image}}" />{% endif -%}{% endfor%}
+{%for image in subset -%}{% if image -%}<a href="{{image}}"><img width="100" src="{{image}}" /></a>{% endif -%}{% endfor%}
 {% endfor %}
 
 <!---
