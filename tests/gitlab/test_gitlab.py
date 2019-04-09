@@ -9,28 +9,36 @@ from skvalidate.gitlab import path_and_job_id_to_artifact_url
 def ci_project():
     Project = namedtuple('Project', ['path', 'job_id', 'url'])
     return Project(
-        path='/builds/group/MyProject',
+        path=os.getcwd(),
         job_id=42,
         url='https://gitlab.example.com/group/MyProject'
     )
 
 
-@pytest.mark.parametrize('path,expected_url', [
+@pytest.mark.parametrize('path,path_type,expected_url', [
     (
-        '/builds/group/MyProject/file.json',
-        'https://gitlab.example.com/group/MyProject/-/jobs/42/artifacts/file/file.json'
+        'file.json',
+        'file',
+        'https://gitlab.example.com/group/MyProject/-/jobs/42/artifacts/file/file.json',
     ),
     (
-        '/builds/group/MyProject/output/file.json',
+        'file.json',
+        'raw',
+        'https://gitlab.example.com/group/MyProject/-/jobs/42/artifacts/raw/file.json',
+    ),
+    (
+        os.getcwd() + '/output/file.json',
+        'file',
         'https://gitlab.example.com/group/MyProject/-/jobs/42/artifacts/file/output/file.json'
     ),
     (
-        '/builds/group/MyProject/output/../file.json',
+        os.getcwd() + '/output/../file.json',
+        'file',
         'https://gitlab.example.com/group/MyProject/-/jobs/42/artifacts/file/file.json'
     ),
 ])
-def test_path_and_job_id_to_artifact_url(ci_project, path, expected_url):
+def test_path_and_job_id_to_artifact_url(ci_project, path, path_type, expected_url):
     os.environ['CI_PROJECT_PATH'] = ci_project.path
     os.environ['CI_PROJECT_URL'] = ci_project.url
-    url = path_and_job_id_to_artifact_url(path, ci_project.job_id, path_type='file')
+    url = path_and_job_id_to_artifact_url(path, ci_project.job_id, path_type=path_type)
     assert url == expected_url
