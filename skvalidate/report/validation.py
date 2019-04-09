@@ -30,7 +30,7 @@ def produce_validation_report(stages, jobs, validation_json, **kwargs):
         data[name] = job['validation_json'][name]
         data[name]['job_name'] = name
         data[name]['images'] = []
-        for name, info in data[name]['distributions'].items():
+        for info in data[name]['distributions'].values():
             if 'image' in info:
                 data[name]['images'].append(info['image'])
         validation_output_file = 'validation_report_{0}'.format(name)
