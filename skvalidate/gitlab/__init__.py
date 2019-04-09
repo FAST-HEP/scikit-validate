@@ -156,10 +156,12 @@ def get_artifact_url(local_path):
 
 
 def path_and_job_id_to_artifact_url(path, job_id, path_type='file'):
-    CI_PROJECT_PATH = os.environ.get('CI_PROJECT_PATH', os.getcwd())
+    CI_PROJECT_DIR = os.environ.get('CI_PROJECT_DIR', os.getcwd())
     CI_PROJECT_URL = os.environ.get('CI_PROJECT_URL')
     url_template = '{CI_PROJECT_URL}/-/jobs/{job_id}/artifacts/{path_type}/{path}'
-    path = os.path.relpath(path, CI_PROJECT_PATH)
+    path = os.path.abspath(path)
+    path = os.path.relpath(path, CI_PROJECT_DIR)
+    path = os.path.normpath(path)
 
     return url_template.format(
         CI_PROJECT_URL=CI_PROJECT_URL,
