@@ -143,7 +143,7 @@ def _get_links_for_reports(output_files):
         link = ''
         if local:
             protocol = 'file://'
-            link = protocol + output_file
+            link = protocol + os.path.abspath(output_file)
         else:
             job_id = os.environ.get('CI_JOB_ID')
             link = gitlab.path_and_job_id_to_artifact_url(output_file, job_id, path_types[format])
