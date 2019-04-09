@@ -6,11 +6,11 @@ from skvalidate.commands.execute import print_metrics
     (
         {'sleep 2':
          {
-             'cpu_time_in_s': {
+             'cpu_time': {
                  'value': 23,
                  'unit': 's',
              },
-             'max_rss_in_mb': {
+             'max_rss': {
                  'value': 200,
                  'unit': 'MB',
              }
@@ -27,10 +27,10 @@ def test_print_metrics(capsys, metrics, command):
     msg = '\n'.join(msg)
     expected = msg.format(
         command,
-        metrics[command]['cpu_time_in_s']['value'],
-        metrics[command]['cpu_time_in_s']['unit'],
-        metrics[command]['max_rss_in_mb']['value'],
-        metrics[command]['max_rss_in_mb']['unit'],
+        metrics[command]['cpu_time']['value'],
+        metrics[command]['cpu_time']['unit'],
+        metrics[command]['max_rss']['value'],
+        metrics[command]['max_rss']['unit'],
     )
     print_metrics(metrics, command)
     captured = capsys.readouterr()

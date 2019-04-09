@@ -83,7 +83,10 @@ class Section(object):
         """Read template and fill with values"""
         if self.__download:
             for output, url in self.__download.items():
-                download_file(url, output)
+                try:
+                    download_file(url, output)
+                except Exception as e:
+                    logger.error('Unable to download {0}: {1}'.format(url, e))
         with open(self.__template) as f:
             self.__content = Template(f.read())
 
@@ -216,7 +219,8 @@ def process_memory_profiles(profile, profile_ref):
     for name in profiles.keys():
         profiles[name] = absolute_to_relative_timestamps(profiles[name])
         profiles_ref[name] = absolute_to_relative_timestamps(profiles_ref[name])
-        output = name.replace(' ', '_') + '.png'
+        output = name.replace(' ', '_').replace(os.sep, '_')
+        output += '.png'
         outputs[name] = output
 
     vis.draw_profiles(profiles, profiles_ref, outputs)

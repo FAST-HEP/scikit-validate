@@ -11,10 +11,12 @@ matplotlib.rcParams['patch.linewidth'] = 4
 matplotlib.rcParams['xtick.labelsize'] = 32
 matplotlib.rcParams['ytick.labelsize'] = 32
 
-import matplotlib.pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
 import numpy as np
 
 from .profile import draw_profiles
+
 
 def adjust_axis_limits(a_min, a_max, change=0.2, logy=False):
     a_min = a_min * (1 + change) if a_min < 0 else a_min * (1 - change)
@@ -31,14 +33,16 @@ def find_limits(d1, d2):
 
 
 def draw_diff(name, values, output_path, bins=100):
+    name = name.replace(';1', '')
+    output_file = os.path.join(output_path, name + '.png')
     logy = False
 
     min_x, max_x = find_limits(values['original'], values['reference'])
     min_x, max_x = adjust_axis_limits(min_x, max_x, change=0.1)
 
-    fig, (a0, a1) = plt.subplots(2, 1, gridspec_kw={'height_ratios': [5, 1]}, sharex=True, figsize=(20, 20))
-    name = name.replace(';1', '')
-    output_file = os.path.join(output_path, name + '.png')
+    fig = Figure(figsize=(20, 20))
+    canvas = FigureCanvas(fig)  # noqa: F841
+    a0, a1 = fig.subplots(2, 1, gridspec_kw={'height_ratios': [5, 1]}, sharex=True, )
 
     h_ref, bin_edges, _ = a0.hist(
         values['reference'], label='reference', color='black', histtype='step', bins=bins, range=(min_x, max_x),
@@ -74,8 +78,7 @@ def draw_diff(name, values, output_path, bins=100):
         # a1.set_yscale('log', nonposy='clip')
 
     fig.tight_layout()
-    plt.savefig(output_file)
-    plt.close()
+    fig.savefig(output_file)
     return output_file
 
 

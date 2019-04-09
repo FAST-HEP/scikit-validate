@@ -111,6 +111,10 @@ def get_full_validations(**kwargs):
     data = {}
     for name, json_file in validation_detail.items():
         data[name] = read_data_from_json(json_file)['root_diff']
+        data[name]['images'] = []
+        for _, info in data[name]['distributions'].items():
+            if 'image' in info:
+                data[name]['images'].append(info['image'])
         validation_output_file = 'validation_report_{0}'.format(name)
         details = validation.create_detailed_report(
             data[name], output_dir='.', output_file=validation_output_file, formats=['md', 'pdf'])

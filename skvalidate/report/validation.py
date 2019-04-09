@@ -25,10 +25,15 @@ def produce_validation_report(stages, jobs, validation_json, **kwargs):
     data = {}
     for name, job in jobs.items():
         outputs = download_validation_outputs(job)
-        outputs = update_image_urls(outputs)
         # write out .md with full paths, HTML with local paths and PDF with local paths
         data[name] = job['validation_json'][name]
         data[name]['job_name'] = name
+        data[name]['images'] = []
+        for d, info in data[name]['distributions'].items():
+            if 'image' in info:
+                image = outputs[d]['image']
+                logger.debug('Loading image {0} for PDF validation report'.format(image))
+                data[name]['images'].append(image)
         validation_output_file = 'validation_report_{0}'.format(name)
 
         details = create_detailed_report(
@@ -37,16 +42,20 @@ def produce_validation_report(stages, jobs, validation_json, **kwargs):
             formats=['pdf']
         )
 
-        # data[name]['distributions'].update(outputs)
+        outputs = update_image_urls(outputs)
+        data[name]['images'] = []
         for d, info in data[name]['distributions'].items():
             if 'image' in info:
-                info['image'] = outputs[d]['image']
-        details = create_detailed_report(
+                image = outputs[d]['image']
+                info['image'] = image
+                logger.debug('Loading image {0} for HTML/MD validation report'.format(image))
+                data[name]['images'].append(image)
+        details.update(create_detailed_report(
             data[name], output_dir='.',
             output_file=validation_output_file,
             formats=['md', 'html']
-        )
-        data[name]['web_url_to_details'] = details
+        ))
+        data[name]['web_url_to_details'] = details['pdf']
     summary = create_summary(data)
     return summary
 
@@ -106,34 +115,39 @@ def create_detailed_report(data, output_dir='.', output_file='validation_report_
     """
     template_path = os.path.join(__skvalidate_root__, 'data', 'templates', 'report', 'default', 'validation_detail.md')
     full_path = os.path.join(os.path.abspath(output_dir), output_file)
+    output_files = {}
 
     if 'md' in formats:
         md_output_file = full_path + '.md'
+        output_files['md'] = md_output_file
         _create_detailed_report_md(_read_template(template_path), data, md_output_file)
     if 'html' in formats or 'pdf' in formats:
         html_output_file = full_path + '.html'
+        output_files['html'] = html_output_file
         _create_detailed_report_html(template_path, data, html_output_file)
         if 'pdf' in formats:
             pdf_output_file = full_path + '.pdf'
+            output_files['pdf'] = pdf_output_file
             _create_pdf(html_output_file, pdf_output_file)
 
+    links = _get_links_for_reports(output_files)
+    return links
+
+
+def _get_links_for_reports(output_files):
     local = 'CI' not in os.environ
-    if local:
-        protocol = 'file://'
-        link = protocol + os.path.join(os.path.abspath(output_dir), output_file)
-    else:
-        job_id = os.environ.get('CI_JOB_ID')
-        path_type = 'file'
-        if 'pdf' in formats:
-            path = os.path.join(output_dir, pdf_output_file)
-            link = gitlab.path_and_job_id_to_artifact_url(path, job_id)
-        elif 'html' in formats:
-            path = os.path.join(output_dir, html_output_file)
-            path_type = 'raw'
+    path_types = dict(md='file', pdf='file', html='raw')
+    links = {}
+    for format, output_file in output_files.items():
+        link = ''
+        if local:
+            protocol = 'file://'
+            link = protocol + os.path.abspath(output_file)
         else:
-            path = os.path.join(output_dir, md_output_file)
-        link = gitlab.path_and_job_id_to_artifact_url(path, job_id, path_type)
-    return link
+            job_id = os.environ.get('CI_JOB_ID')
+            link = gitlab.path_and_job_id_to_artifact_url(output_file, job_id, path_types[format])
+        links[format] = link
+    return links
 
 
 def _create_detailed_report_md(template, data, output_file):
@@ -155,7 +169,7 @@ def _create_pdf(input_file, output_file):
             pisa.pisaDocument(f.read(), dest=o)
 
 
-def _create_detailed_report_html(template_path, data, output_file):
+def _create_detailed_report_html(template_path, data, output_file, table_of_contents=False):
     """Add table of contents to template
 
     @param template_path: path to template
@@ -167,14 +181,15 @@ def _create_detailed_report_html(template_path, data, output_file):
     template = _read_template(template_path)
     # render once to get the structure
     data['table_of_contents'] = ''
-    tmp = template.render(**data)
-    # create table of contents
-    tmp = markdown2.markdown(tmp, extras=["toc"])
-    table_of_contents = tmp.toc_html
+    if table_of_contents:
+        tmp = template.render(**data)
+        # create table of contents
+        tmp = markdown2.markdown(tmp, extras=["toc"])
+        table_of_contents = tmp.toc_html
 
-    # render with table of contents
-    template = _read_template(template_path)
-    data['table_of_contents'] = table_of_contents
+        # render with table of contents
+        template = _read_template(template_path)
+        data['table_of_contents'] = table_of_contents
     tmp = template.render(**data)
 
     content = markdown2.markdown(tmp)
