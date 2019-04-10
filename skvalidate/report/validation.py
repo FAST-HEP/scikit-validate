@@ -155,6 +155,7 @@ def _create_detailed_report_md(template, data, output_file):
     content = template.render(**data)
     with open(output_file, 'w') as f:
         f.write(content)
+    logger.debug('Created report: {0}'.format(output_file))
 
 
 def _read_template(template_path):
@@ -167,6 +168,7 @@ def _create_pdf(input_file, output_file):
     with open(output_file, 'wb') as o:
         with open(input_file) as f:
             pisa.pisaDocument(f.read(), dest=o)
+    logger.debug('Created report: {0}'.format(output_file))
 
 
 def _create_detailed_report_html(template_path, data, output_file, table_of_contents=False):
@@ -195,6 +197,7 @@ def _create_detailed_report_html(template_path, data, output_file, table_of_cont
     content = markdown2.markdown(tmp)
     with open(output_file, 'w') as f:
         f.write(content)
+    logger.debug('Created report: {0}'.format(output_file))
 
 
 def create_summary(data):
