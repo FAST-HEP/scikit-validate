@@ -96,22 +96,22 @@ class Section(object):
 
         for name, section in self.__sections.items():
             self.__values[name] = section.content
-        self.__content = self.__content.render(
-            **self.__values
-        )
-        self.__filled = True
+        try:
+            self.__content = self.__content.render(
+                **self.__values
+            )
+            self.__filled = True
+        except (UndefinedError, TemplateSyntaxError, TypeError) as e:
+            logger.error('Unable to render section "{}": {}'.format(self.__name, e))
+            logger.error('Section values: {0}'.format(self.__values))
+            logger.error('Section properties:'.format(self.__properties))
+            raise e
 
     @property
     def content(self):
         """Return entire content of the section"""
         if not self.__filled:
-            try:
-                self.__fill__()
-            except (UndefinedError, TemplateSyntaxError, TypeError) as e:
-                logger.error('Unable to render section "{}": {}'.format(self.__name, e))
-                logger.error('Section values: {0}'.format(self.__values))
-                logger.error('Section properties:'.format(self.__properties))
-                raise e
+            self.__fill__()
         return self.__content
 
 
