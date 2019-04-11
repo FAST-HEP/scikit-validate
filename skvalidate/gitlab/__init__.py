@@ -127,6 +127,9 @@ def download_json_from_job(json_file, job_id):
 
 def download_artifact(job_id, path, output_file=None):
     logger.debug('Downloading {0} from job #{1}'.format(path, job_id))
+    if output_file and os.path.exists(output_file):
+        logger.info('Output file {0} already exists, skipping download'.format(output_file))
+        return None
     connection = _connect()
     CI_PROJECT_ID = os.environ.get('CI_PROJECT_ID')
     project = connection.projects.get(CI_PROJECT_ID)
