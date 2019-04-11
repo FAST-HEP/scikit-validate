@@ -117,6 +117,9 @@ def create_detailed_report(data, output_dir='.', output_file='validation_report_
     full_path = os.path.join(os.path.abspath(output_dir), output_file)
     output_files = {}
 
+    data['overview_batch_size'] = 8
+    data['report_add_linebreaks'] = False
+
     if 'md' in formats:
         md_output_file = full_path + '.md'
         output_files['md'] = md_output_file
@@ -125,10 +128,14 @@ def create_detailed_report(data, output_dir='.', output_file='validation_report_
         html_output_file = full_path + '.html'
         output_files['html'] = html_output_file
         _create_detailed_report_html(template_path, data, html_output_file)
-        if 'pdf' in formats:
-            pdf_output_file = full_path + '.pdf'
-            output_files['pdf'] = pdf_output_file
-            _create_pdf(html_output_file, pdf_output_file)
+    if 'pdf' in formats:
+        data['overview_batch_size'] = 7
+        data['report_add_linebreaks'] = True
+        html_output_file = full_path + '_for_pdf.html'
+        _create_detailed_report_html(template_path, data, html_output_file)
+        pdf_output_file = full_path + '.pdf'
+        output_files['pdf'] = pdf_output_file
+        _create_pdf(html_output_file, pdf_output_file)
 
     links = _get_links_for_reports(output_files)
     return links
