@@ -69,7 +69,9 @@ def download_validation_outputs(job):
     """
     name = job['name']
     data = job['validation_json'][name]
-    base_output_dir = os.path.join(data['output_path'], name)
+    base_output_dir = data['output_path']
+    if name not in base_output_dir:
+        base_output_dir = os.path.join(base_output_dir, name)
     if not os.path.exists(base_output_dir):
         logger.debug('Creating local path {0}'.format(base_output_dir))
         os.makedirs(base_output_dir)
