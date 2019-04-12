@@ -92,10 +92,10 @@ def get_jobs_for_stages(stages, **kwargs):
 
 def get_pipeline_job(job_name):
     jobs = _get_current_pipeline_jobs()
-    for job in jobs:
-        name = job.attributes['name']
-        if name == job_name:
-            return job
+    selected_jobs = [job for job in jobs if job_name == job.attributes['name']]
+    selected_jobs = sorted(selected_jobs, key=lambda j: j.id, reverse=True)
+    if selected_jobs:
+        return selected_jobs[0]  # first job should have highest ID --> latest
     return None
 
 
