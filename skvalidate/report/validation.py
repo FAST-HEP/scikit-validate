@@ -69,7 +69,9 @@ def download_validation_outputs(job):
     """
     name = job['name']
     data = job['validation_json'][name]
-    base_output_dir = os.path.join(data['output_path'], name)
+    base_output_dir = data['output_path']
+    if name not in base_output_dir:
+        base_output_dir = os.path.join(base_output_dir, name)
     if not os.path.exists(base_output_dir):
         logger.debug('Creating local path {0}'.format(base_output_dir))
         os.makedirs(base_output_dir)
@@ -117,6 +119,9 @@ def create_detailed_report(data, output_dir='.', output_file='validation_report_
     full_path = os.path.join(os.path.abspath(output_dir), output_file)
     output_files = {}
 
+    data['overview_batch_size'] = 8
+    data['report_add_linebreaks'] = False
+
     if 'md' in formats:
         md_output_file = full_path + '.md'
         output_files['md'] = md_output_file
@@ -125,10 +130,14 @@ def create_detailed_report(data, output_dir='.', output_file='validation_report_
         html_output_file = full_path + '.html'
         output_files['html'] = html_output_file
         _create_detailed_report_html(template_path, data, html_output_file)
-        if 'pdf' in formats:
-            pdf_output_file = full_path + '.pdf'
-            output_files['pdf'] = pdf_output_file
-            _create_pdf(html_output_file, pdf_output_file)
+    if 'pdf' in formats:
+        data['overview_batch_size'] = 7
+        data['report_add_linebreaks'] = True
+        html_output_file = full_path + '_for_pdf.html'
+        _create_detailed_report_html(template_path, data, html_output_file)
+        pdf_output_file = full_path + '.pdf'
+        output_files['pdf'] = pdf_output_file
+        _create_pdf(html_output_file, pdf_output_file)
 
     links = _get_links_for_reports(output_files)
     return links
@@ -155,6 +164,7 @@ def _create_detailed_report_md(template, data, output_file):
     content = template.render(**data)
     with open(output_file, 'w') as f:
         f.write(content)
+    logger.debug('Created report: {0}'.format(output_file))
 
 
 def _read_template(template_path):
@@ -167,6 +177,7 @@ def _create_pdf(input_file, output_file):
     with open(output_file, 'wb') as o:
         with open(input_file) as f:
             pisa.pisaDocument(f.read(), dest=o)
+    logger.debug('Created report: {0}'.format(output_file))
 
 
 def _create_detailed_report_html(template_path, data, output_file, table_of_contents=False):
@@ -195,6 +206,7 @@ def _create_detailed_report_html(template_path, data, output_file, table_of_cont
     content = markdown2.markdown(tmp)
     with open(output_file, 'w') as f:
         f.write(content)
+    logger.debug('Created report: {0}'.format(output_file))
 
 
 def create_summary(data):

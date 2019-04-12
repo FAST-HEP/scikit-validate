@@ -92,10 +92,10 @@ def get_jobs_for_stages(stages, **kwargs):
 
 def get_pipeline_job(job_name):
     jobs = _get_current_pipeline_jobs()
-    for job in jobs:
-        name = job.attributes['name']
-        if name == job_name:
-            return job
+    selected_jobs = [job for job in jobs if job_name == job.attributes['name']]
+    selected_jobs = sorted(selected_jobs, key=lambda j: j.id, reverse=True)
+    if selected_jobs:
+        return selected_jobs[0]  # first job should have highest ID --> latest
     return None
 
 
@@ -127,6 +127,9 @@ def download_json_from_job(json_file, job_id):
 
 def download_artifact(job_id, path, output_file=None):
     logger.debug('Downloading {0} from job #{1}'.format(path, job_id))
+    if output_file and os.path.exists(output_file):
+        logger.info('Output file {0} already exists, skipping download'.format(output_file))
+        return None
     connection = _connect()
     CI_PROJECT_ID = os.environ.get('CI_PROJECT_ID')
     project = connection.projects.get(CI_PROJECT_ID)
