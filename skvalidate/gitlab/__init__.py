@@ -18,6 +18,7 @@ Useful Gitlab variables (https://docs.gitlab.com/ee/ci/variables/):
  - CI_PROJECT_ID
  - CI_PROJECT_NAME
  - CI_PROJECT_URL
+
 """
 import os
 
@@ -51,9 +52,12 @@ def _get_auth_data():
 def get_jobs_for_stages(stages, **kwargs):
     """Collect job results for specified stages.
 
-    @param stages: stages to get the jobs for
+    :param stages: stages to get the jobs for
+    :return: dictionary of jobs for the specified stages
 
-    @return
+    :Example:
+
+    >>> get_jobs_for_stages(['build'])
     {
         'name': 'job_name': {
             'status': 'success|failed',
@@ -64,6 +68,7 @@ def get_jobs_for_stages(stages, **kwargs):
         },
         ...
     }
+
     """
     download_json = kwargs.pop('download_json', {})
     job_filter = kwargs.pop('job_filter', [])
@@ -112,8 +117,8 @@ def _get_current_pipeline_jobs():
 def download_json_from_job(json_file, job_id):
     """Collect JSON file from specified job and decode it.
 
-    @param json_file: local path where software versions are stored
-    @param job_id: GitLab job ID for a pipeline job
+    :param json_file: local path where software versions are stored
+    :param job_id: GitLab job ID for a pipeline job
     """
     raw_json = download_artifact(job_id, json_file)
     # load

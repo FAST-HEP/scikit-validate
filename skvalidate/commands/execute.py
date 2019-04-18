@@ -4,11 +4,14 @@ Command that wraps and monitors another command.
 
 For testing install 'stress' package and run
 
-\b
+ :Example:
+
+ .. code-block:: bash
+
     sv_execute 'stress --cpu 1 --io 1 --vm 1 --vm-bytes 128M --timeout 10s --verbose' \
                                     -m resource_metrics.json
 
-If the output file, default resource_metrics.json, already exists it will be read first and results will be appended.
+If the output file, default ``resource_metrics.json``, already exists it will be read first and results will be appended.
 
 If a single string argument is provided as the command then it will be split using white-space, however if multiple
 arguments are provided then no additional splitting is performed.  In this case though, use `--` before the command
@@ -71,10 +74,12 @@ def execute(cmd, memprof_file, sample_interval):
             logging.error(popen.stderr.read())
         raise subprocess.CalledProcessError(return_code, cmd)
 
+
 def memory_profile(cmd, process, memprof_file, sample_interval):
     with open(memprof_file, "a") as f:
         f.write("CMDLINE {0}\n".format(cmd))
         mp.memory_usage(proc=process, interval=sample_interval, timestamps=True, include_children=True, stream=f)
+
 
 def which(program):
     def is_exe(fpath):

@@ -1,5 +1,5 @@
 Welcome to the scikit-validate documentation!
-======================================
+===============================================
 
 .. toctree::
    :maxdepth: 2

@@ -28,9 +28,7 @@ def write_data_to_json(data, json_file):
 
 
 def _unpack_numpy_arrays(obj):
-    '''
-        From https://stackoverflow.com/questions/26646362/numpy-array-is-not-json-serializable
-    '''
+    """From https://stackoverflow.com/questions/26646362/numpy-array-is-not-json-serializable"""
     if type(obj).__module__ == np.__name__:
         if isinstance(obj, np.ndarray):
             return obj.tolist()

@@ -100,3 +100,8 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# docs
+docs/skvalidate.rst
+docs/skvalidate.*.rst
+docs/modules.rst

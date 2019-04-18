@@ -1,8 +1,13 @@
 """Removes a path from an ENV variable.
 
-Usage:
+ :Usage:
+
+ .. code-block:: bash
+
     sv_remove_from_env $PATH $TO_BE_REMOVED
-returns $PATH without paths _starting_ with $TO_BE_REMOVED
+
+returns ``$PATH`` without paths _starting_ with ``$TO_BE_REMOVED``
+
 """
 import click
 
