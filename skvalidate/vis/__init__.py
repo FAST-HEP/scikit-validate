@@ -1,5 +1,5 @@
 """
-VIS A VIS
+Visualization package
 """
 import os
 

@@ -9,7 +9,7 @@ Welcome to the scikit-validate documentation!
    installation
    usage
    reporting
-   modules
+   reference/modules
    contributing
    authors
    history

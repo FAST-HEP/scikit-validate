@@ -105,3 +105,4 @@ ENV/
 docs/skvalidate.rst
 docs/skvalidate.*.rst
 docs/modules.rst
+docs/reference
