@@ -4,10 +4,13 @@ from __future__ import division
 def compare_metrics(metrics, metrics_ref, keys=None):
     """Compare two sets of metrics (nominal and reference).
 
-    @param metrics: dictionary of metrics
-    @param metrics_ref: dictionary of reference metrics
-    @param keys: list of metrics to consider
+    :param metrics: dictionary of metrics
+    :param metrics_ref: dictionary of reference metrics
+    :param keys: list of metrics to consider
 
+    :Example:
+
+    >>> compare_metrics(metrics, metrics_ref)
     metrics format:
     {
         'metric description' :{
@@ -53,19 +56,20 @@ def compare_metrics(metrics, metrics_ref, keys=None):
 def convert_old_to_new(metrics_collection):
     """Convert old metric format to new oneself.
 
-    Old:
+    :Example:
+
+    >>> old_metric
     {
         "file1": {
             "size_in_bytes": 84890132,
             "size_in_mb": 81.0,
         }
     }
-
-    new:
+    >>> convert_old_to_new(old_metric)
     {
         "file1": {
-            "size_in_bytes": {'value': 84890132, 'unit': 'B'},
-            "size_in_mb": {'value': 81.0, 'unit': 'MB'},
+            "size_in_bytes": {'value': 84890132, 'unit': ''},
+            "size_in_mb": {'value': 81.0, 'unit': ''},
         }
     }
     """
@@ -87,7 +91,7 @@ def convert_old_to_new(metrics_collection):
 def absolute_to_relative_timestamps(profile):
     """Change timestamps from absolute to relative times.
 
-    @param profile: a memory profile dictionary from memory_profiler
+    :param profile: a memory profile dictionary from memory_profiler
     """
     timestamps = profile['timestamp']
     baseline = timestamps[0]

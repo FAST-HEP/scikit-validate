@@ -3,12 +3,15 @@ Script to record file metrics.
 
 For testing pick or create a file:
 
-\n
+:Example:
+
+ .. code-block:: bash
+
     # create 10 MB file
     dd if=/dev/zero of=test.file bs=10485760 count=1
     sv_file_info test.file -m file_metrics.json
 
-If the output file, default file_metrics.json, already exists it will be read first and results will be appended.
+If the output file, default ``file_metrics.json``, already exists it will be read first and results will be appended.
 """
 from __future__ import division, print_function
 

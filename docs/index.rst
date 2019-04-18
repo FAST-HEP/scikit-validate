@@ -1,5 +1,5 @@
 Welcome to the scikit-validate documentation!
-======================================
+===============================================
 
 .. toctree::
    :maxdepth: 2
@@ -7,12 +7,14 @@ Welcome to the scikit-validate documentation!
 
    readme
    installation
-   usage
+   quickstart
+   commands
    reporting
-   modules
+
    contributing
    authors
    history
+   reference/modules
 
 Indices and tables
 ==================

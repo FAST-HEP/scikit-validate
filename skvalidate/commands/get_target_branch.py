@@ -3,14 +3,13 @@ Script to extract the target branch for a given project and commit hash.
 
 Meant to be run within a Gitlab CI job and needs the following ENV variables defined:
 
-\b
  * CI_PROJECT_ID (automatic from CI job)
  * CI_COMMIT_SHA (automatic from CI job)
  * CI_API_TOKEN (to be set in the Gitlab project: settings -> pipelines -> add variable)
 
 Related issue: https://gitlab.com/gitlab-org/gitlab-ce/issues/15280
 
-If no target branch is found, the command will try to fall back onto CI_COMMIT_REF_NAME
+If no target branch is found, the command will try to fall back onto ``CI_COMMIT_REF_NAME``
 if it is one of the tracked branches otherwise fallback onto the default branch (if defined)
 or error if not
 """

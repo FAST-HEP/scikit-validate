@@ -1,7 +1,7 @@
 """
 Command that translates absolute paths to relative paths.
 
-Meant to provide functionality of `realpath` for older platforms.
+Meant to provide functionality of ``realpath`` for older platforms.
 """
 import os
 

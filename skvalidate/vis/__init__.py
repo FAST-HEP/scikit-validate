@@ -1,3 +1,6 @@
+"""
+Visualization package
+"""
 import os
 
 import matplotlib

@@ -18,19 +18,29 @@ Runs clang-tidy over all files in a compilation database. Requires clang-tidy
 and clang-apply-replacements in $PATH.
 
 Example invocations.
-- Run clang-tidy on all files in the current working directory with a default
-  set of checks and show warnings in the cpp files and all project headers.
+
+ * Run clang-tidy on all files in the current working directory with a default set of checks and \
+ show warnings in the cpp files and all project headers.
+
+ .. code-block:: bash
+
     run-clang-tidy.py $PWD
 
-- Fix all header guards.
+ * Fix all header guards.
+
+ .. code-block:: bash
+
     run-clang-tidy.py -fix -checks=-*,llvm-header-guard
 
-- Fix all header guards included from clang-tidy and header guards
-  for clang-tidy headers.
+ * Fix all header guards included from clang-tidy and header guards for clang-tidy headers.
+
+ .. code-block:: bash
+
     run-clang-tidy.py -fix -checks=-*,llvm-header-guard extra/clang-tidy -header-filter=extra/clang-tidy
 
 Compilation database setup:
 http://clang.llvm.org/docs/HowToSetupToolingForLLVM.html
+
 """
 
 from __future__ import print_function

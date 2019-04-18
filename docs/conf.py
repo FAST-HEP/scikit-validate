@@ -32,7 +32,12 @@ import skvalidate
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode']
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode', 'sphinxcontrib.apidoc']
+apidoc_module_dir = '../skvalidate'
+apidoc_output_dir = 'reference'
+apidoc_excluded_paths = ['tests']
+apidoc_module_first = True
+apidoc_separate_modules = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -80,11 +85,14 @@ todo_include_todos = False
 
 
 # -- Options for HTML output -------------------------------------------
+# customization
+def setup(app):
+    app.add_stylesheet('css/custom.css')
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a
 # theme further.  For a list of options available for each theme, see the
@@ -103,6 +111,8 @@ html_static_path = ['_static']
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'skvalidatedoc'
 
+logo_only = True
+html_logo = '_static/sk_logo.png'
 
 # -- Options for LaTeX output ------------------------------------------
 
