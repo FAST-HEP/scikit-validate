@@ -26,7 +26,7 @@ you through the process.
 From sources
 ------------
 
-The sources for scikit-validate can be downloaded from the `Github repo`_.
+The sources for scikit-validate can be downloaded from the `GitLab repo`_.
 
 You can either clone the public repository:
 
@@ -42,4 +42,4 @@ Once you have a copy of the source, you can install it with:
     $ python setup.py install
 
 
-.. _Gitlab repo: https://gitlab.cern.ch/fast-hep/public/scikit-validate
+.. _GitLab repo: https://gitlab.cern.ch/fast-hep/public/scikit-validate
