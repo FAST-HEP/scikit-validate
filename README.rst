@@ -1,10 +1,10 @@
-=============
+=================
 scikit-validate
-=============
+=================
 
 
-.. image:: https://img.shields.io/pypi/v/skvalidate.svg
-        :target: https://pypi.python.org/pypi/skvalidate
+.. image:: https://img.shields.io/pypi/v/scikit-validate.svg
+        :target: https://pypi.python.org/pypi/scikit-validate
 
 .. image:: https://readthedocs.org/projects/scikit-validate/badge/?version=latest
         :target: https://scikit-validate.readthedocs.io/en/latest/?badge=latest
@@ -22,9 +22,9 @@ Features
 --------
 
 * Collect metrics in JSON output
- * measure file metrics (e.g. size)
- * measure execution time and memory usage
- * compare to previous executions
+  * measure file metrics (e.g. size)
+  * measure execution time and memory usage
+  * compare to previous executions
 * compare ROOT files & plot discrepancies
 * create validation reports
 
