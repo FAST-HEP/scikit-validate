@@ -107,6 +107,7 @@ html_static_path = ['_static']
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'skvalidatedoc'
 
+html_logo = '_static/sk_logo.png'
 
 # -- Options for LaTeX output ------------------------------------------
 
