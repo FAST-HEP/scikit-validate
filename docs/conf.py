@@ -36,6 +36,7 @@ extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode', 'sphinxcontrib.apidoc
 apidoc_module_dir = '../skvalidate'
 apidoc_output_dir = 'reference'
 apidoc_excluded_paths = ['tests']
+apidoc_module_first = True
 apidoc_separate_modules = True
 
 # Add any paths that contain templates here, relative to this directory.
@@ -84,6 +85,9 @@ todo_include_todos = False
 
 
 # -- Options for HTML output -------------------------------------------
+# customization
+def setup(app):
+    app.add_stylesheet('css/custom.css')
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
