@@ -7,12 +7,14 @@ Welcome to the scikit-validate documentation!
 
    readme
    installation
-   usage
+   quickstart
+   commands
    reporting
-   reference/modules
+
    contributing
    authors
    history
+   reference/modules
 
 Indices and tables
 ==================
