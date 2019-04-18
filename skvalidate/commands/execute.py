@@ -11,7 +11,8 @@ For testing install 'stress' package and run
     sv_execute 'stress --cpu 1 --io 1 --vm 1 --vm-bytes 128M --timeout 10s --verbose' \
                                     -m resource_metrics.json
 
-If the output file, default ``resource_metrics.json``, already exists it will be read first and results will be appended.
+If the output file, default ``resource_metrics.json``, \
+already exists it will be read first and results will be appended.
 
 If a single string argument is provided as the command then it will be split using white-space, however if multiple
 arguments are provided then no additional splitting is performed.  In this case though, use `--` before the command
