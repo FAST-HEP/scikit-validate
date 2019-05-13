@@ -15,6 +15,7 @@ sections:
         - validation
       download_json:
         software_versions: software_versions.json
+      download_timeout: 300
       symbol_success: '&#9989;'
       symbol_failed: '&#10060;'
       symbol_unkown: '&#10067;'
