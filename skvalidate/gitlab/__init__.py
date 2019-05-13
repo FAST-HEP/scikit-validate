@@ -21,6 +21,7 @@ Useful Gitlab variables (https://docs.gitlab.com/ee/ci/variables/):
 
 """
 import os
+import time
 
 import gitlab
 import json
@@ -71,6 +72,7 @@ def get_jobs_for_stages(stages, **kwargs):
 
     """
     download_json = kwargs.pop('download_json', {})
+    download_timeout = kwargs.pop('download_timeout', 60)
     job_filter = kwargs.pop('job_filter', [])
     jobs = _get_current_pipeline_jobs()
 
@@ -91,7 +93,7 @@ def get_jobs_for_stages(stages, **kwargs):
         # extras
         result[name]['web_url_raw'] = result[name]['web_url'] + '/raw'
         for j_name, j_path in download_json.items():
-            result[name][j_name] = download_json_from_job(j_path, job.id)
+            result[name][j_name] = download_json_from_job(j_path, job.id, timeout=download_timeout)
     return result
 
 
@@ -114,13 +116,30 @@ def _get_current_pipeline_jobs():
     return pipeline.jobs.list()
 
 
-def download_json_from_job(json_file, job_id):
+def download_json_from_job(json_file, job_id, timeout=60):
     """Collect JSON file from specified job and decode it.
 
     :param json_file: local path where software versions are stored
     :param job_id: GitLab job ID for a pipeline job
+    :param timeout: number of seconds to retry download for
     """
-    raw_json = download_artifact(job_id, json_file)
+    raw_json = "{}"
+    time_spent = 0
+    wait_time = timeout // 10
+    error = False
+    while time_spent < timeout:
+        time_spent += wait_time
+        try:
+            raw_json = download_artifact(job_id, json_file)
+            error = False
+        except gitlab.exceptions.GitlabHttpError as e:
+            logger.error("Cannot download {} for job {}: {}".format(json_file, job_id, e))
+            logger.error("Next attempt in {}s".format(wait_time))
+            time.sleep(wait_time)
+            error = True
+    if time_spent > timeout and error:
+        logger.error("Timeout exceeded for attempting to download {} for job {}".format(json_file, job_id))
+        return {}
     # load
     try:
         data = json.loads(raw_json)
