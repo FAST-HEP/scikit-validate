@@ -12,6 +12,7 @@ scikit-validate
 
 * Free software: Apache Software License 2.0
 * Documentation: https://scikit-validate.readthedocs.io.
+* Issues: https://github.com/FAST-HEP/scikit-validate/issues
 
 Overview
 --------
