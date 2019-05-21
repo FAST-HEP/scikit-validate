@@ -10,6 +10,11 @@ scikit-validate
         :target: https://scikit-validate.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
+.. image:: https://badges.gitter.im/FAST-HEP/community.svg
+        :target: https://gitter.im/FAST-HEP/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
+        :alt: Gitter
+
+
 * Free software: Apache Software License 2.0
 * Documentation: https://scikit-validate.readthedocs.io.
 * Issues: https://github.com/FAST-HEP/scikit-validate/issues
