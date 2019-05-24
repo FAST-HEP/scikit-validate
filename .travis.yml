@@ -15,25 +15,26 @@ script:
 
 matrix:
   fast_finish: true
-  -
-    python: 3.6
-    stage: quick-checks
-    env: CHECK="lint"
-  -
-    python: 2.7
-    stage: test
-    env: CHECK="test"
-  -
-    python: 3.6
-    stage: test
-    env: CHECK="test"
-  -
-    python: 3.7
-    stage: test
-    env: CHECK="test"
-  -
-    env: DEPLOY_TO_PYPI=yes
-    stage: deploy
+  include:
+    -
+      python: 3.6
+      stage: quick-checks
+      env: CHECK="lint"
+    -
+      python: 2.7
+      stage: test
+      env: CHECK="test"
+    -
+      python: 3.6
+      stage: test
+      env: CHECK="test"
+    -
+      python: 3.7
+      stage: test
+      env: CHECK="test"
+    -
+      env: DEPLOY_TO_PYPI=yes
+      stage: deploy
 
 deploy:
   provider: pypi
