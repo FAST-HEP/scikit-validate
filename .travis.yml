@@ -1,16 +1,46 @@
 # Config file for automatic testing at travis-ci.org
 
 language: python
-python:
-  - 3.6
-  - 3.5
-  - 3.4
-  - 2.7
+cache: pip
 
-# Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install -U tox-travis
+stages:
+  - quick-checks
+  - test
+  -
+    if: tag =~ ^v\d
+    name: deploy
 
-# Command to run tests, e.g. python setup.py test
-script: tox
+script:
+  - 'make $CHECK'
 
+matrix:
+  fast_finish: true
+  -
+    python: 3.6
+    stage: quick-checks
+    env: CHECK="lint"
+  -
+    python: 2.7
+    stage: test
+    env: CHECK="test"
+  -
+    python: 3.6
+    stage: test
+    env: CHECK="test"
+  -
+    python: 3.7
+    stage: test
+    env: CHECK="test"
+  -
+    env: DEPLOY_TO_PYPI=yes
+    stage: deploy
 
+deploy:
+  provider: pypi
+  user:
+    secure: "gBijCB9Vp2J9w+Dt3yIoo8kRqyFidw95rURhJGV+xL20Ev2giJN1sq/tsS50dvf+LseNtmwFpXtdDiM7Ra06GPUaWozBcAXnkLLPEpzdmT8Hq/ldHjX33dICdOFGMu+9Cr9Hd397kWnGYvlC87HB2z8CdPBMjf3sVPRytXOXJJzaYGpvEFudT4Dt3bgAHvWs6MUQ42ZOWmEZL1HnrWk8Ed4bwaOp6f5xd8sX8LXlQgDUFPoCEli250wwCFQovwCuUo5Rphy4H4FFr1HrfTHBsZ/m/lXwk0CJmBDfDw+McAFI3bZMyNN9pEw6b2+EI5NZQP1uIL73x7D8D54KgBetegKGc5LpmnyCKCmJY8bTrnGYExWsm3RmQwGkTK7FWK+hPG4N7Nu109v5f4ljOb2/E1XY7iCawIMVRBR73KMSxkXU89wdkzDeyN4IYnwcoFgWwOK90CkQSk+WrNe94p4X7/YP1H/mWFC8zyPNP2WcrJOyTQ5XKEsPeL9MQZ0+5QD3m3sMPIXMpNishg/AGJs77SguAAynXEfWepPZdci5ajFnF6/d3yj4Uwsj+JciA7PCfW0NpvyX2rrer9M5vpHRaknUrqb+83/sjfaKQtxXVh0K5Jeqf7u0pl/IdJjbs3aRlchg5myz9BDvNcroNCIlRr9CrzmfEtnaiL/nQUa/5pc="
+  password:
+    secure: "nhF1F64CCn2IKQUiryNXsL1jvQk9MpBwRDA0VhwCmceT7ZZtCBf4r9lzFA2ENnzC6TE0vCg+a7tY0WTYXVnYQ7u4rFmzh6SxyKFoeDjP8mO8+uVmWdFvsLhEOwwQlZRrZCkxKQR8JOIW2o9T+ClJFeU7PpwFw+Q+eZKjbdf5xvaxxhlcbQf9PFH8PqinKpqmCS046Zwj843MgHuwS73+r7iNdwsUUOD1brJW5c4CnKYvli2A7ojewtu9TjdkWgubb89vcZE7+UixOIFJ/Xp0KpMm4RVQRiP9V4+BV9a+5Z7FnhvnkUnFpVnJFRG3f+S2kRb8lBapzxcnDTMyzbIKSiUMth+b8rcuaOy96GA7l58FVEA7yuBL6KLvjUpD8wJeCB1X4Ius2SxKqLWXbI52wDvjAKtNlgTlobW2c6eGdLAKBW/8pM+V51Pc5/rpmRxVsODJ2Kef3YMF90ZrlGLHA1Je38R/GLu3BiA+LjQU5ajKi2dd1NWALDJIRvea+G1b6ei9sBA53V9OXVG3OI9ALqGQ/aSsdUZgLB7m0MCl8xerhMuT8wNSxWpTLXnSIFfDzWp5XDYrYutiKJSWG2HY+Lw8CwJRHTDTkaz0pSGCTTj0gamoSWSfYRk91yGZXlpR/mno0U+LV1Mk3BiaHpkD22myvCTm2PY6h+NKMhvcHNY="
+  on:
+    tags: true
+    condition: "$DEPLOY_TO_PYPI = yes"
