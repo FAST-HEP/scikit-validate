@@ -4,6 +4,7 @@ Changelog
 
 0.2.14
 ------------
+- Fixed HISTORY formatting. [kreczko]
 - Fixed release example in README. [kreczko]
 - CI: updated user & password for travis-ci.com. [kreczko]
 - Tagged version 0.2.14. [kreczko]
@@ -516,3 +517,5 @@ Changelog
 - Added execute_with_metrics command. [kreczko]
 - Added command structure and get_target_branch command. [kreczko]
 - Initial commit. [kreczko]
+
+
