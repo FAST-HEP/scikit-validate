@@ -11,6 +11,7 @@ stages:
     name: deploy
 
 script:
+  - 'pip install -r requirements_dev.txt'
   - 'make $CHECK'
 
 matrix:
