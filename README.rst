@@ -51,7 +51,7 @@ This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypack
 Make a new RELEASE
 ------------------
 
-.. code:
+.. code-block:: bash
 
    export RELEASE=X.Y.Z
    export CHANGELOG_GITHUB_TOKEN=<your github token>
