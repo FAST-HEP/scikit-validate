@@ -1,5 +1,5 @@
 # Config file for automatic testing at travis-ci.org
-
+dist: xenial
 language: python
 cache: pip
 
@@ -25,15 +25,15 @@ matrix:
     -
       python: 2.7
       stage: test
-      env: CHECK="test"
+      env: CHECK="test demo"
     -
       python: 3.6
       stage: test
-      env: CHECK="test"
+      env: CHECK="test demo"
     -
       python: 3.7
       stage: test
-      env: CHECK="test"
+      env: CHECK="test demo"
     -
       env: DEPLOY_TO_PYPI=yes
       stage: deploy
