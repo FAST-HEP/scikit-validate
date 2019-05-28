@@ -12,6 +12,7 @@ stages:
 
 script:
   - 'pip install -r requirements_dev.txt'
+  - 'make install'
   - 'make $CHECK'
 
 matrix:
