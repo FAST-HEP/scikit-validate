@@ -106,3 +106,13 @@ docs/skvalidate.rst
 docs/skvalidate.*.rst
 docs/modules.rst
 docs/reference
+
+skvalidate/data/examples/memory_profile.dat.*
+skvalidate/data/examples/memory_profile_ref.dat.*
+validation_report_*
+demo*
+output
+*.json
+*.root
+*.dat
+*.png
