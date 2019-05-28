@@ -35,8 +35,9 @@ matrix:
       stage: test
       env: CHECK="test demo"
     -
-      env: DEPLOY_TO_PYPI=yes
+      python: 3.7
       stage: deploy
+      env: DEPLOY_TO_PYPI=yes
 
 deploy:
   provider: pypi
@@ -47,4 +48,4 @@ deploy:
   on:
     tags: true
     branch: master
-    condition: '$DEPLOY_TO_PYPI = yes && $PYVER = "3.7"'
+    condition: '$DEPLOY_TO_PYPI = yes'
