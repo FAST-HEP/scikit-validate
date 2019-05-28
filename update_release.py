@@ -27,6 +27,13 @@ def update_changelog(release):
     with open(input_file, 'w+') as f:
         f.write(content)
 
+def update_history(release):
+    input_file = 'HISTORY'
+    with open(input_file) as f:
+        content = f.read()
+    content = content.replace('unreleased', release)
+    with open(input_file, 'w+') as f:
+        f.write(content)
 
 if __name__ == '__main__':
     release = os.environ.get('RELEASE', 'unreleased')

@@ -12,3 +12,4 @@ sphinxcontrib-apidoc==0.3.0
 sphinx_rtd_theme==0.1.9
 pytest==3.4.2
 pytest-runner==2.11.1
+gitchangelog==3.0.4
