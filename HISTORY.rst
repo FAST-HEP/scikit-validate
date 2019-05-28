@@ -2,8 +2,10 @@ Changelog
 =========
 
 
-(unreleased)
+0.2.14
 ------------
+- Fixed release example in README. [kreczko]
+- CI: updated user & password for travis-ci.com. [kreczko]
 - Tagged version 0.2.14. [kreczko]
 - Tagged version 0.2.14. [kreczko]
 - Tagged version 0.2.14. [kreczko]
@@ -212,7 +214,7 @@ Changelog
   See merge request fast-hep/public/scikit-validate!7
 - Switch to new command names in the CI. [Lukasz Kreczko]
 - Updated command names & added TODOs. [Lukasz Kreczko]
-- All commands now start with "sv_" [Lukasz Kreczko]
+- All commands now start with "sv\_" [Lukasz Kreczko]
 - Version 0.2.0. [kreczko]
 - Merge branch 'kreczko-better-validation-report' into 'master' [Lukasz
   Kreczko]
@@ -514,5 +516,3 @@ Changelog
 - Added execute_with_metrics command. [kreczko]
 - Added command structure and get_target_branch command. [kreczko]
 - Initial commit. [kreczko]
-
-
