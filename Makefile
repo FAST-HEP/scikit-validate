@@ -77,8 +77,25 @@ docs: ## generate Sphinx HTML documentation, including API docs
 servedocs: docs ## compile the docs watching for changes
 	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
 
-release: dist ## package and upload a release
+pypi-release: dist ## package and upload a release
 	twine upload dist/*
+
+
+changelog:
+	@echo "Updating CHANGELOG.md"
+	@github_changelog_generator -u FAST-HEP -p scikit-validate -t ${CHANGELOG_GITHUB_TOKEN}
+
+update_release:
+	@python update_release.py
+	@echo "Check everything and if OK, execute"
+	@echo "git add -u"
+	@echo "git commit -m 'tagged version ${RELEASE}'"
+	@echo "git push upstream master"
+	@echo "git tag v${RELEASE}"
+	@echo "git push upstream v${RELEASE}"
+
+
+release: changelog update_release
 
 dist: clean ## builds source and wheel package
 	python setup.py sdist

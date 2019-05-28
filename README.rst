@@ -46,3 +46,13 @@ This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypack
 .. _`F.A.S.T.`: https://fast-hep.web.cern.ch/fast-hep/public
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+
+
+Make a new RELEASE
+------------------
+
+.. code:
+
+   export RELEASE=X.Y.Z
+   export CHANGELOG_GITHUB_TOKEN=<your github token>
+   make release
