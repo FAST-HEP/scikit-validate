@@ -2,8 +2,12 @@ Changelog
 =========
 
 
-0.2.14
+0.2.15
 ------------
+- Collapsible details for detailed validation report (issue #8)
+  [kreczko]
+- Extending gitignore for test files. [kreczko]
+- Updated history & changelog. [kreczko]
 - Fixed HISTORY formatting. [kreczko]
 - Fixed release example in README. [kreczko]
 - CI: updated user & password for travis-ci.com. [kreczko]
