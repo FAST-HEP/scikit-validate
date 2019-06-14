@@ -55,6 +55,7 @@ with open('HISTORY.rst') as history_file:
 
 requirements = [
     'Click>=6.0',
+    'gitpython',
     'jinja2',
     'markdown2',
     'matplotlib',
