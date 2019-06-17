@@ -13,6 +13,7 @@ def create_patch(repository, output_file):
     repo = Repo(repository)
     git = repo.git
     diff = git.diff()
+    diff += '\n'
     with open(output_file, 'w') as f:
         f.write(diff)
 
