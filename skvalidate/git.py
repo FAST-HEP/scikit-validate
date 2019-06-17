@@ -22,4 +22,10 @@ def create_patch(repository, output_file):
 
 def get_current_branch(repository):
     repo = Repo(repository)
-    return str(repo.head.ref)
+    branch = None
+    try:
+        branch = str(repo.active_branch)
+    except TypeError as e:
+        if 'detached' in str(e):
+            branch = 'detached HEAD'
+    return branch

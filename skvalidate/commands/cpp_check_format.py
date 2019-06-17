@@ -64,7 +64,7 @@ def format_files(files):
 
 
 @click.command(help=__doc__)
-@click.option('-r', 'repository', help="Path to repository", type=click.Path(), default=os.getcwd())
+@click.option('-r', 'repository', help="Path to repository", type=click.Path(exists=True), default=os.getcwd())
 @click.option('-o', '--output', default='apply-formatting.patch', type=click.Path())
 @click.option('--report', default='formatting.md', type=click.Path())
 def cli(repository, output, report):
@@ -79,5 +79,5 @@ def cli(repository, output, report):
     if n_lines_changed > 0:
         changed_files = get_changed_files(repository, 'HEAD')
         create_report(repository, changed_files, output, report)
-        add_report_to_merge_request(report)
+        add_report_to_merge_request([report])
     return n_lines_changed
