@@ -1,9 +1,9 @@
 """Check formatting of C++ code using clang-format"""
 
 from __future__ import print_function
-import os
 import fnmatch
-
+import os
+import sys
 
 import click
 from plumbum import local
@@ -80,4 +80,4 @@ def cli(repository, output, report):
         changed_files = get_changed_files(repository, 'HEAD')
         create_report(repository, changed_files, output, report)
         add_report_to_merge_request([report])
-    return n_lines_changed
+        sys.exit(-1)
