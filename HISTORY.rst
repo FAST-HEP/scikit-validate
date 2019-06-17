@@ -2,8 +2,12 @@ Changelog
 =========
 
 
-0.2.19
+0.2.20
 ------------
+- Added ability to overwrite default cpp_check_format template.
+  [kreczko]
+- Cpp_check_format report: separated path & command variables. [kreczko]
+- Tagged version 0.2.19. [kreczko]
 - Sv_cpp_check_format: fixed return code. [kreczko]
 - Tagged version 0.2.18. [kreczko]
 - Sv_cpp_check_format: fixes issues with instructions. [kreczko]
