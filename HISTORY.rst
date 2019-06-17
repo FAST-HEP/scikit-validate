@@ -2,8 +2,10 @@ Changelog
 =========
 
 
-0.2.17
+0.2.18
 ------------
+- Sv_cpp_check_format: fixes issues with instructions. [kreczko]
+- Tagged version 0.2.17. [kreczko]
 - Increased version to 0.2.17. [kreczko]
 - Sv_cpp_check_format: fixes issues with detached head. [kreczko]
 - Merge pull request #11 from kreczko/kreczko-cpp_format. [Luke Kreczko]
