@@ -10,6 +10,7 @@ from plumbum import local
 from plumbum.commands.processes import CommandNotFound
 
 from skvalidate.report.cpp_check_format import create_report
+from skvalidate.report.cpp_check_format import TEMPLATE as cpp_check_template
 from skvalidate.git import create_patch, get_changed_files
 from skvalidate.report import add_report_to_merge_request
 
@@ -67,7 +68,8 @@ def format_files(files):
 @click.option('-r', 'repository', help="Path to repository", type=click.Path(exists=True), default=os.getcwd())
 @click.option('-o', '--output', default='apply-formatting.patch', type=click.Path())
 @click.option('--report', default='formatting.md', type=click.Path())
-def cli(repository, output, report):
+@click.option('--report-template', default=cpp_check_template, type=click.Path(exists=True))
+def cli(repository, output, report, report_template):
     if not check_clang_format():
         return -1
     files_to_check = get_files_to_check(repository)
@@ -78,6 +80,6 @@ def cli(repository, output, report):
 
     if n_lines_changed > 0:
         changed_files = get_changed_files(repository, 'HEAD')
-        create_report(repository, changed_files, output, report)
+        create_report(repository, changed_files, output, report, template_file=cpp_check_template)
         add_report_to_merge_request([report])
         sys.exit(-1)
