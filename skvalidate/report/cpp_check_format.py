@@ -18,11 +18,10 @@ def create_report(repository, changed_files, output_file, report_file):
     if is_ci:
         CI_PROJECT_URL = os.environ.get('CI_PROJECT_URL')
         CI_JOB_ID = os.environ.get('CI_JOB_ID')
-        path_and_cmd = 'curl ${CI_PROJECT_URL}/-/jobs/${CI_JOB_ID}/artifacts/raw/{output_file}'
-        path_and_cmd.format(CI_PROJECT_URL=CI_PROJECT_URL, CI_JOB_ID=CI_JOB_ID, output_file=output_file)
+        path_and_cmd = 'curl {CI_PROJECT_URL}/-/jobs/{CI_JOB_ID}/artifacts/raw/{output_file}'
+        path_and_cmd = path_and_cmd.format(CI_PROJECT_URL=CI_PROJECT_URL, CI_JOB_ID=CI_JOB_ID, output_file=output_file)
         target_branch = os.environ.get('CI_MERGE_REQUEST_TARGET_BRANCH_NAME')
         source_branch = os.environ.get('CI_COMMIT_REF_NAME')
-    path_and_cmd = '{0} | git am'.format(path_and_cmd)
 
     with open(TEMPLATE) as f:
         template = Template(f.read())
