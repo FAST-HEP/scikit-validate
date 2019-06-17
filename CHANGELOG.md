@@ -1,5 +1,16 @@
 # Change Log
 
+## [v0.2.16](https://github.com/FAST-HEP/scikit-validate/tree/v0.2.16)
+
+[Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.2.15...v0.2.16)
+
+**Merged pull requests:**
+
+- New CI check: sv\_cpp\_check\_format [\#11](https://github.com/FAST-HEP/scikit-validate/pull/11) ([kreczko](https://github.com/kreczko))
+
+## [v0.2.15](https://github.com/FAST-HEP/scikit-validate/tree/v0.2.15) (2019-05-29)
+[Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.2.14...v0.2.15)
+
 ## [v0.2.14](https://github.com/FAST-HEP/scikit-validate/tree/v0.2.14) (2019-05-28)
 [Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/0.2.13...v0.2.14)
 
