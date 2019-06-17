@@ -80,6 +80,6 @@ def cli(repository, output, report, report_template):
 
     if n_lines_changed > 0:
         changed_files = get_changed_files(repository, 'HEAD')
-        create_report(repository, changed_files, output, report, template_file=cpp_check_template)
+        create_report(repository, changed_files, output, report, template_file=report_template)
         add_report_to_merge_request([report])
         sys.exit(-1)

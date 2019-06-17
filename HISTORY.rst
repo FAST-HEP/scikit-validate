@@ -2,8 +2,9 @@ Changelog
 =========
 
 
-0.2.20
+0.2.21
 ------------
+- Tagged version 0.2.20. [kreczko]
 - Added ability to overwrite default cpp_check_format template.
   [kreczko]
 - Cpp_check_format report: separated path & command variables. [kreczko]
