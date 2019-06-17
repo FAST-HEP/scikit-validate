@@ -2,8 +2,10 @@ Changelog
 =========
 
 
-0.2.18
+0.2.19
 ------------
+- Sv_cpp_check_format: fixed return code. [kreczko]
+- Tagged version 0.2.18. [kreczko]
 - Sv_cpp_check_format: fixes issues with instructions. [kreczko]
 - Tagged version 0.2.17. [kreczko]
 - Increased version to 0.2.17. [kreczko]

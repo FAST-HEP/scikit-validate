@@ -6,7 +6,7 @@ import os
 
 __author__ = """FAST"""
 __email__ = 'fast-hep@cern.ch'
-__version__ = '0.2.18'
+__version__ = '0.2.19'
 
 __skvalidate_root__ = os.path.dirname(__file__)
 
