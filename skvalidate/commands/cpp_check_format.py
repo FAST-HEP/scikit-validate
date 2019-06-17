@@ -69,12 +69,12 @@ def format_files(files):
 @click.option('-o', '--output', default='apply-formatting.patch', type=click.Path())
 @click.option('--report', default='formatting.md', type=click.Path())
 @click.option('--report-template', default=cpp_check_template, type=click.Path(exists=True))
-@click.option('--ignore-file', type=click.Path(), multiple=True)
-def cli(repository, output, report, report_template, ignore_file):
+@click.option('--exclude', type=click.Path(), multiple=True)
+def cli(repository, output, report, report_template, exclude):
     if not check_clang_format():
         return -1
     files_to_check = get_files_to_check(repository)
-    files_to_check = [f for f in files_to_check if f not in ignore_file]
+    files_to_check = [f for f in files_to_check if f not in exclude]
     n_lines_changed = 0
     if files_to_check:
         format_files(files_to_check)

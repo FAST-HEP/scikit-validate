@@ -2,8 +2,12 @@ Changelog
 =========
 
 
-0.2.21
+0.2.22
 ------------
+- Cpp_check_format: added "--exclude" parameter. [kreczko]
+- Cpp_check_format: fixed patch file (missing new line at the EOF)
+  [kreczko]
+- Tagged version 0.2.21. [kreczko]
 - Tagged version 0.2.20. [kreczko]
 - Added ability to overwrite default cpp_check_format template.
   [kreczko]
