@@ -2,8 +2,20 @@ Changelog
 =========
 
 
-0.2.15
+0.2.17
 ------------
+- Increased version to 0.2.17. [kreczko]
+- Sv_cpp_check_format: fixes issues with detached head. [kreczko]
+- Merge pull request #11 from kreczko/kreczko-cpp_format. [Luke Kreczko]
+
+  New CI check: sv_cpp_check_format
+- Increased version to 0.2.16. [kreczko]
+- Added wrappers for git commands. [kreczko]
+- Sv_cpp_check_format: added report creation & publishing. [kreczko]
+- Sv_cpp_check_format: added file retrival, formatting and patch
+  creation. [Luke Kreczko]
+- Added draft for cpp_check_format. [kreczko]
+- Tagged version 0.2.15. [kreczko]
 - Collapsible details for detailed validation report (issue #8)
   [kreczko]
 - Extending gitignore for test files. [kreczko]
