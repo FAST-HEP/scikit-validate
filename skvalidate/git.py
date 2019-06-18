@@ -14,11 +14,12 @@ def create_patch(repository, output_file):
     git = repo.git
     diff = git.diff()
     diff += '\n'
-    with open(output_file, 'w') as f:
-        f.write(diff)
 
-    with open(output_file) as f:
-        return len(f.readlines())
+    if not diff.isspace():
+        with open(output_file, 'w') as f:
+            f.write(diff)
+        return len(diff.split('\n'))
+    return 0
 
 
 def get_current_branch(repository):
