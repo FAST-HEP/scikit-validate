@@ -2,8 +2,10 @@ Changelog
 =========
 
 
-0.2.22
+0.2.23
 ------------
+- Fix git.create_patch behaviour for empty diffs. [kreczko]
+- Tagged version 0.2.22. [kreczko]
 - Cpp_check_format: added "--exclude" parameter. [kreczko]
 - Cpp_check_format: fixed patch file (missing new line at the EOF)
   [kreczko]
