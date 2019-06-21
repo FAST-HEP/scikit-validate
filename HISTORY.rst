@@ -2,8 +2,11 @@ Changelog
 =========
 
 
-0.2.23
+0.2.24
 ------------
+- When getting pipeline jobs: filter for only the last iteration of a
+  particular job. [kreczko]
+- Tagged version 0.2.23. [kreczko]
 - Fix git.create_patch behaviour for empty diffs. [kreczko]
 - Tagged version 0.2.22. [kreczko]
 - Cpp_check_format: added "--exclude" parameter. [kreczko]
