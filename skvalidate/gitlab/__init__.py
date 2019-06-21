@@ -113,7 +113,25 @@ def _get_current_pipeline_jobs():
     CI_PIPELINE_ID = os.environ.get('CI_PIPELINE_ID')
     project = connection.projects.get(CI_PROJECT_ID)
     pipeline = project.pipelines.get(CI_PIPELINE_ID)
-    return pipeline.jobs.list()
+
+    return _select_last_iteration_only(pipeline.jobs.list())
+
+
+def _select_last_iteration_only(jobs):
+    """
+        Looks through a list of jobs and removes duplicates (only keeps last iteration of a particular job)
+    """
+    jobs_by_name = {}
+    for job in jobs:
+        if job.name in jobs_by_name:
+            jobs_by_name[job.name].append(job)
+        else:
+            jobs_by_name[job.name] = [job]
+    selected_jobs = []
+    for name, named_jobs in jobs_by_name.items():
+        named_jobs = sorted(named_jobs, key=lambda j: j.id, reverse=True)
+        selected_jobs.append(named_jobs[0])
+    return selected_jobs
 
 
 def download_json_from_job(json_file, job_id, timeout=60):
