@@ -2,8 +2,10 @@ Changelog
 =========
 
 
-0.3.0
+0.3.1
 ------------
+- Sv_root_info: fixed mask for non-readable. [kreczko]
+- Tagged version 0.3.0. [kreczko]
 - Merge pull request #12 from kreczko/kreczko-root-info. [Luke Kreczko]
 
   Added sv_root_info for inspection of ROOT files with uproot

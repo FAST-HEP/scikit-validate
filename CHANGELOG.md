@@ -1,7 +1,6 @@
 # Change Log
 
-## [v0.3.0](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.0)
-
+## [v0.3.0](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.0) (2019-07-05)
 [Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.2.24...v0.3.0)
 
 **Merged pull requests:**
