@@ -1,5 +1,16 @@
 # Change Log
 
+## [v0.3.0](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.0)
+
+[Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.2.24...v0.3.0)
+
+**Merged pull requests:**
+
+- Added sv\_root\_info for inspection of ROOT files with uproot [\#12](https://github.com/FAST-HEP/scikit-validate/pull/12) ([kreczko](https://github.com/kreczko))
+
+## [v0.2.24](https://github.com/FAST-HEP/scikit-validate/tree/v0.2.24) (2019-06-21)
+[Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.2.23...v0.2.24)
+
 ## [v0.2.23](https://github.com/FAST-HEP/scikit-validate/tree/v0.2.23) (2019-06-18)
 [Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.2.22...v0.2.23)
 
