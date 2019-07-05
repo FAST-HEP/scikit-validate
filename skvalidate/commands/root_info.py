@@ -46,7 +46,7 @@ def cli(input_file, output_file, show_unreadable, show_empty, verbose):
     if verbose and not (show_unreadable or show_empty):
         print(tabulate(df, headers='keys', tablefmt='psql'))
     if show_unreadable:
-        unreadable = df[df.uproot_readable == False]
+        unreadable = df[not df.uproot_readable]
         if unreadable.empty:
             print('All file contents can be read by uproot')
         else:
@@ -54,7 +54,7 @@ def cli(input_file, output_file, show_unreadable, show_empty, verbose):
             print(tabulate(unreadable, headers='keys', tablefmt='psql'))
     print()
     if show_empty:
-        empty = df[df.is_empty == True]
+        empty = df[df.is_empty]
         if empty.empty:
             print('All file contents are filled')
         else:
