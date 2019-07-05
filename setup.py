@@ -62,6 +62,7 @@ requirements = [
     'memory_profiler>=0.54',
     'numexpr',
     'numpy>=1.15.0',
+    'pandas',
     'plumbum',
     # 'python-gitlab>=1.8.0',
     # as long as 1.8.0 is not published, take master
@@ -70,6 +71,7 @@ requirements = [
     'python-gitlab>=1.7.0',
     'pyyaml',
     'scipy',
+    'tabulate',
     'tqdm',
     'uproot',
     'xhtml2pdf',
