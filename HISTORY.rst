@@ -2,8 +2,15 @@ Changelog
 =========
 
 
-0.2.24
+0.3.0
 ------------
+- Merge pull request #12 from kreczko/kreczko-root-info. [Luke Kreczko]
+
+  Added sv_root_info for inspection of ROOT files with uproot
+- Sv_root_info: fixed lint errors. [kreczko]
+- Sv_root_info: added read test for non-obvious branches. [kreczko]
+- Added sv_root_info for inspection of ROOT files with uproot. [kreczko]
+- Tagged version 0.2.24. [kreczko]
 - When getting pipeline jobs: filter for only the last iteration of a
   particular job. [kreczko]
 - Tagged version 0.2.23. [kreczko]
