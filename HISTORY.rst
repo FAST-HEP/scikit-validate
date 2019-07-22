@@ -2,13 +2,13 @@ Changelog
 =========
 
 
-0.3.1
+0.3.2
 ------------
+- Fix root_diff (draw_diff) crashing for string input. [kreczko]
+- Added hypothesis tests for vis.adjust_axis_limits. [kreczko]
+- Tagged version 0.3.1. [kreczko]
 - Sv_root_info: fixed mask for non-readable. [kreczko]
 - Tagged version 0.3.0. [kreczko]
-- Merge pull request #12 from kreczko/kreczko-root-info. [Luke Kreczko]
-
-  Added sv_root_info for inspection of ROOT files with uproot
 - Sv_root_info: fixed lint errors. [kreczko]
 - Sv_root_info: added read test for non-obvious branches. [kreczko]
 - Added sv_root_info for inspection of ROOT files with uproot. [kreczko]
