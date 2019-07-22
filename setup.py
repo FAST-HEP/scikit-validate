@@ -33,6 +33,7 @@ def _is_valid_command(file_name):
     with open(file_name) as f:
         return 'def cli(' in f.read()
 
+
 def find_commands(path='skvalidate/commands'):
     """ Scans path for valid commands """
     command_files = glob.glob(os.path.join(path, '*.py'))
@@ -81,7 +82,7 @@ setup_requirements = [
     # 'pytest-runner',
 ]
 
-test_requirements = ['pytest', ]
+test_requirements = ['pytest', 'hypothesis', ]
 
 setup(
     author="Luke Kreczko",
