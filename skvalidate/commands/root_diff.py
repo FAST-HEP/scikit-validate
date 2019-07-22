@@ -28,9 +28,15 @@ def _process(name, values, output_path):
     status = values['status']
 
     if status == compare.FAILED:
-        image = draw_diff(name, values, output_path)
-        values['image'] = image
-        msg = 'FAILED (test: {:0.3f}): {}'.format(evaluationValue, image)
+        try:
+            image = draw_diff(name, values, output_path)
+            values['image'] = image
+            msg = 'FAILED (test: {:0.3f}): {}'.format(evaluationValue, image)
+        except TypeError as e:
+            msg = 'ERROR: Cannot draw (value type: {0}, reason: {1})'.format(
+                values['original'].dtype,
+                str(e),
+            )
     if status == compare.UNKNOWN:
         msg = 'WARNING: Unable to compare (value type: {0}, reason: {1})'.format(
             values['original'].dtype,
@@ -108,6 +114,7 @@ class MultiProcessStatus(object):
     def terminate(self):
         self.pool.terminate()
         self.pool.join()
+
 
 @click.command()
 @click.argument('file_under_test', type=click.Path(exists=True))
