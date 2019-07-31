@@ -2,8 +2,38 @@ Changelog
 =========
 
 
-0.3.2
+0.3.3
 ------------
+- Merge branch 'master' of github.com:FAST-HEP/scikit-validate.
+  [kreczko]
+- Merge pull request #13 from kreczko/kreczko-string-branches. [Luke
+  Kreczko]
+
+  Fixing issues reported by LZ
+- Fixed tests for new test samples (extra branch) [kreczko]
+- Compare: restored old behaviour for strings. [kreczko]
+- Compare: make sure both arrays are same size and deal better with
+  empty arrays. [kreczko]
+- Sv_root_diff: ommit string and object type arrays. [kreczko]
+- Ommit flattening arrays where impossible. [kreczko]
+- Added string branches to test samples. [kreczko]
+- Tagged version 0.3.2. [kreczko]
+- Fix root_diff (draw_diff) crashing for string input. [kreczko]
+- Added hypothesis tests for vis.adjust_axis_limits. [kreczko]
+- Tagged version 0.3.1. [kreczko]
+- Sv_root_info: fixed mask for non-readable. [kreczko]
+- Tagged version 0.3.0. [kreczko]
+- Merge pull request #12 from kreczko/kreczko-root-info. [Luke Kreczko]
+
+  Added sv_root_info for inspection of ROOT files with uproot
+- Sv_root_info: fixed lint errors. [kreczko]
+- Sv_root_info: added read test for non-obvious branches. [kreczko]
+- Added sv_root_info for inspection of ROOT files with uproot. [kreczko]
+- Tagged version 0.2.24. [kreczko]
+- When getting pipeline jobs: filter for only the last iteration of a
+  particular job. [kreczko]
+- Tagged version 0.2.23. [kreczko]
+- Tagged version 0.3.2. [kreczko]
 - Fix root_diff (draw_diff) crashing for string input. [kreczko]
 - Added hypothesis tests for vis.adjust_axis_limits. [kreczko]
 - Tagged version 0.3.1. [kreczko]

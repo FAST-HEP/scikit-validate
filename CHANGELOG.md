@@ -1,5 +1,16 @@
 # Change Log
 
+## [v0.3.3](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.3)
+
+[Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.3.2...v0.3.3)
+
+**Merged pull requests:**
+
+- Fixing issues reported by LZ [\#13](https://github.com/FAST-HEP/scikit-validate/pull/13) ([kreczko](https://github.com/kreczko))
+
+## [v0.3.2](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.2) (2019-07-22)
+[Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.3.1...v0.3.2)
+
 ## [v0.3.1](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.1) (2019-07-05)
 [Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.3.0...v0.3.1)
 
