@@ -14,16 +14,22 @@ ERROR = 'error'
 
 
 def difference(a1, a2):
-    try:
-        # convert to float64 to avoid hitting int limits
-        new_type = a1.dtype
-        if np.issubdtype(new_type, np.integer):
-            new_type = np.float64
-        return np.subtract(a1.flatten().astype(new_type), a2.flatten().astype(new_type))
-    except Exception:
-        # TODO: need to compare string as well?
-        return []
+    a1_tmp, a2_tmp = _ensure_same_lentgth(a1, a2)
+    if np.issubdtype(a1.dtype, np.integer):
+        new_type = np.float64
+        a1_tmp = a1_tmp.astype(new_type)
+        a2_tmp = a2_tmp.astype(new_type)
 
+    return np.subtract(a1_tmp, a2_tmp)
+
+def _ensure_same_lentgth(a1, a2):
+    a1_size, a2_size = np.size(a1), np.size(a2)
+    if a1_size == a2_size:
+        return a1, a2
+    if a1_size > a2_size:
+        return a1, np.resize(a2, a1_size)
+    if a2_size > a1_size:
+        return np.resize(a1, a2_size), a2
 
 def is_ok(evaluationFunc, cut, *args, **kwargs):
     value = evaluationFunc(*args, **kwargs)  # noqa: F841
@@ -53,13 +59,13 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
 
         value1, value2 = load_values(name, content1, content2)
 
-        if len(value1) == 0 and len(value2) == 0:
+        if np.size(value1) == 0 and np.size(value2) == 0:
             status = SUCCESS
             pvalue = 1
-        elif (len(value1) == 0 and len(value2) > 0) or (len(value1) > 0 and len(value2) == 0):
+        elif (np.size(value1) == 0 and np.size(value2) > 0) or (np.size(value1) > 0 and np.size(value2) == 0):
             status = FAILED
-            reason = 'file1 is empty' if len(value1) > 0 else 'reference file is empty'
-            diff = value1 if len(value1) > 0 else value2
+            reason = 'file1 is empty' if np.size(value1) > 0 else 'reference file is empty'
+            diff = value1 if np.size(value1) > 0 else value2
         else:
             ks_statistic, pvalue = stats.ks_2samp(value2, value1)
 
@@ -91,7 +97,6 @@ def load_values(name, content1, content2):
         value1 = np.array(value1)
         value2 = np.array(value2)
     except TypeError as e:
-        value1.x
         logger.error('Cannot convert {} to numpy array: {}'.format(name, e))
         return None, None
 
@@ -115,14 +120,15 @@ def maxRelativeDifference(value1, value2, normalisation=None):
     diff = difference(value2, value1)
     d = np.absolute(diff)
     if normalisation is None:
-        normalisation = np.sqrt(np.sum(value2**2))
+        normalisation = value2 if np.size(value2) > 0 else value1
+        normalisation = np.linalg.norm(normalisation)
 
     if abs(normalisation) == np.Infinity or np.Infinity in d:
         return np.Infinity
     if normalisation == 0:
         return 0
 
-    return np.amax(d / normalisation, initial=9000)
+    return np.amax(d / normalisation, initial=-9000)
 
 
 __all__ = [
