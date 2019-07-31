@@ -20,6 +20,8 @@ def difference(a1, a2):
         a1_tmp = a1_tmp.astype(new_type)
         a2_tmp = a2_tmp.astype(new_type)
 
+    if np.issubdtype(a1.dtype, np.str_):
+        return []
     return np.subtract(a1_tmp, a2_tmp)
 
 def _ensure_same_lentgth(a1, a2):
