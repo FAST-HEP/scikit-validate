@@ -69,7 +69,11 @@ def unpack(name, obj):
         return
 
     if hasattr(array, 'flatten'):
-        flat_array = obj.array().flatten()
+        try:
+            flat_array = obj.array().flatten()
+        except ValueError as e:
+            logger.error('Cannot flatten {}: {}'.format(name, e))
+            flat_array = obj.array()
     else:
         flat_array = array
 

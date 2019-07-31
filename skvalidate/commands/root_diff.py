@@ -28,9 +28,15 @@ def _process(name, values, output_path):
     status = values['status']
 
     if status == compare.FAILED:
-        image = draw_diff(name, values, output_path)
-        values['image'] = image
-        msg = 'FAILED (test: {:0.3f}): {}'.format(evaluationValue, image)
+        try:
+            image = draw_diff(name, values, output_path)
+            values['image'] = image
+            msg = 'FAILED (test: {:0.3f}): {}'.format(evaluationValue, image)
+        except TypeError as e:
+            msg = 'ERROR: Cannot draw (value type: {0}, reason: {1})'.format(
+                values['original'].dtype,
+                str(e),
+            )
     if status == compare.UNKNOWN:
         msg = 'WARNING: Unable to compare (value type: {0}, reason: {1})'.format(
             values['original'].dtype,
@@ -109,6 +115,7 @@ class MultiProcessStatus(object):
         self.pool.terminate()
         self.pool.join()
 
+
 @click.command()
 @click.argument('file_under_test', type=click.Path(exists=True))
 @click.argument('reference_file', type=click.Path(exists=True))
@@ -138,6 +145,8 @@ def cli(file_under_test, reference_file, output_path, report_file, prefix, n_cor
 def _reset_infinities(comparison):
     for name, values in comparison.items():
         if values['original'].dtype.kind in {'U', 'S', 'O'}:
+            continue
+        if values['reference'].dtype.kind in {'U', 'S', 'O'}:
             continue
         if len(values['original']) > 0:
             values['original'][np.absolute(values['original']) == np.Infinity] = 0
