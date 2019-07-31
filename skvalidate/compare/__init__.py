@@ -5,6 +5,7 @@ from scipy import stats
 
 from skvalidate.io import walk
 from .metrics import compare_metrics, absolute_to_relative_timestamps
+from .. import logger
 
 SUCCESS = 'success'
 FAILED = 'failed'
@@ -86,8 +87,13 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
 def load_values(name, content1, content2):
     value1 = content1[name] if name in content1 else np.array([])
     value2 = content2[name] if name in content2 else np.array([])
-    value1 = np.array(value1)
-    value2 = np.array(value2)
+    try:
+        value1 = np.array(value1)
+        value2 = np.array(value2)
+    except TypeError as e:
+        value1.x
+        logger.error('Cannot convert {} to numpy array: {}'.format(name, e))
+        return None, None
 
     # if len(value1) == 0 and len(value2) == 0:
 
@@ -116,7 +122,7 @@ def maxRelativeDifference(value1, value2, normalisation=None):
     if normalisation == 0:
         return 0
 
-    return max(d / normalisation)
+    return np.amax(d / normalisation, initial=9000)
 
 
 __all__ = [
