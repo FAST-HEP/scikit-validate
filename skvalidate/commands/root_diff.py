@@ -146,6 +146,8 @@ def _reset_infinities(comparison):
     for name, values in comparison.items():
         if values['original'].dtype.kind in {'U', 'S', 'O'}:
             continue
+        if values['reference'].dtype.kind in {'U', 'S', 'O'}:
+            continue
         if len(values['original']) > 0:
             values['original'][np.absolute(values['original']) == np.Infinity] = 0
         if len(values['reference']) > 0:
