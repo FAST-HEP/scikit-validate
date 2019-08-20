@@ -2,11 +2,17 @@ Changelog
 =========
 
 
+0.3.5
+------------
+- Io.unpack: deal with empty flat arrays. [Luke Kreczko]
+
 0.3.4
 ------------
 - Added AssertionError to list of exceptions for converting ROOT
   branches to numpy arrays. [Luke Kreczko]
-- Tagged version 0.3.3. [kreczko]
+
+0.3.3
+------------
 - Merge branch 'master' of github.com:FAST-HEP/scikit-validate.
   [kreczko]
 - Merge pull request #13 from kreczko/kreczko-string-branches. [Luke
@@ -20,50 +26,56 @@ Changelog
 - Sv_root_diff: ommit string and object type arrays. [kreczko]
 - Ommit flattening arrays where impossible. [kreczko]
 - Added string branches to test samples. [kreczko]
-- Tagged version 0.3.2. [kreczko]
+
+0.3.2
+------------
 - Fix root_diff (draw_diff) crashing for string input. [kreczko]
 - Added hypothesis tests for vis.adjust_axis_limits. [kreczko]
-- Tagged version 0.3.1. [kreczko]
+
+0.3.1
+------------
 - Sv_root_info: fixed mask for non-readable. [kreczko]
-- Tagged version 0.3.0. [kreczko]
+
+0.3.0
+------------
 - Merge pull request #12 from kreczko/kreczko-root-info. [Luke Kreczko]
 
   Added sv_root_info for inspection of ROOT files with uproot
 - Sv_root_info: fixed lint errors. [kreczko]
 - Sv_root_info: added read test for non-obvious branches. [kreczko]
 - Added sv_root_info for inspection of ROOT files with uproot. [kreczko]
-- Tagged version 0.2.24. [kreczko]
+
+0.2.24
+------------
 - When getting pipeline jobs: filter for only the last iteration of a
   particular job. [kreczko]
-- Tagged version 0.2.23. [kreczko]
-- Tagged version 0.3.2. [kreczko]
-- Fix root_diff (draw_diff) crashing for string input. [kreczko]
-- Added hypothesis tests for vis.adjust_axis_limits. [kreczko]
-- Tagged version 0.3.1. [kreczko]
-- Sv_root_info: fixed mask for non-readable. [kreczko]
-- Tagged version 0.3.0. [kreczko]
-- Sv_root_info: fixed lint errors. [kreczko]
-- Sv_root_info: added read test for non-obvious branches. [kreczko]
-- Added sv_root_info for inspection of ROOT files with uproot. [kreczko]
-- Tagged version 0.2.24. [kreczko]
-- When getting pipeline jobs: filter for only the last iteration of a
-  particular job. [kreczko]
-- Tagged version 0.2.23. [kreczko]
+
+0.2.23
+------------
 - Fix git.create_patch behaviour for empty diffs. [kreczko]
-- Tagged version 0.2.22. [kreczko]
+
+0.2.22
+------------
 - Cpp_check_format: added "--exclude" parameter. [kreczko]
 - Cpp_check_format: fixed patch file (missing new line at the EOF)
   [kreczko]
-- Tagged version 0.2.21. [kreczko]
-- Tagged version 0.2.20. [kreczko]
+
+0.2.21
+------------
 - Added ability to overwrite default cpp_check_format template.
   [kreczko]
 - Cpp_check_format report: separated path & command variables. [kreczko]
-- Tagged version 0.2.19. [kreczko]
+
+0.2.19
+------------
 - Sv_cpp_check_format: fixed return code. [kreczko]
-- Tagged version 0.2.18. [kreczko]
+
+0.2.18
+------------
 - Sv_cpp_check_format: fixes issues with instructions. [kreczko]
-- Tagged version 0.2.17. [kreczko]
+
+0.2.17
+------------
 - Increased version to 0.2.17. [kreczko]
 - Sv_cpp_check_format: fixes issues with detached head. [kreczko]
 - Merge pull request #11 from kreczko/kreczko-cpp_format. [Luke Kreczko]
@@ -75,7 +87,9 @@ Changelog
 - Sv_cpp_check_format: added file retrival, formatting and patch
   creation. [Luke Kreczko]
 - Added draft for cpp_check_format. [kreczko]
-- Tagged version 0.2.15. [kreczko]
+
+0.2.15
+------------
 - Collapsible details for detailed validation report (issue #8)
   [kreczko]
 - Extending gitignore for test files. [kreczko]
@@ -83,12 +97,10 @@ Changelog
 - Fixed HISTORY formatting. [kreczko]
 - Fixed release example in README. [kreczko]
 - CI: updated user & password for travis-ci.com. [kreczko]
-- Tagged version 0.2.14. [kreczko]
-- Tagged version 0.2.14. [kreczko]
-- Tagged version 0.2.14. [kreczko]
-- Merge pull request #9 from kreczko/kreczko-issue-8. [Luke Kreczko]
 
-  Collapsible details for validation report (issue #8)
+0.2.14
+------------
+- Merge pull request #9 from kreczko/kreczko-issue-8. [Luke Kreczko]
 - CI: more verbose install. [kreczko]
 - CI: updating Ubuntu distribution from 14.04 to 16.04. [kreczko]
 - CI: added demo report. [kreczko]
@@ -593,5 +605,3 @@ Changelog
 - Added execute_with_metrics command. [kreczko]
 - Added command structure and get_target_branch command. [kreczko]
 - Initial commit. [kreczko]
-
-
