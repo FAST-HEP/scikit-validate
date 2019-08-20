@@ -2,8 +2,11 @@ Changelog
 =========
 
 
-0.3.3
+0.3.4
 ------------
+- Added AssertionError to list of exceptions for converting ROOT
+  branches to numpy arrays. [Luke Kreczko]
+- Tagged version 0.3.3. [kreczko]
 - Merge branch 'master' of github.com:FAST-HEP/scikit-validate.
   [kreczko]
 - Merge pull request #13 from kreczko/kreczko-string-branches. [Luke
