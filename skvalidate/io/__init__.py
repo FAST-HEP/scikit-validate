@@ -77,7 +77,7 @@ def unpack(name, obj):
     else:
         flat_array = array
 
-    if flat_array and flat_array.__class__.__name__ == 'ObjectArrayMethods':
+    if np.size(flat_array) > 0 and flat_array.__class__.__name__ == 'ObjectArrayMethods':
         o = flat_array[0]
         attributes = [x for x in dir(o) if x.startswith('_f')]
         for a in attributes:
