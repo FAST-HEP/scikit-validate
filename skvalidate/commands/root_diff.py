@@ -34,12 +34,12 @@ def _process(name, values, output_path):
             msg = 'FAILED (test: {:0.3f}): {}'.format(evaluationValue, image)
         except TypeError as e:
             msg = 'ERROR: Cannot draw (value type: {0}, reason: {1})'.format(
-                values['original'].dtype,
+                "Unknown" if values['original'] is None else values['original'].dtype,
                 str(e),
             )
     if status == compare.UNKNOWN:
         msg = 'WARNING: Unable to compare (value type: {0}, reason: {1})'.format(
-            values['original'].dtype,
+            "Unknown" if values['original'] is None else values['original'].dtype,
             values['reason'],
         )
         color = colors.Orange3
@@ -144,6 +144,8 @@ def cli(file_under_test, reference_file, output_path, report_file, prefix, n_cor
 
 def _reset_infinities(comparison):
     for name, values in comparison.items():
+        if values['original'] is None or values['reference'] is None:
+            continue
         if values['original'].dtype.kind in {'U', 'S', 'O'}:
             continue
         if values['reference'].dtype.kind in {'U', 'S', 'O'}:
