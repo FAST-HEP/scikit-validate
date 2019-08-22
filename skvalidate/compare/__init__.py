@@ -68,6 +68,9 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
             status = FAILED
             reason = 'file1 is empty' if np.size(value1) > 0 else 'reference file is empty'
             diff = value1 if np.size(value1) > 0 else value2
+        elif value1 is None or value2 is None:
+            status = UNKNOWN
+            reason = 'Cannot convert data to numpy array'
         else:
             ks_statistic, pvalue = stats.ks_2samp(value2, value1)
 
