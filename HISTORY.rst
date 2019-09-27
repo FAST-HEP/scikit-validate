@@ -8,7 +8,7 @@ Changelog
   HEP/BK_check_nones_compare_two_root_files. [Luke Kreczko]
 
   Add check in case we get a pair of Nones from load_values
-- Catch several more places where `None`s will matter. [Ben Krikler]
+- Catch several more places where `None`'s will matter. [Ben Krikler]
 - Add check in case we get a pair of Nones from load_values. [Ben
   Krikler]
 - Io.unpack: fixed behaviour for numpy arrays vs lists. [kreczko]
