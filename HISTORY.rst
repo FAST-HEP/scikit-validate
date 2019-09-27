@@ -2,6 +2,17 @@ Changelog
 =========
 
 
+0.3.6
+------------
+- Merge pull request #14 from FAST-
+  HEP/BK_check_nones_compare_two_root_files. [Luke Kreczko]
+
+  Add check in case we get a pair of Nones from load_values
+- Catch several more places where `None`s will matter. [Ben Krikler]
+- Add check in case we get a pair of Nones from load_values. [Ben
+  Krikler]
+- Io.unpack: fixed behaviour for numpy arrays vs lists. [kreczko]
+
 0.3.5
 ------------
 - Io.unpack: deal with empty flat arrays. [Luke Kreczko]
@@ -18,7 +29,7 @@ Changelog
 - Merge pull request #13 from kreczko/kreczko-string-branches. [Luke
   Kreczko]
 
-  Fixing issues reported by LZ
+- Fixing issues reported by LZ
 - Fixed tests for new test samples (extra branch) [kreczko]
 - Compare: restored old behaviour for strings. [kreczko]
 - Compare: make sure both arrays are same size and deal better with
@@ -39,8 +50,7 @@ Changelog
 0.3.0
 ------------
 - Merge pull request #12 from kreczko/kreczko-root-info. [Luke Kreczko]
-
-  Added sv_root_info for inspection of ROOT files with uproot
+- Added sv_root_info for inspection of ROOT files with uproot
 - Sv_root_info: fixed lint errors. [kreczko]
 - Sv_root_info: added read test for non-obvious branches. [kreczko]
 - Added sv_root_info for inspection of ROOT files with uproot. [kreczko]
@@ -60,33 +70,40 @@ Changelog
 - Cpp_check_format: fixed patch file (missing new line at the EOF)
   [kreczko]
 
-0.2.21
+
+0.2.20
 ------------
 - Added ability to overwrite default cpp_check_format template.
   [kreczko]
 - Cpp_check_format report: separated path & command variables. [kreczko]
 
+
 0.2.19
 ------------
 - Sv_cpp_check_format: fixed return code. [kreczko]
+
 
 0.2.18
 ------------
 - Sv_cpp_check_format: fixes issues with instructions. [kreczko]
 
+
 0.2.17
 ------------
-- Increased version to 0.2.17. [kreczko]
 - Sv_cpp_check_format: fixes issues with detached head. [kreczko]
 - Merge pull request #11 from kreczko/kreczko-cpp_format. [Luke Kreczko]
 
-  New CI check: sv_cpp_check_format
-- Increased version to 0.2.16. [kreczko]
+- New CI check: sv_cpp_check_format
+
+
+0.2.16
+------------
 - Added wrappers for git commands. [kreczko]
 - Sv_cpp_check_format: added report creation & publishing. [kreczko]
 - Sv_cpp_check_format: added file retrival, formatting and patch
   creation. [Luke Kreczko]
 - Added draft for cpp_check_format. [kreczko]
+
 
 0.2.15
 ------------
@@ -98,9 +115,12 @@ Changelog
 - Fixed release example in README. [kreczko]
 - CI: updated user & password for travis-ci.com. [kreczko]
 
+
 0.2.14
 ------------
 - Merge pull request #9 from kreczko/kreczko-issue-8. [Luke Kreczko]
+
+  Collapsible details for validation report (issue #8)
 - CI: more verbose install. [kreczko]
 - CI: updating Ubuntu distribution from 14.04 to 16.04. [kreczko]
 - CI: added demo report. [kreczko]

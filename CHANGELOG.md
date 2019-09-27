@@ -1,5 +1,16 @@
 # Change Log
 
+## [v0.3.6](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.6)
+
+[Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.3.5...v0.3.6)
+
+**Merged pull requests:**
+
+- Add check in case we get a pair of Nones from load\_values [\#14](https://github.com/FAST-HEP/scikit-validate/pull/14) ([benkrikler](https://github.com/benkrikler))
+
+## [v0.3.5](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.5) (2019-08-20)
+[Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.3.4...v0.3.5)
+
 ## [v0.3.4](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.4) (2019-08-20)
 [Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.3.3...v0.3.4)
 
