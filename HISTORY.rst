@@ -1,6 +1,22 @@
 Changelog
 =========
 
+0.3.7
+------------
+- Merge pull request #15 from kreczko/kreczko-sanatizing-report-configs.
+  [Luke Kreczko]
+
+  Sanatising report configs
+- Updated pytest and hypothesis dependencies. [kreczko]
+- Adjust all configs to reversed-order rendering. [kreczko]
+- Fixed reversed-order rendering for lists in templates. [kreczko]
+- Fixed sv_root_info for more complex structures. [kreczko]
+- Reversing the order of report config parsing. New order: first read
+  full YAML then render each value. [kreczko]
+- Fix commit description in HISTORY. [kreczko]
+- Tagged version 0.3.6. [kreczko]
+
+
 
 0.3.6
 ------------

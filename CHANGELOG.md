@@ -1,7 +1,14 @@
 # Change Log
 
-## [v0.3.6](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.6)
+## [v0.3.7](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.7)
 
+[Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.3.6...v0.3.7)
+
+**Implemented enhancements:**
+
+- Sanatising report configs [\#15](https://github.com/FAST-HEP/scikit-validate/pull/15) ([kreczko](https://github.com/kreczko))
+
+## [v0.3.6](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.6) (2019-09-27)
 [Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.3.5...v0.3.6)
 
 **Merged pull requests:**
