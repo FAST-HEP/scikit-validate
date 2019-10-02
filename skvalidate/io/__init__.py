@@ -55,8 +55,13 @@ def _walk(obj, name=None):
     else:
         for k in sorted(obj.keys()):
             # if there is a '.' the first part of k it will be a duplicate
-            new_k = k.decode("utf-8").split('.')[-1]
-            new_name = '.'.join([name, new_k]) if name else new_k
+            k_str = k.decode("utf-8")
+            tokens = k_str.split('.')
+            new_name = name if name else k_str
+            for t in tokens:
+                if new_name.endswith(t):
+                    continue
+                new_name = '.'.join([new_name, t])
             for n, o in _walk(obj[k], new_name):
                 yield n, o
 

@@ -1,10 +1,10 @@
 
-template: {{scikit_validate}}/data/templates/report/default/summary.md
+template: "{{scikit_validate}}/data/templates/report/default/summary.md"
 title: "scikit-validate DEMO report"
 
 sections:
   pipeline_report:
-    template: {{scikit_validate}}/data/templates/report/default/pipeline.md
+    template: "{{scikit_validate}}/data/templates/report/default/pipeline.md"
     pipeline:
       function: skvalidate.report.demo.get_pipeline_url
     jobs:
@@ -13,39 +13,39 @@ sections:
         - build
         - test
         - validation
-      software_versions: {{scikit_validate}}/data/examples/software_versions.json
+      software_versions: "{{scikit_validate}}/data/examples/software_versions.json"
       symbol_success: '&#9989;'
       symbol_failed: '&#10060;'
       symbol_unkown: '&#10067;'
 
   validation_report:
-    template: {{scikit_validate}}/data/templates/report/default/validation.md
+    template: "{{scikit_validate}}/data/templates/report/default/validation.md"
     validation:
       function: skvalidate.report.demo.get_full_validations
       validation_detail:
-        validation1: {{scikit_validate}}/data/examples/root_diff/test_1_2/root_diff.json
-        validation2: {{scikit_validate}}/data/examples/root_diff/test_1_3/root_diff.json
-        validation3: {{scikit_validate}}/data/examples/root_diff/test_1_3/root_diff.json
+        validation1: "{{scikit_validate}}/data/examples/root_diff/test_1_2/root_diff.json"
+        validation2: "{{scikit_validate}}/data/examples/root_diff/test_1_3/root_diff.json"
+        validation3: "{{scikit_validate}}/data/examples/root_diff/test_1_3/root_diff.json"
 
 
   performance_report:
-    template: {{scikit_validate}}/data/templates/report/default/performance.md
+    template: "{{scikit_validate}}/data/templates/report/default/performance.md"
     comparison:
       function: skvalidate.report.get_metrics
-      metrics_json: {{scikit_validate}}/data/examples/performance_metrics.json
-      metrics_ref_json: {{scikit_validate}}/data/examples/performance_metrics_ref.json
-      profile: {{scikit_validate}}/data/examples/memory_profile.dat
-      profile_ref: {{scikit_validate}}/data/examples/memory_profile_ref.dat
+      metrics_json: "{{scikit_validate}}/data/examples/performance_metrics.json"
+      metrics_ref_json: "{{scikit_validate}}/data/examples/performance_metrics_ref.json"
+      profile: "{{scikit_validate}}/data/examples/memory_profile.dat"
+      profile_ref: "{{scikit_validate}}/data/examples/memory_profile_ref.dat"
       symbol_up: '&#10138;'
       symbol_down: '&#10136;'
       symbol_same: '&#10134;'
 
   file_report:
-    template: {{scikit_validate}}/data/templates/report/default/file_metrics.md
+    template: "{{scikit_validate}}/data/templates/report/default/file_metrics.md"
     comparison:
       function: skvalidate.report.get_metrics
-      metrics_json: {{scikit_validate}}/data/examples/file_metrics.json
-      metrics_ref_json: {{scikit_validate}}/data/examples/file_metrics_ref.json
+      metrics_json: "{{scikit_validate}}/data/examples/file_metrics.json"
+      metrics_ref_json: "{{scikit_validate}}/data/examples/file_metrics_ref.json"
       keys:
         - size_in_mb
       symbol_up: '&#10138;'

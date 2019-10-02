@@ -117,9 +117,20 @@ class Section(object):
 
 def read_config(path):
     with open(path) as f:
-        config_tpl = Template(f.read())
-    config = config_tpl.render(scikit_validate=__skvalidate_root__)
-    config = yaml.load(config)
+        config_tpl = yaml.load(f.read())
+    return _render_config(config_tpl)
+
+
+def _render_config(config_tpl):
+    config = {}
+    for key, value in config_tpl.items():
+        if isinstance(value, dict):
+            config[key] = _render_config(value)
+        else:
+            if isinstance(value, list):
+                config[key] = [Template(v).render(scikit_validate=__skvalidate_root__) for v in value]
+            else:
+                config[key] = Template(value).render(scikit_validate=__skvalidate_root__)
     return config
 
 
