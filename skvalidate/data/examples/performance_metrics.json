@@ -1,47 +1,47 @@
 {
     "MCTruth continuous_integration_101.root": {
-        "cpu_time_in_s": {
+        "cpu_time": {
             "value": 187.110981,
             "unit": "s",
             "lower_is_better": true
         },
-        "max_rss_in_MB": {
+        "max_rss": {
             "value": 1296.7,
             "unit": "MB",
             "lower_is_better": true
         }
     },
     "RootConverter continuous_integration_101.bin": {
-        "cpu_time_in_s": {
+        "cpu_time": {
             "value": 4.952387,
             "unit": "s",
             "lower_is_better": true
         },
-        "max_rss_in_MB": {
+        "max_rss": {
             "value": 330.7,
             "unit": "MB",
             "lower_is_better": true
         }
     },
     "make": {
-        "cpu_time_in_s": {
+        "cpu_time": {
             "value": 463.696075,
             "unit": "s",
             "lower_is_better": true
         },
-        "max_rss_in_MB": {
+        "max_rss": {
             "value": 561.2,
             "unit": "MB",
             "lower_is_better": true
         }
     },
     "generate": {
-        "cpu_time_in_s": {
+        "cpu_time": {
             "value": 524.510786,
             "unit": "s",
             "lower_is_better": true
         },
-        "max_rss_in_MB": {
+        "max_rss": {
             "value": 1992.5,
             "unit": "MB",
             "lower_is_better": true
