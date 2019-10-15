@@ -37,14 +37,23 @@ At the moment only (simple) CPU time and RAM usage are supported::
 
       For testing install 'stress' package and run
 
-          sv_execute 'stress --cpu 1 --io 1 --vm 1 --vm-bytes 128M --timeout 10s --verbose' -m resource_metrics.json
+          sv_execute -m resource_metrics.json -- \
+                stress --cpu 1 --io 1 --vm 1 --vm-bytes 128M --timeout 10s --verbose
 
       If the output file, default resource_metrics.json, already exists it will
       be read first and results will be appended.
 
+      If a single string argument is provided as the command then it will be
+      split using white-space, however if multiple arguments are provided then
+      no additional splitting is performed.  In this case though, use `--`
+      before the command so that options are passed to the command, rather than
+      this script.
+
     Options:
-      -m, --metrics-file TEXT
-      --help                   Show this message and exit.
+        -m, --metrics-file PATH
+        --memprof-file PATH
+        --sample-interval FLOAT  Sampling period (in seconds), defaults to 0.1
+        --help                   Show this message and exit.
 
 
 sv_get_artifact_url

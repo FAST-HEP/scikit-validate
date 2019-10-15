@@ -8,8 +8,8 @@ For testing install 'stress' package and run
 
  .. code-block:: bash
 
-    sv_execute 'stress --cpu 1 --io 1 --vm 1 --vm-bytes 128M --timeout 10s --verbose' \
-                                    -m resource_metrics.json
+    sv_execute -m resource_metrics.json -- \
+        stress --cpu 1 --io 1 --vm 1 --vm-bytes 128M --timeout 10s --verbose
 
 If the output file, default ``resource_metrics.json``, \
 already exists it will be read first and results will be appended.
@@ -44,6 +44,11 @@ def monitor_command(command, memprof_file, sample_interval):
     metrics = dict(
         cpu_time=dict(
             value=usage_end.ru_utime - usage_start.ru_utime,
+            unit='s',
+            lower_is_better=True,
+        ),
+        sys_time=dict(
+            value=usage_end.ru_stime - usage_start.ru_stime,
             unit='s',
             lower_is_better=True,
         ),
