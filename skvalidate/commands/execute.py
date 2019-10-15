@@ -8,8 +8,8 @@ For testing install 'stress' package and run
 
  .. code-block:: bash
 
-    sv_execute 'stress --cpu 1 --io 1 --vm 1 --vm-bytes 128M --timeout 10s --verbose' \
-                                    -m resource_metrics.json
+    sv_execute -m resource_metrics.json -- \
+        stress --cpu 1 --io 1 --vm 1 --vm-bytes 128M --timeout 10s --verbose
 
 If the output file, default ``resource_metrics.json``, \
 already exists it will be read first and results will be appended.
