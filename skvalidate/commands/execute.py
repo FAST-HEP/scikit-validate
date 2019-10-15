@@ -47,6 +47,11 @@ def monitor_command(command, memprof_file, sample_interval):
             unit='s',
             lower_is_better=True,
         ),
+        sys_time=dict(
+            value=usage_end.ru_stime - usage_start.ru_stime,
+            unit='s',
+            lower_is_better=True,
+        ),
         max_rss=dict(
             value=round(max_rss_in_mb, 1),
             unit='MB',
