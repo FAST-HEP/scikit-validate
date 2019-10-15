@@ -1,7 +1,19 @@
 # Change Log
 
-## [v0.3.7](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.7)
+## [v0.3.8](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.8)
 
+[Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.3.7...v0.3.8)
+
+**Closed issues:**
+
+- sv\_execute: add system time [\#16](https://github.com/FAST-HEP/scikit-validate/issues/16)
+
+**Merged pull requests:**
+
+- New command: sv\_metric\_diff [\#18](https://github.com/FAST-HEP/scikit-validate/pull/18) ([kreczko](https://github.com/kreczko))
+- Fixing issue 16: added system time to sv\_execute [\#17](https://github.com/FAST-HEP/scikit-validate/pull/17) ([kreczko](https://github.com/kreczko))
+
+## [v0.3.7](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.7) (2019-10-02)
 [Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.3.6...v0.3.7)
 
 **Implemented enhancements:**

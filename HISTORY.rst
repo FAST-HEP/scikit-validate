@@ -3,7 +3,15 @@ Changelog
 
 0.3.8
 ------------
+- Tagged version 0.3.8. [kreczko]
+- Fixed history vs releases. [kreczko]
+- Make: add unreleased history at the top of HISTORY.rst (still needs
+  manual edit) [kreczko]
 - New command: sv_version. [kreczko]
+- Merge pull request #18 from kreczko/kreczko-metric-diff. [Luke
+  Kreczko]
+
+  New command: sv_metric_diff
 - Fixed formatting. [kreczko]
 - Added documentation for sv_metric_diff. [kreczko]
 - New command: sv_metric_diff. [kreczko]
@@ -13,6 +21,7 @@ Changelog
 - Fixed usage instructions for sv_execute. [kreczko]
 - Fixing issue #16: added system time to sv_execute. [kreczko]
 - Updated metric names for demo report. [Luke Kreczko]
+
 
 
 0.3.7
