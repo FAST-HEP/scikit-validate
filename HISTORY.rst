@@ -1,6 +1,20 @@
 Changelog
 =========
 
+0.3.8
+------------
+- New command: sv_version. [kreczko]
+- Fixed formatting. [kreczko]
+- Added documentation for sv_metric_diff. [kreczko]
+- New command: sv_metric_diff. [kreczko]
+- Merge pull request #17 from kreczko/kreczko-issue-16. [Luke Kreczko]
+
+  Fixing issue 16: added system time to sv_execute
+- Fixed usage instructions for sv_execute. [kreczko]
+- Fixing issue #16: added system time to sv_execute. [kreczko]
+- Updated metric names for demo report. [Luke Kreczko]
+
+
 0.3.7
 ------------
 - Merge pull request #15 from kreczko/kreczko-sanatizing-report-configs.
@@ -13,13 +27,10 @@ Changelog
 - Fixed sv_root_info for more complex structures. [kreczko]
 - Reversing the order of report config parsing. New order: first read
   full YAML then render each value. [kreczko]
-- Fix commit description in HISTORY. [kreczko]
-- Tagged version 0.3.6. [kreczko]
-
-
 
 0.3.6
 ------------
+- Fix commit description in HISTORY. [kreczko]
 - Merge pull request #14 from FAST-
   HEP/BK_check_nones_compare_two_root_files. [Luke Kreczko]
 
@@ -27,10 +38,10 @@ Changelog
 - Catch several more places where `None`'s will matter. [Ben Krikler]
 - Add check in case we get a pair of Nones from load_values. [Ben
   Krikler]
-- Io.unpack: fixed behaviour for numpy arrays vs lists. [kreczko]
 
 0.3.5
 ------------
+- Io.unpack: fixed behaviour for numpy arrays vs lists. [kreczko]
 - Io.unpack: deal with empty flat arrays. [Luke Kreczko]
 
 0.3.4
@@ -61,14 +72,14 @@ Changelog
 
 0.3.1
 ------------
-- Sv_root_info: fixed mask for non-readable. [kreczko]
+- sv_root_info: fixed mask for non-readable. [kreczko]
 
 0.3.0
 ------------
 - Merge pull request #12 from kreczko/kreczko-root-info. [Luke Kreczko]
 - Added sv_root_info for inspection of ROOT files with uproot
-- Sv_root_info: fixed lint errors. [kreczko]
-- Sv_root_info: added read test for non-obvious branches. [kreczko]
+- sv_root_info: fixed lint errors. [kreczko]
+- sv_root_info: added read test for non-obvious branches. [kreczko]
 - Added sv_root_info for inspection of ROOT files with uproot. [kreczko]
 
 0.2.24
@@ -156,11 +167,12 @@ Changelog
 0.2.13 (2019-05-13)
 -------------------
 - Merge branch 'kreczko-reduce-timeouts' into 'master' [Lukasz Kreczko]
-
   Reduce timeouts during artifact download
-
   See merge request fast-hep/public/scikit-validate!14
-- Version 0.2.12 --> 0.2.13. [kreczko]
+
+
+0.2.12
+------------
 - Added timeout to job artifact download. [kreczko]
 - Merge branch 'kreczko-docs' into 'master' [Lukasz Kreczko]
 
@@ -186,23 +198,27 @@ Changelog
   See merge request fast-hep/public/scikit-validate!12
 - Fixed issue #6: Bug: gitlab.get_pipeline_job returns first job only.
   [kreczko]
-- Version 0.2.11 --> 0.2.12. [kreczko]
+
+0.2.11
+------------
 - Download_validation_outputs: do not append validation job name if
   already part of path (e.g. user defined) [kreczko]
-- Version 0.2.10 --> 0.2.11. [kreczko]
+
+0.2.10
+------------
 - Validation report: batch size and line breaks are now configurable.
   [kreczko]
 - Gitlab.download_artifact will skip download if output file exists.
   [kreczko]
 - Report: added debug information for validation report. [kreczko]
-- Version 0.2.9 --> 0.2.10. [kreczko]
 - Report: moved parsing errors their respective subsections. [kreczko]
+
+
+0.2.9
+------------
 - Merge branch 'kreczko-report-tuning' into 'master' [Lukasz Kreczko]
-
   Fine-tuning reporting
-
   Closes #5
-
   See merge request fast-hep/public/scikit-validate!11
 - Report: allow file download to fail (e.g. failed jobs in pipeline)
   [kreczko]
@@ -220,7 +236,6 @@ Changelog
 - Validation report: remove unused loop variable. [kreczko]
 - Validation report: reduced image size & added overview. [kreczko]
 - Sv_root_diff: fixed incorrect function name for processing. [kreczko]
-- Version 0.2.8 --> 0.2.9. [kreczko]
 - Sv_root_diff: added multi-processing support. [kreczko]
 - Sv_root_diff: added reason for UNKNOWN status. [kreczko]
 - Vis.draw_diff: trying to make plotting thread-safe. [kreczko]
@@ -231,16 +246,21 @@ Changelog
   [kreczko]
 - Gitlab: always take local file path as relative to project path for
   URLs. [kreczko]
-- Version 0.2.7 --> 0.2.8. [kreczko]
+
+0.2.8
+------------
 - Sv_make_report: fixed memeory_profile output file names for commands
   that include paths. [kreczko]
-- Version 0.2.6 --> 0.2.7. [kreczko]
+
+0.2.7
+------------
 - Sv_root_diff: fix _reset_infinities for empty values. [kreczko]
-- Version 0.2.5 --> 0.2.6. [kreczko]
+
+
+0.2.6
+------------
 - Merge branch 'kreczko-root-diff-tuning' into 'master' [Lukasz Kreczko]
-
   Bug fixes & generalisation for sv_root_diff
-
   See merge request fast-hep/public/scikit-validate!10
 - Vis.find_limits: fixed behaviour for empty arrays. [kreczko]
 - Added unpack np array function to serialize JSON. [kreczko]
@@ -254,16 +274,27 @@ Changelog
   "Orange3" [kreczko]
 - Sv_root_diff: improve robustness for 2D arrays and arrays of strings.
   [kreczko]
-- Version 0.2.4 --> 0.2.5. [kreczko]
+
+
+0.2.5
+------------
 - Sv_execute: replace _thread with six.moves._thread. [kreczko]
 - Sv_execute: replaced thread with six._thread. [kreczko]
 - CI: increased sleep time for report stage. [kreczko]
 - Sv_execute: memory profile monitoring now in separate thread.
   [kreczko]
+
+
+0.2.4
+------------
 - Added software module to setup.py. [kreczko]
-- Version 0.2.2 --> 0.2.3. [kreczko]
+
+0.2.3
+------------
 - Added gitlab.get_pipeline_url. [kreczko]
-- Version 0.2.1 --> 0.2.2. [kreczko]
+
+0.2.2
+------------
 - Merge branch 'kreczko-memory-profile' into 'master' [Lukasz Kreczko]
 
   Adding memory profiles to validation report
@@ -331,7 +362,6 @@ Changelog
 
 0.2.1 (2019-03-12)
 ------------------
-- Version 0.2.0 --> 0.2.1. [Lukasz Kreczko]
 - Merge branch 'kreczko-rename-commands' into 'master' [Lukasz Kreczko]
 
   More user-friendly command names
@@ -340,7 +370,10 @@ Changelog
 - Switch to new command names in the CI. [Lukasz Kreczko]
 - Updated command names & added TODOs. [Lukasz Kreczko]
 - All commands now start with "sv\_" [Lukasz Kreczko]
-- Version 0.2.0. [kreczko]
+
+
+0.2.0
+------------
 - Merge branch 'kreczko-better-validation-report' into 'master' [Lukasz
   Kreczko]
 
@@ -512,7 +545,9 @@ Changelog
 - Moved data to skvalidate/data. [kreczko]
 - Added report package. [kreczko]
 - Trying indirect call to make_demo_report in CI. [kreczko]
-- Changed version: 0.1.8 --> 0.2.0rc1. [kreczko]
+
+0.1.8
+------------
 - Run demo report under python 3.7. [kreczko]
 - Added Jinja2 to dependencies. [kreczko]
 - Added demo_report to validation stage. [kreczko]
@@ -535,31 +570,47 @@ Changelog
 - Added default report templates. [Lukasz Kreczko]
 - Added example report configs. [Lukasz Kreczko]
 - Improved development install. [Lukasz Kreczko]
-- Version 0.1.7 --> 0.1.8. [kreczko]
+
+0.1.7
+------------
 - Add_file_metrics: added fix for Python3 & test. [kreczko]
-- Version 0.1.6 --> 0.1.7. [kreczko]
+
+0.1.6
+------------
 - Execute_with_metrics: added fix for Python3 & test. [kreczko]
-- Version 0.1.5 --> 0.1.6. [kreczko]
+
+0.1.5
+------------
 - Made run-clang-tidy Python3 compatible. [kreczko]
 - Fixed pep8 error in vis. [kreczko]
-- Version 0.1.4 --> 0.1.5. [kreczko]
+
+0.1.4
+------------
 - Disabled log scale for diff plot. [kreczko]
 - Setting minY to non-zero for logarithmic plots. [kreczko]
 - Disabled logY setting if negative values are found. [kreczko]
-- V0.1.3 --> v0.1.4. [kreczko]
+
+0.1.3
+------------
 - Execute_with_metrics: added soft-fail to IOException on writing
   metrics file. [kreczko]
 - Added tests for get_target_branch. [kreczko]
 - Fix missing import. [kreczko]
-- Version 0.1.2 --> 0.1.3. [kreczko]
+
+0.1.2
+------------
 - Improved error-handling for get_target_branch and added target &
   default branches. [kreczko]
 - Worked through the stricter pep8 set. [Lukasz Kreczko]
 - Added default target_branch to get_target_branch. [Lukasz Kreczko]
-- Version 0.1.1 --> 0.1.2. [kreczko]
+
+0.1.1
+------------
 - Visualisation adjustments for root_diff. [kreczko]
 - Fixed python3 issues with io._walk. [kreczko]
-- Version 0.1.0 --> 0.1.1. [kreczko]
+
+0.1.0
+------------
 - Replaced io._walk with a more robust equivalent. [kreczko]
 - Added automated logy & x-limits to drawing. [kreczko]
 - Added code to generate tests/samples/objects.root. [kreczko]
@@ -568,17 +619,26 @@ Changelog
 - Made io.unpack more robust to str-arrays. [kreczko]
 - Fixed pep8 error: unused include in test_io. [kreczko]
 - Fixed "make test" [kreczko]
-- Version 0.0.7 --> 0.1.0. [kreczko]
+
+0.0.7
+------------
 - Added comparison of object data to tests. [kreczko]
 - Updated io.walk to handle & unpack objects. [kreczko]
-- Version 0.0.6 -> 0.0.7. [kreczko]
+
+
+0.0.6
+------------
 - Automatically expose commands directly to command line. [kreczko]
 - Made sure vector branches are flattened before comparison. [kreczko]
 - Updated tests for vector branch. [kreczko]
 - Added vector variable to test samples. [kreczko]
-- Tagged version 0.0.6. [kreczko]
+
+0.0.5
+------------
 - Added image examples for root_diff. [kreczko]
-- Tagged version 0.0.5. [kreczko]
+
+0.0.4
+------------
 - Added KS test to drawing. [kreczko]
 - Moved compare_two_root_files to compare.compare_two_root_files.
   [kreczko]
@@ -602,6 +662,9 @@ Changelog
 - Added validation step to CI. [kreczko]
 - Added test samples & generation script. [kreczko]
 - Added auto-generated docs. [kreczko]
+
+0.0.3
+------------
 - Fix package description and align versions in __init__.py and
   setup.cfg. [kreczko]
 - Fixed pep8 errors. [kreczko]
@@ -615,7 +678,9 @@ Changelog
 - Renaming CLI class. [Lukasz Kreczko]
 - Rename to scikit-validate. [Lukasz Kreczko]
 - Added missing variable to setup.py. [kreczko]
-- Version 0.0.2 --> 0.0.3. [kreczko]
+
+0.0.2
+------------
 - Added version lookup in setup.py from lz_validation. [kreczko]
 - CI: simplyfied twine upload to pypi. [kreczko]
 - Fixed behaviour of get_target_branch for non-MR branches. [kreczko]
