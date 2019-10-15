@@ -85,7 +85,8 @@ changelog:
 	@echo "Updating CHANGELOG.md"
 	@github_changelog_generator -u FAST-HEP -p scikit-validate -t ${CHANGELOG_GITHUB_TOKEN}
 	@echo "Updating HISTORY.rst"
-	@gitchangelog > HISTORY.rst
+	@gitchangelog ^v`sv_version --plain` HEAD | cat - HISTORY.rst > HISTORY.tmp
+	@mv HISTORY.tmp HISTORY.rst
 
 update_release:
 	@python update_release.py
