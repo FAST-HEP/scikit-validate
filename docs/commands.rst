@@ -154,6 +154,18 @@ Example output 2 - `test.y` exists in both, but different random seed:
       :target: _static/root_diff/test.y.png
 
 
+sv_version
+------------
+
+::
+
+    sv_version 
+    scikit-validate version: 0.3.7
+
+    sv_version --plain
+    0.3.7
+
+
 run-clang-tidy
 --------------
 From https://github.com/llvm-mirror/clang-tools-extra/blob/master/clang-tidy/tool/run-clang-tidy.py
