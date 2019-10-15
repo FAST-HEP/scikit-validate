@@ -103,6 +103,39 @@ will result in `/d/b/a`. Recommended use is to clean up ENV variables::
     PATH=`sv_remove_from_env /a/b/c:/a/b/d:/d/b/a /a/b`
 
 
+sv_metric_diff
+--------------------
+
+::
+
+    Usage: sv_metric_diff [OPTIONS] FILE_UNDER_TEST REFERENCE_FILE
+
+      Display the difference between two metric (JSON) files.
+
+      Examples:     sv_metric_diff
+      skvalidate/data/examples/performance_metrics*.json     sv_metric_diff
+      skvalidate/data/examples/file_metrics*.json
+
+    Options:
+      -o, --output-format [console|csv|markdown]
+      --help                          Show this message and exit.
+
+
+Example output:
+
+::
+
+    sv_metric_diff skvalidate/data/examples/file_metrics*
+    +-----------------------------------------+------------+---------+-------------+--------+-----------+--------+
+    | file                                    | metric     |   value |   ref value |   diff |   diff_pc | unit   |
+    |-----------------------------------------+------------+---------+-------------+--------+-----------+--------|
+    | continuous_integration_101.bin          | size_in_mb |    81   |        39.6 |   41.4 |  104.545  | MB     |
+    | continuous_integration_101.root         | size_in_mb |    14.3 |         9.4 |    4.9 |   52.1277 | MB     |
+    | continuous_integration_101_mctruth.root | size_in_mb |    90.3 |        31.9 |   58.4 |  183.072  | MB     |
+    +-----------------------------------------+------------+---------+-------------+--------+-----------+--------+
+
+
+
 sv_root_diff
 --------------------
 Calculates the difference between two ROOT (https://root.cern.ch/) files.
