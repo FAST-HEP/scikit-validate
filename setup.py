@@ -34,7 +34,7 @@ def _is_valid_command(file_name):
         return 'def cli(' in f.read()
 
 
-def find_commands(path='skvalidate/commands'):
+def find_commands(path=os.path.join('skvalidate','commands')):
     """ Scans path for valid commands """
     command_files = glob.glob(os.path.join(path, '*.py'))
     # commands = []
