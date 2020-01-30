@@ -1,9 +1,20 @@
 Changelog
 =========
 
+
+0.3.9
+------------
+- Removed comment blocks in validation_detail template (would write
+  passing entries in there resulting in large files for large projects)
+  [kreczko]
+- Merge pull request #28 from FAST-HEP/kreczko-issue-27. [Luke Kreczko]
+
+  Fixing issue #27: setup.py not compatible with Windows
+- Setup.py: fixed Unix path for find_commands default value. [kreczko]
+
+
 0.3.8
 ------------
-- Tagged version 0.3.8. [kreczko]
 - Fixed history vs releases. [kreczko]
 - Make: add unreleased history at the top of HISTORY.rst (still needs
   manual edit) [kreczko]

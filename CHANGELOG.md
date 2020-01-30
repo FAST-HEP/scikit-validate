@@ -1,7 +1,18 @@
 # Change Log
 
-## [v0.3.8](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.8)
+## [v0.3.9](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.9) (2020-01-30)
 
+[Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.3.8...v0.3.9)
+
+**Fixed bugs:**
+
+- setup.py not compatible with Windows [\#27](https://github.com/FAST-HEP/scikit-validate/issues/27)
+
+**Merged pull requests:**
+
+- Fixing issue \#27: setup.py not compatible with Windows [\#28](https://github.com/FAST-HEP/scikit-validate/pull/28) ([kreczko](https://github.com/kreczko))
+
+## [v0.3.8](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.8) (2019-10-15)
 [Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.3.7...v0.3.8)
 
 **Closed issues:**
