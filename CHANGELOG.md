@@ -1,6 +1,14 @@
 # Changelog
 
-## [v0.3.10](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.10)
+## [v0.3.11](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.11)
+
+[Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.3.10...v0.3.11)
+
+**Merged pull requests:**
+
+- Fixing root\_diff and root\_info for TGraphs [\#32](https://github.com/FAST-HEP/scikit-validate/pull/32) ([kreczko](https://github.com/kreczko))
+
+## [v0.3.10](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.10) (2020-04-01)
 
 [Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.3.9...v0.3.10)
 
