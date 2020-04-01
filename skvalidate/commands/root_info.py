@@ -3,6 +3,7 @@ Read a ROOT file and reports information about its content (names, sizes, types)
 """
 from __future__ import print_function
 import click
+import numpy as np
 import pandas as pd
 from tabulate import tabulate
 import uproot
@@ -19,6 +20,15 @@ def info(input_file):
     for name, obj in _walk(f):
         canRead = False
         is_empty = False
+
+        hasStreamer = hasattr(obj, '_streamer') and obj._streamer is not None
+        interpretation = obj.interpretation if hasattr(obj, 'interpretation') else None
+        if not hasStreamer and interpretation is None:
+            data.append(
+                (name, interpretation, np.nan, np.nan, hasStreamer, canRead, is_empty)
+            )
+            continue
+
         try:
             a = obj.array()
             if a is None:
@@ -28,9 +38,8 @@ def info(input_file):
             canRead = True
         except Exception as e:
             print(e)
-        hasStreamer = obj._streamer is not None
         data.append(
-            (name, obj.interpretation, obj.compressedbytes(), obj.uncompressedbytes(), hasStreamer, canRead, is_empty)
+            (name, interpretation, obj.compressedbytes(), obj.uncompressedbytes(), hasStreamer, canRead, is_empty)
         )
     return pd.DataFrame.from_records(data, columns=labels)
 

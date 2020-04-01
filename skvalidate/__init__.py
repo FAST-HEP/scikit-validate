@@ -14,6 +14,7 @@ __skvalidate_root__ = os.path.dirname(__file__)
 # logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
+logger.propagate = False
 
 # add loggers
 ch = logging.StreamHandler()
