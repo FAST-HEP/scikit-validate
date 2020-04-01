@@ -37,6 +37,11 @@ from skvalidate.io import walk
             np.float64, np.float64, np.float64
         ]
     ),
+    (
+        'tests/samples/non_tree_objects.root',
+        ['1Dhist;1', '2Dhist;1'],
+        [np.int32, np.float32]
+    ),
 ])
 def test_walk(input_file, names, types):
     result = list(walk(input_file))
@@ -44,4 +49,5 @@ def test_walk(input_file, names, types):
 
     for name, array in result:
         assert name in names
-        assert array.dtype == types[names.index(name)]
+        if hasattr(array, 'dtype'):
+            assert array.dtype == types[names.index(name)]

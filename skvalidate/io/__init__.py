@@ -50,7 +50,7 @@ def walk(path_to_root_file):
 
 
 def _walk(obj, name=None):
-    if not obj.keys():
+    if not hasattr(obj, 'keys') or len(obj.keys()) == 0:
         yield name, obj
     else:
         for k in sorted(obj.keys()):
