@@ -101,7 +101,7 @@ def load_values(name, content1, content2):
     try:
         value1 = np.array(value1)
         value2 = np.array(value2)
-    except (AssertionError, TypeError) as e:
+    except (AssertionError, TypeError, ValueError) as e:
         logger.error('Cannot convert {} to numpy array: {}'.format(name, e))
         return None, None
 
