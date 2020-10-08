@@ -23,13 +23,17 @@ matrix:
       stage: quick-checks
       env: CHECK="lint"
     -
-      python: 3.8
+      python: 3.7
       stage: test
       env: CHECK="test demo"
     -
-      python: 3.9-dev
+      python: 3.8
       stage: test
       env: CHECK="test demo"
+    # -
+    #   python: 3.9-dev
+    #   stage: test
+    #   env: CHECK="test demo"
     -
       python: 3.8
       stage: deploy
