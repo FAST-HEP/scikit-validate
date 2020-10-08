@@ -1,3 +1,27 @@
+0.3.12
+------------
+
+Fix
+~~~
+- Added missing error info for section properties. [Luke Kreczko]
+- More readable debug messages for get_pipeline_job. [Luke Kreczko]
+- Wrong variable name for DEBUG messages. [Luke Kreczko]
+
+Other
+~~~~~
+- Added debug output for io.download_from_gitlab. [Luke Kreczko]
+- Python-gitlab 1.8 has been released, removing workarounds and
+  comments. [Luke Kreczko]
+- Removing py 3.9 for now as not all dependencies are available yet.
+  [Luke Kreczko]
+- Python 3.9 not yet available on travis, use 3.9-dev instead. [Luke
+  Kreczko]
+- Updated requirements_dev.txt. [Luke Kreczko]
+- CI: removed Python 2.7, 3.6. and 3.7, added python 3.8 and 3.9. [Luke
+  Kreczko]
+- Feature: added debug output for get_pipeline_job. [Luke Kreczko]
+
+
 Changelog
 =========
 

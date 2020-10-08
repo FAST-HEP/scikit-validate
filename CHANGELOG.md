@@ -1,6 +1,14 @@
 # Changelog
 
-## [v0.3.11](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.11)
+## [v0.3.12](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.12)
+
+[Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.3.11...v0.3.12)
+
+**Merged pull requests:**
+
+- Fixing pipeline for Python 3.7 & more debug logs [\#33](https://github.com/FAST-HEP/scikit-validate/pull/33) ([kreczko](https://github.com/kreczko))
+
+## [v0.3.11](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.11) (2020-04-01)
 
 [Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.3.10...v0.3.11)
 
