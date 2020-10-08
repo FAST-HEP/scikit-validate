@@ -19,23 +19,23 @@ matrix:
   fast_finish: true
   include:
     -
-      python: 3.6
+      python: 3.8
       stage: quick-checks
       env: CHECK="lint"
     -
-      python: 2.7
-      stage: test
-      env: CHECK="test demo"
-    -
-      python: 3.6
-      stage: test
-      env: CHECK="test demo"
-    -
       python: 3.7
       stage: test
       env: CHECK="test demo"
     -
-      python: 3.7
+      python: 3.8
+      stage: test
+      env: CHECK="test demo"
+    # -
+    #   python: 3.9-dev
+    #   stage: test
+    #   env: CHECK="test demo"
+    -
+      python: 3.8
       stage: deploy
       env: DEPLOY_TO_PYPI=yes
 
