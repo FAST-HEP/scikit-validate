@@ -27,7 +27,7 @@ matrix:
       stage: test
       env: CHECK="test demo"
     -
-      python: 3.9
+      python: 3.9-dev
       stage: test
       env: CHECK="test demo"
     -
