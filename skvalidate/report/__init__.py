@@ -104,7 +104,7 @@ class Section(object):
         except (UndefinedError, TemplateSyntaxError, TypeError) as e:
             logger.error('Unable to render section "{}": {}'.format(self.__name, e))
             logger.error('Section values: {0}'.format(self.__values))
-            logger.error('Section properties:'.format(self.__properties))
+            logger.error('Section properties: {0}'.format(self.__properties))
             raise e
 
     @property
