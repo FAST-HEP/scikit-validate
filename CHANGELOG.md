@@ -1,6 +1,14 @@
 # Changelog
 
-## [v0.3.12](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.12)
+## [v0.3.13](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.13)
+
+[Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.3.12...v0.3.13)
+
+**Closed issues:**
+
+- Drop Python 2 support [\#20](https://github.com/FAST-HEP/scikit-validate/issues/20)
+
+## [v0.3.12](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.12) (2020-10-08)
 
 [Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.3.11...v0.3.12)
 
