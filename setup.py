@@ -78,7 +78,15 @@ setup_requirements = [
     # 'pytest-runner',
 ]
 
-test_requirements = ['pytest', 'hypothesis', ]
+test_requirements = [
+    'coverage',
+    'httmock',
+    'hypothesis',
+    'mock',
+    'pytest',
+    'pytest-cov',
+    'responses',
+]
 
 setup(
     author="Luke Kreczko",

@@ -1,11 +1,15 @@
 bumpversion==0.5.3
 coverage==4.5.1
+httmock
 hypothesis==5.8.0
 flake8==3.8.3
 gitchangelog==3.0.4
+mock
 pip==19.3.1
 pytest==4.6.4
+pytest-cov
 pytest-runner==2.11.1
+responses
 six
 Sphinx==3.2.1
 sphinx-rtd-theme==0.5.0
