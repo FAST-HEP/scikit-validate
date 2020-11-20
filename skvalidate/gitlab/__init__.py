@@ -159,7 +159,7 @@ def download_json_from_job(json_file, job_id, timeout=60):
         try:
             raw_json = download_artifact(job_id, json_file)
             error = False
-        except gitlab.exceptions.GitlabHttpError as e:
+        except (gitlab.exceptions.GitlabGetError, gitlab.exceptions.GitlabHttpError) as e:
             logger.error("Cannot download {} for job {}: {}".format(json_file, job_id, e))
             logger.error("Next attempt in {}s".format(wait_time))
             time.sleep(wait_time)
