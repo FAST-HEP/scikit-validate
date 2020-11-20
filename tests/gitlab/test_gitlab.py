@@ -5,8 +5,6 @@ import pytest
 import random
 import json
 
-from httmock import HTTMock, urlmatch, response
-
 import skvalidate.gitlab as sk_gl
 
 @pytest.fixture()
@@ -73,21 +71,21 @@ def test_select_last_iteration_only(ci_jobs):
 
 def test_download_artifact(gl, resp_artifact_json):
     sk_gl.GITLAB_CONNECTION = gl
-    os.environ['CI_PROJECT_ID'] =  '1'
+    os.environ['CI_PROJECT_ID'] = '1'
 
     content = sk_gl.download_artifact(1, "test.json")
-    assert json.loads(content) == {'name':'value'}
+    assert json.loads(content) == {'name': 'value'}
 
 def test_download_artifact_no_such_file(gl, resp_artifact_no_such_file):
     sk_gl.GITLAB_CONNECTION = gl
-    os.environ['CI_PROJECT_ID'] =  '1'
+    os.environ['CI_PROJECT_ID'] = '1'
 
     with pytest.raises(gitlab.exceptions.GitlabGetError):
-        content = sk_gl.download_artifact(1, "test.json")
+        sk_gl.download_artifact(1, "test.json")
 
 def test_download_json_from_job(gl, resp_artifact_json):
     sk_gl.GITLAB_CONNECTION = gl
-    os.environ['CI_PROJECT_ID'] =  '1'
-    
+    os.environ['CI_PROJECT_ID'] = '1'
+
     content = sk_gl.download_json_from_job('test.json', 1)
-    assert content == {'name':'value'}
+    assert content == {'name': 'value'}
