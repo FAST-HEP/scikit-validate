@@ -279,6 +279,8 @@ def format_software_versions(items):
     for name, content in items.items():
         result[name] = content
         if 'software_versions' in content:
+            if name not in content['software_versions']:
+                continue
             logger.debug('Formatting {0} for {1}'.format(content['software_versions'], name))
             software_versions = []
             for software, version in content['software_versions'][name].items():
