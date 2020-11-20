@@ -55,22 +55,22 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
-    'Click>=6.0',
-    'gitpython',
+    'Click<8.0',
+    'gitpython<4.0.0',
     'jinja2',
     'markdown2',
-    'matplotlib',
+    'matplotlib<4.0.0',
     'memory_profiler>=0.54',
     'numexpr',
     'numpy>=1.15.0',
     'pandas',
     'plumbum',
-    'python-gitlab>=2.0.0',
+    'python-gitlab<3.0.0',
     'pyyaml',
     'scipy',
     'tabulate',
     'tqdm',
-    'uproot',
+    'uproot<4.0.0',
     'xhtml2pdf',
 ]
 
@@ -84,16 +84,14 @@ setup(
     author="Luke Kreczko",
     author_email='kreczko@cern.ch',
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Natural Language :: English',
-        "Programming Language :: Python :: 2",
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
     ],
     description="Science validation toolkit",
     entry_points={
