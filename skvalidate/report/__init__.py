@@ -117,7 +117,7 @@ class Section(object):
 
 def read_config(path):
     with open(path) as f:
-        config_tpl = yaml.load(f.read())
+        config_tpl = yaml.load(f.read(), Loader=yaml.FullLoader)
     return _render_config(config_tpl)
 
 
