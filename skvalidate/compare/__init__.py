@@ -18,7 +18,11 @@ ERROR = 'error'
 
 def difference(a1, a2):
     a1_tmp, a2_tmp = _ensure_same_lentgth(a1, a2)
-    return a1_tmp - a2_tmp
+    if hasattr(a1, 'dtype'):
+        if np.issubdtype(a1.dtype, np.str_):
+            return []
+
+    return np.subtract(a1_tmp, a2_tmp)
 
 
 def _ensure_same_lentgth(a1, a2):
