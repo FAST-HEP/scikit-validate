@@ -6,7 +6,7 @@ import click
 import numpy as np
 import pandas as pd
 from tabulate import tabulate
-import uproot
+import uproot4 as uproot
 
 from skvalidate.io import _walk
 
@@ -39,7 +39,7 @@ def info(input_file):
         except Exception as e:
             print(e)
         data.append(
-            (name, interpretation, obj.compressedbytes(), obj.uncompressedbytes(), hasStreamer, canRead, is_empty)
+            (name, interpretation, obj.compressed_bytes, obj.uncompressed_bytes, hasStreamer, canRead, is_empty)
         )
     return pd.DataFrame.from_records(data, columns=labels)
 

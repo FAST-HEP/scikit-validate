@@ -6,7 +6,8 @@ import requests
 
 from mprof import read_mprofile_file
 import numpy as np
-import uproot
+import uproot4
+import awkward1
 
 from .. import logger
 
@@ -43,7 +44,7 @@ def read_data_from_json(json_file):
 
 
 def walk(path_to_root_file):
-    f = uproot.open(path_to_root_file)
+    f = uproot4.open(path_to_root_file)
     for name, obj in _walk(f):
         for subname, subobj in unpack(name, obj):
             yield subname, subobj
@@ -55,9 +56,8 @@ def _walk(obj, name=None):
     else:
         for k in sorted(obj.keys()):
             # if there is a '.' the first part of k it will be a duplicate
-            k_str = k.decode("utf-8")
-            tokens = k_str.split('.')
-            new_name = name if name else k_str
+            tokens = k.split('.')
+            new_name = name if name else k
             for t in tokens:
                 if new_name.endswith(t):
                     continue
@@ -76,13 +76,14 @@ def unpack(name, obj):
     if hasattr(array, 'flatten'):
         try:
             flat_array = obj.array().flatten()
+            print(dir(flat_array))
         except ValueError as e:
             logger.error('Cannot flatten {}: {}'.format(name, e))
             flat_array = obj.array()
     else:
         flat_array = array
 
-    if np.size(flat_array) > 0 and flat_array.__class__.__name__ == 'ObjectArrayMethods':
+    if np.size(awkward1.operations.convert.to_numpy(flat_array)) > 0 and flat_array.__class__.__name__ == 'ObjectArrayMethods':
         o = flat_array[0]
         attributes = [x for x in dir(o) if x.startswith('_f')]
         for a in attributes:
