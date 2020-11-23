@@ -39,7 +39,8 @@ def info(input_file):
         except Exception as e:
             print(e)
         data.append(
-            (name, typename, interpretation, obj.compressed_bytes, obj.uncompressed_bytes, hasStreamer, canRead, is_empty)
+            (name, typename, interpretation, obj.compressed_bytes,
+             obj.uncompressed_bytes, hasStreamer, canRead, is_empty)
         )
     return pd.DataFrame.from_records(data, columns=labels)
 
