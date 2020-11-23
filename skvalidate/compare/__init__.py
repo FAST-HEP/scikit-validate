@@ -8,7 +8,7 @@ import awkward1 as ak
 from skvalidate.io import walk
 from .metrics import compare_metrics, absolute_to_relative_timestamps
 from .. import logger
-import skvalidate.operations._awkward
+import skvalidate.operations._awkward # noqa F405
 
 SUCCESS = 'success'
 FAILED = 'failed'
@@ -112,12 +112,16 @@ def evaluateStatus(value1, value2, evaluationFunc, cut):
     return status
 
 
+def norm(data):
+    return np.sqrt(np.sum(abs(data * data)))
+
+
 def maxRelativeDifference(value1, value2, normalisation=None):
     diff = difference(value2, value1)
     d = np.absolute(diff)
     if normalisation is None:
         normalisation = value2 if np.size(value2) > 0 else value1
-        normalisation = np.sqrt(np.sum(abs(normalisation*normalisation)))  # np.sum(normalisation)
+        normalisation = norm(normalisation)
 
     if abs(normalisation) == np.Infinity or np.Infinity in d:
         return np.Infinity
@@ -131,8 +135,7 @@ def reset_infinities(values):
     try:
         values[np.absolute(values) == np.Infinity] = 0
     except Exception as e:
-        print('Cannot process', values)
-        ak.type(values)
+        logger.error('Cannot process', ak.type(values))
         raise e
     return values
 

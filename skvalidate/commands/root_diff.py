@@ -10,8 +10,8 @@ import multiprocessing as mp
 import os
 import threading
 
+import awkward1 as ak
 import click
-import numpy as np
 from plumbum import colors
 from tqdm import tqdm
 
@@ -34,12 +34,12 @@ def _process(name, values, output_path):
             msg = 'FAILED (test: {:0.3f}): {}'.format(evaluationValue, image)
         except TypeError as e:
             msg = 'ERROR: Cannot draw (value type: {0}, reason: {1})'.format(
-                "Unknown" if values['original'] is None else values['original'].dtype,
+                "Unknown" if values['original'] is None else str(ak.type(values['original'])),
                 str(e),
             )
     if status == compare.UNKNOWN:
         msg = 'WARNING: Unable to compare (value type: {0}, reason: {1})'.format(
-            "Unknown" if values['original'] is None else values['original'].dtype,
+            "Unknown" if values['original'] is None else str(ak.type(values['original'])),
             values['reason'],
         )
         color = colors.Orange3
@@ -146,16 +146,10 @@ def _reset_infinities(comparison):
     for name, values in comparison.items():
         if values['original'] is None or values['reference'] is None:
             continue
-        if values['original'].dtype.kind in {'U', 'S', 'O'}:
+        if 'str' in str(ak.type(values['original'])):
             continue
-        if values['reference'].dtype.kind in {'U', 'S', 'O'}:
+        if 'str' in str(ak.type(values['reference'])):
             continue
-        if len(values['original']) > 0:
-            values['original'][np.absolute(values['original']) == np.Infinity] = 0
-        if len(values['reference']) > 0:
-            values['reference'][np.absolute(values['reference']) == np.Infinity] = 0
-        if len(values['diff']) > 0:
-            values['diff'][np.absolute(values['diff']) == np.Infinity] = 0
         comparison[name] = values
     return comparison
 
