@@ -15,17 +15,17 @@ def info(input_file):
     f = uproot.open(input_file)
 
     data = []
-    labels = ['name', 'uproot_type', 'compressedbytes',
+    labels = ['name', 'type', 'interpretation', 'compressedbytes',
               'uncompressedbytes', 'hasStreamer', 'uproot_readable', 'is_empty']
     for name, obj in _walk(f):
         canRead = False
         is_empty = False
-
+        typename = obj.typename
         hasStreamer = hasattr(obj, '_streamer') and obj._streamer is not None
         interpretation = obj.interpretation if hasattr(obj, 'interpretation') else None
         if not hasStreamer and interpretation is None:
             data.append(
-                (name, interpretation, np.nan, np.nan, hasStreamer, canRead, is_empty)
+                (name, typename, interpretation, np.nan, np.nan, hasStreamer, canRead, is_empty)
             )
             continue
 
@@ -39,7 +39,7 @@ def info(input_file):
         except Exception as e:
             print(e)
         data.append(
-            (name, interpretation, obj.compressed_bytes, obj.uncompressed_bytes, hasStreamer, canRead, is_empty)
+            (name, typename, interpretation, obj.compressed_bytes, obj.uncompressed_bytes, hasStreamer, canRead, is_empty)
         )
     return pd.DataFrame.from_records(data, columns=labels)
 
