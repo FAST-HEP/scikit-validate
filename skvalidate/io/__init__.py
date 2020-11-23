@@ -54,7 +54,7 @@ def _walk(obj, name=None):
     if not hasattr(obj, 'keys') or len(obj.keys()) == 0:
         yield name, obj
     else:
-        for k in sorted(obj.keys()):
+        for k in sorted(obj.keys(recursive=False)):
             # if there is a '.' the first part of k it will be a duplicate
             tokens = k.split('.')
             new_name = name if name else k
@@ -73,12 +73,11 @@ def unpack(name, obj):
         yield name, []
         return
 
-    if hasattr(array, 'flatten'):
-        try:
-            flat_array = obj.array().flatten()
-        except ValueError as e:
-            logger.error('Cannot flatten {}: {}'.format(name, e))
-            flat_array = obj.array()
+    try:
+        flat_array = ak.flatten(obj.array())
+    except ValueError as e:
+        logger.debug('Cannot flatten {}: {}'.format(name, e))
+        flat_array = obj.array()
     else:
         flat_array = array
 
