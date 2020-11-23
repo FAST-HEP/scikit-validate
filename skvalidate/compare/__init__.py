@@ -3,9 +3,12 @@ import numexpr as ne
 import numpy as np
 from scipy import stats
 
+import awkward1 as ak
+
 from skvalidate.io import walk
 from .metrics import compare_metrics, absolute_to_relative_timestamps
 from .. import logger
+import skvalidate.operations._awkward
 
 SUCCESS = 'success'
 FAILED = 'failed'
@@ -15,14 +18,8 @@ ERROR = 'error'
 
 def difference(a1, a2):
     a1_tmp, a2_tmp = _ensure_same_lentgth(a1, a2)
-    if np.issubdtype(a1.dtype, np.integer):
-        new_type = np.float64
-        a1_tmp = a1_tmp.astype(new_type)
-        a2_tmp = a2_tmp.astype(new_type)
+    return a1_tmp - a2_tmp
 
-    if np.issubdtype(a1.dtype, np.str_):
-        return []
-    return np.subtract(a1_tmp, a2_tmp)
 
 def _ensure_same_lentgth(a1, a2):
     a1_size, a2_size = np.size(a1), np.size(a2)
@@ -32,6 +29,7 @@ def _ensure_same_lentgth(a1, a2):
         return a1, np.resize(a2, a1_size)
     if a2_size > a1_size:
         return np.resize(a1, a2_size), a2
+
 
 def is_ok(evaluationFunc, cut, *args, **kwargs):
     value = evaluationFunc(*args, **kwargs)  # noqa: F841
@@ -72,7 +70,7 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
             status = UNKNOWN
             reason = 'Cannot convert data to numpy array'
         else:
-            ks_statistic, pvalue = stats.ks_2samp(value2, value1)
+            ks_statistic, pvalue = stats.ks_2samp(ak.to_numpy(value2), ak.to_numpy(value1))
 
             try:
                 diff = difference(value2, value1)
@@ -96,21 +94,14 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
 
 
 def load_values(name, content1, content2):
-    value1 = content1[name] if name in content1 else np.array([])
-    value2 = content2[name] if name in content2 else np.array([])
+    value1 = content1[name] if name in content1 else ak.Array([])
+    value2 = content2[name] if name in content2 else ak.Array([])
+
     try:
-        value1 = np.array(value1)
-        value2 = np.array(value2)
-    except (AssertionError, TypeError, ValueError) as e:
-        logger.error('Cannot convert {} to numpy array: {}'.format(name, e))
-        return None, None
-
-    # if len(value1) == 0 and len(value2) == 0:
-
-    dimension = max(np.ndim(value1), np.ndim(value2))
-    if dimension > 1:
-        value1 = value1.flatten()
-        value2 = value2.flatten()
+        value1 = ak.flatten(value1)
+        value2 = ak.flatten(value2)
+    except ValueError:
+        pass
     return value1, value2
 
 
@@ -126,14 +117,24 @@ def maxRelativeDifference(value1, value2, normalisation=None):
     d = np.absolute(diff)
     if normalisation is None:
         normalisation = value2 if np.size(value2) > 0 else value1
-        normalisation = np.linalg.norm(normalisation)
+        normalisation = np.sqrt(np.sum(abs(normalisation*normalisation)))  # np.sum(normalisation)
 
     if abs(normalisation) == np.Infinity or np.Infinity in d:
         return np.Infinity
     if normalisation == 0:
         return 0
 
-    return np.amax(d / normalisation, initial=-9000)
+    return np.amax(d / normalisation)
+
+
+def reset_infinities(values):
+    try:
+        values[np.absolute(values) == np.Infinity] = 0
+    except Exception as e:
+        print('Cannot process', values)
+        ak.type(values)
+        raise e
+    return values
 
 
 __all__ = [
