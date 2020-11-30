@@ -50,10 +50,10 @@ def info(input_file):
 @click.option('-o', '--output-file', help="CSV output file for information", type=click.Path(), default='root_info.csv')
 @click.option('--show-unreadable', help="print the file entries that uproot cannot read", default=False, is_flag=True)
 @click.option('--show-empty', help="print the file entries that are empty", default=False, is_flag=True)
-@click.option('-v', '--verbose', help="print information", default=False, is_flag=True)
-def cli(input_file, output_file, show_unreadable, show_empty, verbose):
+@click.option('-q', '--quiet', help="print only failures", default=False, is_flag=True)
+def cli(input_file, output_file, show_unreadable, show_empty, quiet):
     df = info(input_file)
-    if verbose and not (show_unreadable or show_empty):
+    if not quiet and not (show_unreadable or show_empty):
         print(tabulate(df, headers='keys', tablefmt='psql'))
     if show_unreadable:
         unreadable = df[~df.uproot_readable]
