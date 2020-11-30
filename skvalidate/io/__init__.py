@@ -80,14 +80,15 @@ def unpack(name, obj):
         flat_array = obj.array()
     else:
         flat_array = array
+    # print(ak.num(flat_array, axis=0))
 
-    if ak.num(flat_array, axis=0) > 0 and flat_array.__class__.__name__ == 'ObjectArrayMethods':
-        o = flat_array[0]
-        attributes = [x for x in dir(o) if x.startswith('_f')]
-        for a in attributes:
-            yield name + '.' + a, np.asarray([getattr(x, a) for x in flat_array])
-    else:
-        yield name, flat_array
+    # if ak.num(flat_array, axis=0) > 0 and flat_array.__class__.__name__ == 'ObjectArrayMethods':
+    #     o = flat_array[0]
+    #     attributes = [x for x in dir(o) if x.startswith('_f')]
+    #     for a in attributes:
+    #         yield name + '.' + a, np.asarray([getattr(x, a) for x in flat_array])
+    # else:
+    yield name, flat_array
 
 
 def save_array_to_file(array, name, output_dir):
