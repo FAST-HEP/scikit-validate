@@ -31,10 +31,11 @@ def info(input_file):
 
         try:
             a = obj.array()
-            if a is None:
+            if a is None or len(a) == 0:
                 is_empty = True
             # try to access first element
-            a[0]
+            if not is_empty:
+                a[0]
             canRead = True
         except Exception as e:
             print(e)
