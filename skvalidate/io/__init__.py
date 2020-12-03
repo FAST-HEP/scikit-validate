@@ -10,6 +10,7 @@ import uproot as uproot
 import awkward as ak
 
 from .. import logger
+import skvalidate.operations._awkward as skak
 
 
 def save_metrics_to_file(metrics, metrics_file):
@@ -43,9 +44,12 @@ def read_data_from_json(json_file):
         return json.load(f)
 
 
-def walk(path_to_root_file):
+def walk(path_to_root_file, unpack_fields=True):
     f = uproot.open(path_to_root_file)
     for name, obj in _walk(f):
+        if not unpack_fields:
+            yield name, obj
+            continue
         for subname, subobj in unpack(name, obj):
             yield subname, subobj
 
@@ -80,15 +84,14 @@ def unpack(name, obj):
         flat_array = obj.array()
     else:
         flat_array = array
-    # print(ak.num(flat_array, axis=0))
 
-    # if ak.num(flat_array, axis=0) > 0 and flat_array.__class__.__name__ == 'ObjectArrayMethods':
-    #     o = flat_array[0]
-    #     attributes = [x for x in dir(o) if x.startswith('_f')]
-    #     for a in attributes:
-    #         yield name + '.' + a, np.asarray([getattr(x, a) for x in flat_array])
-    # else:
-    yield name, flat_array
+    unpacked = skak.unpack_array(flat_array)
+    if not isinstance(unpacked, dict):
+        yield name, flat_array
+        return
+
+    for field, value in unpacked.items():
+        yield name + '.' + field, value
 
 
 def save_array_to_file(array, name, output_dir):
