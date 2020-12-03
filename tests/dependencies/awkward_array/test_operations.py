@@ -1,4 +1,4 @@
-import awkward1 as ak
+import awkward as ak
 import numpy as np
 import pytest
 
@@ -28,17 +28,15 @@ def test_object_subtract(object_type_ak_array):
 
 
 def test_scalar_amax(scalar_type_ak_array):
-    with pytest.raises(TypeError):
-        amax = np.amax(scalar_type_ak_array, initial=-9000)
-        np_array = ak.to_numpy(scalar_type_ak_array)
-        amax == np.amax(np_array, initial=-9000)
+    amax = ak.max(scalar_type_ak_array, initial=-9000)
+    np_array = ak.to_numpy(scalar_type_ak_array)
+    amax == np.amax(np_array, initial=-9000)
 
 
 def test_object_amax(object_type_ak_array):
-    with pytest.raises(TypeError):
-        amax = np.amax(object_type_ak_array, initial=-9000)
-        np_array = ak.to_numpy(object_type_ak_array)
-        amax == np.amax(np_array, initial=-9000)
+    amax = np.amax(object_type_ak_array.fX, initial=-9000)
+    np_array = ak.to_numpy(object_type_ak_array.fX)
+    amax == np.amax(np_array, initial=-9000)
 
 
 def test_scalar_laNorm(scalar_type_ak_array):
