@@ -1,4 +1,4 @@
-import awkward1 as ak
+import awkward as ak
 import numpy as np
 
 ak.behavior[np.absolute, "TVector2"] = lambda data: np.sqrt(data.fX**2 + data.fY**2)

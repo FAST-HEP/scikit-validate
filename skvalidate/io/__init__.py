@@ -6,8 +6,8 @@ import requests
 
 from mprof import read_mprofile_file
 import numpy as np
-import uproot4 as uproot
-import awkward1 as ak
+import uproot as uproot
+import awkward as ak
 
 from .. import logger
 

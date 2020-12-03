@@ -6,7 +6,7 @@ import click
 import numpy as np
 import pandas as pd
 from tabulate import tabulate
-import uproot4 as uproot
+import uproot as uproot
 
 from skvalidate.io import _walk
 
