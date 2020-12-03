@@ -55,7 +55,7 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
-    'awkward>=1.0.0rc1',
+    'git+https://github.com/scikit-hep/awkward-1.0.git',
     'Click<8.0',
     'gitpython<4.0.0',
     'jinja2',
