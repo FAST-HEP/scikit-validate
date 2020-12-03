@@ -81,7 +81,7 @@ def resp_artifact_no_such_file(binary_content):
 
 @pytest.fixture
 def object_file():
-    import uproot4 as uproot
+    import uproot
     path = 'tests/samples/objects.root'
     f = uproot.open(path)
     return f
@@ -93,5 +93,10 @@ def scalar_type_ak_array(object_file):
 
 
 @pytest.fixture
-def object_type_ak_array(object_file):
-    return object_file['Events']['bees.xyPosition'].array()
+def object_type(object_file):
+    return object_file['Events']['bees.xyPosition']
+
+
+@pytest.fixture
+def object_type_ak_array(object_type):
+    return object_type.array()
