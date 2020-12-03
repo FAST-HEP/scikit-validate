@@ -10,7 +10,7 @@ import multiprocessing as mp
 import os
 import threading
 
-import awkward1 as ak
+import awkward as ak
 import click
 from plumbum import colors
 from tqdm import tqdm
@@ -24,17 +24,17 @@ def _process(name, values, output_path):
     color = colors.red
     msg = compare.ERROR
 
-    evaluationValue = values['evaluationValue']
     status = values['status']
 
     if status == compare.FAILED:
         try:
             image = draw_diff(name, values, output_path)
             values['image'] = image
-            msg = 'FAILED (test: {:0.3f}): {}'.format(evaluationValue, image)
+            msg = 'FAILED (reason: {}): {}'.format(values['reason'], image)
         except TypeError as e:
-            msg = 'ERROR: Cannot draw (value type: {0}, reason: {1})'.format(
-                "Unknown" if values['original'] is None else str(ak.type(values['original'])),
+            msg = 'ERROR: Cannot draw (value types: {0} & {1}, reason: {2})'.format(
+                "NoneType" if values['original'] is None else str(ak.type(values['original'])),
+                "NoneType" if values['reference'] is None else str(ak.type(values['reference'])),
                 str(e),
             )
     if status == compare.UNKNOWN:
@@ -125,33 +125,45 @@ class MultiProcessStatus(object):
 @click.option('-n', '--n-cores', default=1, type=int, help='Experimental feature: use n number of cores')
 def cli(file_under_test, reference_file, output_path, report_file, prefix, n_cores):
     # TODO add verbosity setting
-    # TODO: add parameter for distributions that are allowed to file (e.g. timestamps)
+    # TODO: add parameter for distributions that are allowed to fail (e.g. timestamps)
     # TODO: throw error if any distribution fails
-    comparison = compare.compare_two_root_files(file_under_test, reference_file)
-    comparison = _reset_infinities(comparison)
+    summary = {}
+    for name, comparison in compare.compare_two_root_files(file_under_test, reference_file):
+        comparison = _reset_infinities(comparison)
+        if comparison is None:
+            continue
+        summary[name] = _process(name, comparison, output_path)
 
-    processing = MultiProcessStatus(comparison, n_cores, output_path)
-    try:
-        processing.run()
-    except KeyboardInterrupt:
-        processing.terminate()
+    # processing = MultiProcessStatus(comparison, n_cores, output_path)
+    # try:
+    #     processing.run()
+    # except KeyboardInterrupt:
+    #     processing.terminate()
 
-    summary = _add_summary(processing.comparison, prefix)
+    # summary = _add_summary(processing.comparison, prefix)
+    summary = _add_summary(summary, prefix)
     summary[prefix]['output_path'] = output_path
     # TODO: print nice summary
     write_data_to_json(summary, report_file)
 
 
 def _reset_infinities(comparison):
-    for name, values in comparison.items():
-        if values['original'] is None or values['reference'] is None:
-            continue
-        if 'str' in str(ak.type(values['original'])):
-            continue
-        if 'str' in str(ak.type(values['reference'])):
-            continue
-        comparison[name] = values
+    if comparison['original'] is None or comparison['reference'] is None:
+        return None
+    if 'str' in str(ak.type(comparison['original'])):
+        return None
+    if 'str' in str(ak.type(comparison['reference'])):
+        return None
     return comparison
+    # for name, values in comparison.items():
+    #     if values['original'] is None or values['reference'] is None:
+    #         continue
+    #     if 'str' in str(ak.type(values['original'])):
+    #         continue
+    #     if 'str' in str(ak.type(values['reference'])):
+    #         continue
+    #     comparison[name] = values
+    # return comparison
 
 
 def _add_summary(comparison, prefix):

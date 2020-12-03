@@ -3,12 +3,12 @@ import numexpr as ne
 import numpy as np
 from scipy import stats
 
-import awkward1 as ak
+import awkward as ak
 
 from skvalidate.io import walk
 from .metrics import compare_metrics, absolute_to_relative_timestamps
 from .. import logger
-import skvalidate.operations._awkward # noqa F405
+import skvalidate.operations._awkward as skak # noqa F405
 
 SUCCESS = 'success'
 FAILED = 'failed'
@@ -43,12 +43,10 @@ def is_ok(evaluationFunc, cut, *args, **kwargs):
 def compare_two_root_files(file1, file2, tolerance=0.02):
     """Compare two ROOT(.cern.ch) files and return dictionary of comparison."""
     comparison = {}
-
     content1 = dict((key, value) for (key, value) in walk(file1))
     content2 = dict((key, value) for (key, value) in walk(file2))
     keys1 = set(content1.keys())
     keys2 = set(content2.keys())
-
     all_keys = sorted(keys1 | keys2)
 
     for name in all_keys:
@@ -61,14 +59,15 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
         evaluationFunc = maxRelativeDifference
         cut = 'value <= {}'.format(tolerance)
 
-        value1, value2 = load_values(name, content1, content2)
+        value1 = load_value(name, content1)
+        value2 = load_value(name, content2)
 
-        if np.size(value1) == 0 and np.size(value2) == 0:
+        if len(value1) == 0 and len(value2) == 0:
             status = SUCCESS
             pvalue = 1
         elif (np.size(value1) == 0 and np.size(value2) > 0) or (np.size(value1) > 0 and np.size(value2) == 0):
             status = FAILED
-            reason = 'file1 is empty' if np.size(value1) > 0 else 'reference file is empty'
+            reason = 'original file is empty' if np.size(value1) > 0 else 'reference file is empty'
             diff = value1 if np.size(value1) > 0 else value2
         elif value1 is None or value2 is None:
             status = UNKNOWN
@@ -83,8 +82,7 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
             except Exception as e:
                 reason = str(e)
                 status = UNKNOWN
-
-        comparison[name] = dict(
+        yield name, dict(
             status=status,
             original=value1,
             reference=value2,
@@ -94,19 +92,17 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
             pvalue=pvalue,
             reason=reason,
         )
-    return comparison
 
 
-def load_values(name, content1, content2):
-    value1 = content1[name] if name in content1 else ak.Array([])
-    value2 = content2[name] if name in content2 else ak.Array([])
-
+def load_value(name, content):
+    value = content[name] if name in content else ak.Array([])
+    if hasattr(value, 'array'):
+        value = value.array()
     try:
-        value1 = ak.flatten(value1)
-        value2 = ak.flatten(value2)
+        value = ak.flatten(value)
     except ValueError:
         pass
-    return value1, value2
+    return value
 
 
 def evaluateStatus(value1, value2, evaluationFunc, cut):
