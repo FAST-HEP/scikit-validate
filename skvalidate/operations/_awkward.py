@@ -16,3 +16,20 @@ ak.behavior[np.multiply, "TVector2", "TVector2"] = lambda left, right: left.fX *
     right.fX + left.fY * right.fY
 ak.behavior[np.multiply, "TVector3", "TVector3"] = lambda left, right: left.fX * \
     right.fX + left.fY * right.fY + left.fZ * right.fZ
+
+
+def parse_fields(array):
+    layout = array.layout
+    return layout.keys()
+
+
+def unpack(obj):
+    if not hasattr(obj, 'array'):
+        return obj
+    return unpack_array(obj.array())
+
+def unpack_array(array):
+    fields = parse_fields(array)
+    if fields:
+        return {f: getattr(array, f) for f in fields}
+    return array
