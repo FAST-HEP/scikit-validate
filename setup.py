@@ -123,6 +123,7 @@ setup(
         'skvalidate.compare',
         'skvalidate.gitlab',
         'skvalidate.io',
+        'skvalidate.operations',
         'skvalidate.report',
         'skvalidate.software',
         'skvalidate.vis',
