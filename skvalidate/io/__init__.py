@@ -8,6 +8,7 @@ from mprof import read_mprofile_file
 import numpy as np
 import uproot as uproot
 import awkward as ak
+from fuzzywuzzy import process
 
 from .. import logger
 import skvalidate.operations._awkward as skak
@@ -170,3 +171,37 @@ def split_memory_profile_output(profile_file):
             timestamp=profile['timestamp']
         )
     return results
+
+
+def recursive_keys(path_to_root_file, unpack_fields=True):
+    f = uproot.open(path_to_root_file)
+    for name, obj in _walk(f):
+        if not unpack_fields:
+            yield name
+            del obj
+            continue
+        for subname, _ in unpack(name, obj):
+            yield subname
+        del obj
+
+
+def load_array(path_to_root_file, array_name):
+    f = uproot.open(path_to_root_file)
+    tokens = array_name.split('.')
+    obj = f[tokens[0]]
+    try:  # fuzzy match
+        tmp_key = '/'.join(tokens[1:])
+        key, _ = process.extractOne(tmp_key, obj.keys())
+        obj = obj[key]
+    except:  # dig deeper
+        for t in tokens[1:]:
+            obj = obj[t]
+
+    if hasattr(obj, 'array'):
+        array = obj.array()
+        try:  # to unpack array
+            array = getattr(array, tokens[-1])
+        except:
+            pass
+        return array
+    return obj
