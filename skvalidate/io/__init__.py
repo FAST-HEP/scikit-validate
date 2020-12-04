@@ -6,7 +6,7 @@ import requests
 
 from mprof import read_mprofile_file
 import numpy as np
-import uproot as uproot
+import uproot
 import awkward as ak
 from fuzzywuzzy import process
 
