@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.4.0rc1](https://github.com/FAST-HEP/scikit-validate/tree/v0.4.0rc1) (2020-12-04)
+
+[Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.3.14...v0.4.0rc1)
+
 ## [v0.3.14](https://github.com/FAST-HEP/scikit-validate/tree/v0.3.14) (2020-11-21)
 
 [Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.3.13...v0.3.14)
