@@ -64,7 +64,7 @@ requirements = [
     'matplotlib<4.0.0',
     'memory_profiler>=0.54',
     'numexpr',
-    'numpy>=1.15.0',
+    'numpy>=1.19.0',
     'pandas',
     'plumbum',
     'python-gitlab<3.0.0',
