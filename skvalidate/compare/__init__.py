@@ -86,6 +86,8 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
                 diff = difference(value2, value1)
                 evaluationValue = evaluationFunc(value1, value2)
                 status = evaluateStatus(value1, value2, evaluationFunc, cut)
+                if status == FAILED:
+                    reason = f'evaluationFunc({evaluationValue} > {cut}) failed'
             except Exception as e:
                 reason = str(e)
                 status = UNKNOWN
