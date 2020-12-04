@@ -47,8 +47,7 @@ def _process(name, values, output_path):
         msg = 'OK'
         color = colors.green
     values['msg'] = msg
-
-    print(color | '{0} - {1}'.format(name, msg))
+    values['color'] = color
 
     del values['original']
     del values['reference']
@@ -132,7 +131,10 @@ def cli(file_under_test, reference_file, output_path, report_file, prefix, n_cor
         comparison = _reset_infinities(comparison)
         if comparison is None:
             continue
-        summary[name] = _process(name, comparison, output_path)
+        result = _process(name, comparison, output_path)
+        print(result['color'] | f'{name} - {result["msg"]}')
+        del result['color']  # delete, as we cannot JSON it
+        summary[name] = result
 
     # processing = MultiProcessStatus(comparison, n_cores, output_path)
     # try:
@@ -155,15 +157,6 @@ def _reset_infinities(comparison):
     if 'str' in str(ak.type(comparison['reference'])):
         return None
     return comparison
-    # for name, values in comparison.items():
-    #     if values['original'] is None or values['reference'] is None:
-    #         continue
-    #     if 'str' in str(ak.type(values['original'])):
-    #         continue
-    #     if 'str' in str(ak.type(values['reference'])):
-    #         continue
-    #     comparison[name] = values
-    # return comparison
 
 
 def _add_summary(comparison, prefix):

@@ -5,7 +5,7 @@ from scipy import stats
 
 import awkward as ak
 
-from skvalidate.io import walk
+from skvalidate.io import recursive_keys, load_array
 from .metrics import compare_metrics, absolute_to_relative_timestamps
 from .. import logger
 import skvalidate.operations._awkward as skak # noqa F405
@@ -43,12 +43,13 @@ def is_ok(evaluationFunc, cut, *args, **kwargs):
 def compare_two_root_files(file1, file2, tolerance=0.02):
     """Compare two ROOT(.cern.ch) files and return dictionary of comparison."""
     comparison = {}
-    content1 = dict((key, value) for (key, value) in walk(file1))
-    content2 = dict((key, value) for (key, value) in walk(file2))
-    keys1 = set(content1.keys())
-    keys2 = set(content2.keys())
+    # content1 = dict((key, value) for (key, value) in walk(file1))
+    # content2 = dict((key, value) for (key, value) in walk(file2))
+    keys1 = set(recursive_keys(file1))
+    keys2 = set(recursive_keys(file2))
     all_keys = sorted(keys1 | keys2)
-
+    print(f'Testing {len(all_keys)} distributions')
+    # for name in tqdm(all_keys): # tqdm does not work well inside CI
     for name in all_keys:
         comparison[name] = {}
         status = FAILED
@@ -59,16 +60,22 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
         evaluationFunc = maxRelativeDifference
         cut = 'value <= {}'.format(tolerance)
 
-        value1 = load_value(name, content1)
-        value2 = load_value(name, content2)
+        value1 = load_value(name, file1, keys1)
+        value2 = load_value(name, file2, keys2)
 
+        try:
+            v1_size = np.size(value1)
+            v2_size = np.size(value2)
+        except Exception:
+            print(f'Cannot handle {name} due to issues with value.size')
+            continue
         if len(value1) == 0 and len(value2) == 0:
             status = SUCCESS
             pvalue = 1
-        elif (np.size(value1) == 0 and np.size(value2) > 0) or (np.size(value1) > 0 and np.size(value2) == 0):
+        elif (v1_size == 0 and v2_size > 0) or (v1_size > 0 and v2_size == 0):
             status = FAILED
-            reason = 'original file is empty' if np.size(value1) > 0 else 'reference file is empty'
-            diff = value1 if np.size(value1) > 0 else value2
+            reason = 'original file is empty' if v1_size > 0 else 'reference file is empty'
+            diff = value1 if v1_size > 0 else value2
         elif value1 is None or value2 is None:
             status = UNKNOWN
             reason = 'Cannot convert data to numpy array'
@@ -94,8 +101,8 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
         )
 
 
-def load_value(name, content):
-    value = content[name] if name in content else ak.Array([])
+def load_value(name, file_name, keys):
+    value = load_array(file_name, name) if name in keys else ak.Array([])
     if hasattr(value, 'array'):
         value = value.array()
     try:

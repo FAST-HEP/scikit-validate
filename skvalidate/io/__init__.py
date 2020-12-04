@@ -193,7 +193,7 @@ def load_array(path_to_root_file, array_name):
         tmp_key = '/'.join(tokens[1:])
         key, _ = process.extractOne(tmp_key, obj.keys())
         obj = obj[key]
-    except:  # dig deeper
+    except Exception:  # dig deeper
         for t in tokens[1:]:
             obj = obj[t]
 
@@ -201,7 +201,7 @@ def load_array(path_to_root_file, array_name):
         array = obj.array()
         try:  # to unpack array
             array = getattr(array, tokens[-1])
-        except:
+        except Exception:
             pass
         return array
     return obj
