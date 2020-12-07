@@ -13,7 +13,6 @@ Welcome to the scikit-validate documentation!
 
    contributing
    authors
-   history
    reference/modules
 
 Indices and tables
