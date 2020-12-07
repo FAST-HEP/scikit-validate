@@ -55,22 +55,25 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
+    'awkward>=1.0.0',
     'Click<8.0',
     'gitpython<4.0.0',
+    'fuzzywuzzy',
     'jinja2',
     'markdown2',
     'matplotlib<4.0.0',
     'memory_profiler>=0.54',
     'numexpr',
-    'numpy>=1.15.0',
+    'numpy>=1.19.0',
     'pandas',
     'plumbum',
     'python-gitlab<3.0.0',
+    'python-Levenshtein',
     'pyyaml',
     'scipy',
     'tabulate',
     'tqdm',
-    'uproot<4.0.0',
+    'uproot>=4.0.0',
     'xhtml2pdf',
 ]
 
@@ -120,6 +123,7 @@ setup(
         'skvalidate.compare',
         'skvalidate.gitlab',
         'skvalidate.io',
+        'skvalidate.operations',
         'skvalidate.report',
         'skvalidate.software',
         'skvalidate.vis',

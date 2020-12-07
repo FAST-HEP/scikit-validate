@@ -10,8 +10,8 @@ import multiprocessing as mp
 import os
 import threading
 
+import awkward as ak
 import click
-import numpy as np
 from plumbum import colors
 from tqdm import tqdm
 
@@ -24,22 +24,22 @@ def _process(name, values, output_path):
     color = colors.red
     msg = compare.ERROR
 
-    evaluationValue = values['evaluationValue']
     status = values['status']
 
     if status == compare.FAILED:
         try:
             image = draw_diff(name, values, output_path)
             values['image'] = image
-            msg = 'FAILED (test: {:0.3f}): {}'.format(evaluationValue, image)
+            msg = 'FAILED (reason: {}): {}'.format(values['reason'], image)
         except TypeError as e:
-            msg = 'ERROR: Cannot draw (value type: {0}, reason: {1})'.format(
-                "Unknown" if values['original'] is None else values['original'].dtype,
+            msg = 'ERROR: Cannot draw (value types: {0} & {1}, reason: {2})'.format(
+                "NoneType" if values['original'] is None else str(ak.type(values['original'])),
+                "NoneType" if values['reference'] is None else str(ak.type(values['reference'])),
                 str(e),
             )
     if status == compare.UNKNOWN:
         msg = 'WARNING: Unable to compare (value type: {0}, reason: {1})'.format(
-            "Unknown" if values['original'] is None else values['original'].dtype,
+            "Unknown" if values['original'] is None else str(ak.type(values['original'])),
             values['reason'],
         )
         color = colors.Orange3
@@ -47,8 +47,7 @@ def _process(name, values, output_path):
         msg = 'OK'
         color = colors.green
     values['msg'] = msg
-
-    print(color | '{0} - {1}'.format(name, msg))
+    values['color'] = color
 
     del values['original']
     del values['reference']
@@ -125,38 +124,38 @@ class MultiProcessStatus(object):
 @click.option('-n', '--n-cores', default=1, type=int, help='Experimental feature: use n number of cores')
 def cli(file_under_test, reference_file, output_path, report_file, prefix, n_cores):
     # TODO add verbosity setting
-    # TODO: add parameter for distributions that are allowed to file (e.g. timestamps)
+    # TODO: add parameter for distributions that are allowed to fail (e.g. timestamps)
     # TODO: throw error if any distribution fails
-    comparison = compare.compare_two_root_files(file_under_test, reference_file)
-    comparison = _reset_infinities(comparison)
+    summary = {}
+    for name, comparison in compare.compare_two_root_files(file_under_test, reference_file):
+        comparison = _reset_infinities(comparison)
+        if comparison is None:
+            continue
+        result = _process(name, comparison, output_path)
+        print(result['color'] | f'{name} - {result["msg"]}')
+        del result['color']  # delete, as we cannot JSON it
+        summary[name] = result
 
-    processing = MultiProcessStatus(comparison, n_cores, output_path)
-    try:
-        processing.run()
-    except KeyboardInterrupt:
-        processing.terminate()
+    # processing = MultiProcessStatus(comparison, n_cores, output_path)
+    # try:
+    #     processing.run()
+    # except KeyboardInterrupt:
+    #     processing.terminate()
 
-    summary = _add_summary(processing.comparison, prefix)
+    # summary = _add_summary(processing.comparison, prefix)
+    summary = _add_summary(summary, prefix)
     summary[prefix]['output_path'] = output_path
     # TODO: print nice summary
     write_data_to_json(summary, report_file)
 
 
 def _reset_infinities(comparison):
-    for name, values in comparison.items():
-        if values['original'] is None or values['reference'] is None:
-            continue
-        if values['original'].dtype.kind in {'U', 'S', 'O'}:
-            continue
-        if values['reference'].dtype.kind in {'U', 'S', 'O'}:
-            continue
-        if len(values['original']) > 0:
-            values['original'][np.absolute(values['original']) == np.Infinity] = 0
-        if len(values['reference']) > 0:
-            values['reference'][np.absolute(values['reference']) == np.Infinity] = 0
-        if len(values['diff']) > 0:
-            values['diff'][np.absolute(values['diff']) == np.Infinity] = 0
-        comparison[name] = values
+    if comparison['original'] is None or comparison['reference'] is None:
+        return None
+    if 'str' in str(ak.type(comparison['original'])):
+        return None
+    if 'str' in str(ak.type(comparison['reference'])):
+        return None
     return comparison
 
 

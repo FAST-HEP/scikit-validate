@@ -15,31 +15,33 @@ def info(input_file):
     f = uproot.open(input_file)
 
     data = []
-    labels = ['name', 'uproot_type', 'compressedbytes',
+    labels = ['name', 'type', 'interpretation', 'compressedbytes',
               'uncompressedbytes', 'hasStreamer', 'uproot_readable', 'is_empty']
     for name, obj in _walk(f):
         canRead = False
         is_empty = False
-
+        typename = obj.typename if hasattr(obj, 'typename') else 'UNKNOWN'
         hasStreamer = hasattr(obj, '_streamer') and obj._streamer is not None
         interpretation = obj.interpretation if hasattr(obj, 'interpretation') else None
         if not hasStreamer and interpretation is None:
             data.append(
-                (name, interpretation, np.nan, np.nan, hasStreamer, canRead, is_empty)
+                (name, typename, interpretation, np.nan, np.nan, hasStreamer, canRead, is_empty)
             )
             continue
 
         try:
             a = obj.array()
-            if a is None:
+            if a is None or len(a) == 0:
                 is_empty = True
             # try to access first element
-            a[0]
+            if not is_empty:
+                a[0]
             canRead = True
         except Exception as e:
             print(e)
         data.append(
-            (name, interpretation, obj.compressedbytes(), obj.uncompressedbytes(), hasStreamer, canRead, is_empty)
+            (name, typename, interpretation, obj.compressed_bytes,
+             obj.uncompressed_bytes, hasStreamer, canRead, is_empty)
         )
     return pd.DataFrame.from_records(data, columns=labels)
 
@@ -49,10 +51,10 @@ def info(input_file):
 @click.option('-o', '--output-file', help="CSV output file for information", type=click.Path(), default='root_info.csv')
 @click.option('--show-unreadable', help="print the file entries that uproot cannot read", default=False, is_flag=True)
 @click.option('--show-empty', help="print the file entries that are empty", default=False, is_flag=True)
-@click.option('-v', '--verbose', help="print information", default=False, is_flag=True)
-def cli(input_file, output_file, show_unreadable, show_empty, verbose):
+@click.option('-q', '--quiet', help="print only failures", default=False, is_flag=True)
+def cli(input_file, output_file, show_unreadable, show_empty, quiet):
     df = info(input_file)
-    if verbose and not (show_unreadable or show_empty):
+    if not quiet and not (show_unreadable or show_empty):
         print(tabulate(df, headers='keys', tablefmt='psql'))
     if show_unreadable:
         unreadable = df[~df.uproot_readable]

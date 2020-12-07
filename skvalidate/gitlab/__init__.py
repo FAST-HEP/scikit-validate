@@ -99,15 +99,13 @@ def get_jobs_for_stages(stages, **kwargs):
 
 def get_pipeline_job(job_name):
     jobs = _get_current_pipeline_jobs()
-    logger.debug('Found jobs in the pipeline: {0}'.format(
-        ','.join([(job.id, job.attributes['name']) for job in jobs])
-    ))
+    logger.debug(f'Found {len(jobs)} jobs in the pipeline')
 
     selected_jobs = [job for job in jobs if job_name == job.attributes['name']]
     selected_jobs = sorted(selected_jobs, key=lambda j: j.id, reverse=True)
     logger.debug('Found jobs matching name "{0}": {1}'.format(
         job_name,
-        ','.join([(job.id, job.attributes['name']) for job in selected_jobs])
+        ','.join([f"{job.id} ({job.attributes['name']})" for job in selected_jobs])
     ))
 
     if selected_jobs:
@@ -195,7 +193,7 @@ def download_artifact(job_id, path, output_file=None):
     try:
         job.artifact(path, streamed=True, action=streamer)
         return streamer.content
-    except gitlab.exceptions.GitlabGetError as e:
+    except (gitlab.exceptions.GitlabGetError, gitlab.exceptions.GitlabHttpError) as e:
         logger.error('Could not find artifact {} for job ID {}'.format(path, job_id))
         raise gitlab.exceptions.GitlabGetError(e)
     return None

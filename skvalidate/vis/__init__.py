@@ -3,6 +3,7 @@ Visualization package
 """
 import os
 
+import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 matplotlib.rcParams['lines.linewidth'] = 4
@@ -16,7 +17,6 @@ matplotlib.rcParams['ytick.labelsize'] = 32
 
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
-import numpy as np
 
 from .profile import draw_profiles
 
@@ -30,8 +30,15 @@ def adjust_axis_limits(a_min, a_max, change=0.2, logy=False):
 
 
 def find_limits(d1, d2):
-    a_min = min(np.amin(d1, initial=0), np.amin(d2, initial=0))
-    a_max = max(np.amax(d1, initial=0), np.amax(d2, initial=0))
+    if (d1 is None and d2 is None) or (np.size(d1) == 0 and np.size(d2) == 0):
+        return 0, 0
+    if d1 is None or np.size(d1) == 0:
+        return np.amin(d2), np.amax(d2)
+    if d2 is None or np.size(d2) == 0:
+        return np.amin(d1), np.amax(d1)
+
+    a_min = min(np.amin(d1), np.amin(d2))
+    a_max = max(np.amax(d1), np.amax(d2))
     return a_min, a_max
 
 
@@ -47,13 +54,24 @@ def draw_diff(name, values, output_path, bins=100):
     canvas = FigureCanvas(fig)  # noqa: F841
     a0, a1 = fig.subplots(2, 1, gridspec_kw={'height_ratios': [5, 1]}, sharex=True, )
 
-    h_ref, bin_edges, _ = a0.hist(
-        values['reference'], label='reference', color='black', histtype='step', bins=bins, range=(min_x, max_x),
-    )
-    h_orig, _, _ = a0.hist(
-        values['original'], label='this code', color='red', histtype='step', bins=bin_edges, linewidth=2, alpha=0.6,
-        range=(min_x, max_x),
-    )
+    if values['reference'] is not None and np.size(values['reference']) != 0:
+        h_ref, bin_edges, _ = a0.hist(
+            values['reference'], label='reference', color='black', histtype='step', bins=bins, range=(min_x, max_x),
+        )
+    else:
+        h_ref, bin_edges, _ = a0.hist(
+            [-1], label='reference (missing)', color='black', histtype='step', bins=bins, range=(min_x, max_x),
+        )
+    if values['original'] is not None and np.size(values['original']) != 0:
+        h_orig, _, _ = a0.hist(
+            values['original'], label='this code', color='red', histtype='step', bins=bin_edges, linewidth=2, alpha=0.6,
+            range=(min_x, max_x),
+        )
+    else:
+        h_orig, _, _ = a0.hist(
+            [-1], label='this code (missing)', color='red', histtype='step', bins=bin_edges, linewidth=2, alpha=0.6,
+            range=(min_x, max_x),
+        )
 
     min_y, max_y = find_limits(h_ref, h_orig)
     if max_y - min_y > 1e3:

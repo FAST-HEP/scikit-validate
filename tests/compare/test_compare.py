@@ -149,8 +149,8 @@ def test_maxRelativeDifference(value1, value2, normalisation, expected):
         'tests/samples/test_1.root',
         'tests/samples/test_1.root',
         0,
-        5,
-        1
+        6,
+        0
     ),
     (
         'tests/samples/test_1.root',
@@ -163,8 +163,8 @@ def test_maxRelativeDifference(value1, value2, normalisation, expected):
         'tests/samples/test_1.root',
         'tests/samples/test_2.root',
         1,
-        5,
-        1
+        6,
+        0
     ),
     (
         'tests/samples/test_1.root',
@@ -189,7 +189,7 @@ def test_maxRelativeDifference(value1, value2, normalisation, expected):
     ),
 ])
 def test_compare_two_root_files(file1, file2, tolerance, n_ok, n_not_ok):
-    comparison = compare_two_root_files(file1, file2, tolerance=tolerance)
+    comparison = dict(compare_two_root_files(file1, file2, tolerance=tolerance))
     n_cmp_ok = sum([v['status'] == skcmp.SUCCESS for v in comparison.values()])
     n_cmp_not_ok = len(comparison) - n_cmp_ok
     assert n_cmp_ok == n_ok

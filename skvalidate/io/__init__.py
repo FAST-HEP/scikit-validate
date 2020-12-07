@@ -7,8 +7,11 @@ import requests
 from mprof import read_mprofile_file
 import numpy as np
 import uproot
+import awkward as ak
+from fuzzywuzzy import process
 
 from .. import logger
+import skvalidate.operations._awkward as skak
 
 
 def save_metrics_to_file(metrics, metrics_file):
@@ -42,9 +45,12 @@ def read_data_from_json(json_file):
         return json.load(f)
 
 
-def walk(path_to_root_file):
+def walk(path_to_root_file, unpack_fields=True):
     f = uproot.open(path_to_root_file)
     for name, obj in _walk(f):
+        if not unpack_fields:
+            yield name, obj
+            continue
         for subname, subobj in unpack(name, obj):
             yield subname, subobj
 
@@ -53,11 +59,10 @@ def _walk(obj, name=None):
     if not hasattr(obj, 'keys') or len(obj.keys()) == 0:
         yield name, obj
     else:
-        for k in sorted(obj.keys()):
+        for k in sorted(obj.keys(recursive=False)):
             # if there is a '.' the first part of k it will be a duplicate
-            k_str = k.decode("utf-8")
-            tokens = k_str.split('.')
-            new_name = name if name else k_str
+            tokens = k.split('.')
+            new_name = name if name else k
             for t in tokens:
                 if new_name.endswith(t):
                     continue
@@ -73,22 +78,21 @@ def unpack(name, obj):
         yield name, []
         return
 
-    if hasattr(array, 'flatten'):
-        try:
-            flat_array = obj.array().flatten()
-        except ValueError as e:
-            logger.error('Cannot flatten {}: {}'.format(name, e))
-            flat_array = obj.array()
+    try:
+        flat_array = ak.flatten(obj.array())
+    except ValueError as e:
+        logger.debug('Cannot flatten {}: {}'.format(name, e))
+        flat_array = obj.array()
     else:
         flat_array = array
 
-    if np.size(flat_array) > 0 and flat_array.__class__.__name__ == 'ObjectArrayMethods':
-        o = flat_array[0]
-        attributes = [x for x in dir(o) if x.startswith('_f')]
-        for a in attributes:
-            yield name + '.' + a, np.asarray([getattr(x, a) for x in flat_array])
-    else:
+    unpacked = skak.unpack_array(flat_array)
+    if not isinstance(unpacked, dict):
         yield name, flat_array
+        return
+
+    for field, value in unpacked.items():
+        yield name + '.' + field, value
 
 
 def save_array_to_file(array, name, output_dir):
@@ -167,3 +171,37 @@ def split_memory_profile_output(profile_file):
             timestamp=profile['timestamp']
         )
     return results
+
+
+def recursive_keys(path_to_root_file, unpack_fields=True):
+    f = uproot.open(path_to_root_file)
+    for name, obj in _walk(f):
+        if not unpack_fields:
+            yield name
+            del obj
+            continue
+        for subname, _ in unpack(name, obj):
+            yield subname
+        del obj
+
+
+def load_array(path_to_root_file, array_name):
+    f = uproot.open(path_to_root_file)
+    tokens = array_name.split('.')
+    obj = f[tokens[0]]
+    try:  # fuzzy match
+        tmp_key = '/'.join(tokens[1:])
+        key, _ = process.extractOne(tmp_key, obj.keys())
+        obj = obj[key]
+    except Exception:  # dig deeper
+        for t in tokens[1:]:
+            obj = obj[t]
+
+    if hasattr(obj, 'array'):
+        array = obj.array()
+        try:  # to unpack array
+            array = getattr(array, tokens[-1])
+        except Exception:
+            pass
+        return array
+    return obj

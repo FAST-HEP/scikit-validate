@@ -78,3 +78,25 @@ def resp_artifact_no_such_file(binary_content):
             status=404,
         )
         yield rsps
+
+@pytest.fixture
+def object_file():
+    import uproot
+    path = 'tests/samples/objects.root'
+    f = uproot.open(path)
+    return f
+
+
+@pytest.fixture
+def scalar_type_ak_array(object_file):
+    return object_file['Events']['eventID'].array()
+
+
+@pytest.fixture
+def object_type(object_file):
+    return object_file['Events']['bees.xyPosition']
+
+
+@pytest.fixture
+def object_type_ak_array(object_type):
+    return object_type.array()
