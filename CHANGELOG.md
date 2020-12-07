@@ -1,8 +1,17 @@
 # Changelog
 
-## [0.4.0](https://github.com/FAST-HEP/scikit-validate/tree/v0.4.0) (2020-12-07)
+## [v0.4.0](https://github.com/FAST-HEP/scikit-validate/tree/v0.4.0) (2020-12-07)
 
-[Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.3.14...v0.4.0)
+[Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.4.0rc3...v0.4.0)
+
+**Closed issues:**
+
+- sv\_root\_diff & sv\_root\_info: processing LZap\_LZLama output [\#30](https://github.com/FAST-HEP/scikit-validate/issues/30)
+- sv\_root\_diff: switch to awkward1 for complex structures [\#25](https://github.com/FAST-HEP/scikit-validate/issues/25)
+
+**Merged pull requests:**
+
+- Towards 0.4.0 with uproot4 and awkward1 [\#34](https://github.com/FAST-HEP/scikit-validate/pull/34) ([kreczko](https://github.com/kreczko))
 
 ## [v0.4.0rc3](https://github.com/FAST-HEP/scikit-validate/tree/v0.4.0rc3) (2020-12-05)
 
