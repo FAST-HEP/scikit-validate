@@ -20,7 +20,7 @@ def info(input_file):
     for name, obj in _walk(f):
         canRead = False
         is_empty = False
-        typename = obj.typename
+        typename = obj.typename if hasattr(obj, 'typename') else 'UNKNOWN'
         hasStreamer = hasattr(obj, '_streamer') and obj._streamer is not None
         interpretation = obj.interpretation if hasattr(obj, 'interpretation') else None
         if not hasStreamer and interpretation is None:
