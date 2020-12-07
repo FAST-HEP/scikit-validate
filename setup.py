@@ -55,7 +55,7 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
-    'awkward>=1.0.0rc2',
+    'awkward>=1.0.0',
     'Click<8.0',
     'gitpython<4.0.0',
     'fuzzywuzzy',
@@ -73,7 +73,7 @@ requirements = [
     'scipy',
     'tabulate',
     'tqdm',
-    'uproot>=4.0.0rc2',
+    'uproot>=4.0.0',
     'xhtml2pdf',
 ]
 
