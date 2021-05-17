@@ -206,6 +206,10 @@ def get_artifact_url(local_path):
         path_type = 'file'
     return path_and_job_id_to_artifact_url(local_path, CI_JOB_ID, path_type)
 
+def get_artifact_raw_url(local_path):
+    CI_JOB_ID = os.environ.get('CI_JOB_ID')
+    return path_and_job_id_to_artifact_url(local_path, CI_JOB_ID, 'raw')
+
 
 def path_and_job_id_to_artifact_url(path, job_id, path_type='file'):
     CI_PROJECT_DIR = os.environ.get('CI_PROJECT_DIR', os.getcwd())

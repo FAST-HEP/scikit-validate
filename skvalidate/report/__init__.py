@@ -210,10 +210,10 @@ def plot_list(plot_list_json):
     for variable, plot in plot_list.items():
 
         formatted_plot_list[variable] = {}
-        formatted_plot_list[variable]['image_url'] = plot['image_path']
+        formatted_plot_list[variable]['image_url'] = gitlab.get_artifact_raw_url(plot['image_path'])
         formatted_plot_list[variable]['prefix_text'] = plot['prefix_text']
         formatted_plot_list[variable]['figure_caption'] = plot['figure_caption']
-
+    
     return formatted_plot_list
 
 
