@@ -172,7 +172,7 @@ def __repr_section__(name, section):
         str(section),
     )
 
-def formated_table(table_json, **kwargs):
+def formatted_table(table_json, **kwargs):
 
     with open(table_json) as f:
         table = json.load(f)
