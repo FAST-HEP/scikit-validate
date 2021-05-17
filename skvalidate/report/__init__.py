@@ -200,6 +200,22 @@ def get_metrics(metrics_json, metrics_ref_json, **kwargs):
 
     return comparison
 
+def plot_list(plot_list_json):
+
+    with open(plot_list_json) as f:
+        plot_list = json.load(f)
+
+    formatted_plot_list = {}
+
+    for variable, plot in plot_list.items():
+
+        formatted_plot_list[variable] = {}
+        formatted_plot_list[variable]['image_url'] = gitlab.get_artifact_raw_url(plot['image_path'])
+        formatted_plot_list[variable]['prefix_text'] = plot['prefix_text']
+        formatted_plot_list[variable]['figure_caption'] = plot['figure_caption']
+    
+    return formatted_plot_list
+
 
 def __format_comparison(comparison, **kwargs):
     # format metrics
