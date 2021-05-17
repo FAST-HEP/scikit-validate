@@ -185,7 +185,7 @@ def formated_table(table_json, **kwargs):
     except Exception as e:
         logger.error('Error reading the table file: {}'.format(e))
         raise e
-        
+
     if 'symbol_success' in kwargs:
         symbol_success = kwargs.pop('symbol_success')
     else:
@@ -203,8 +203,8 @@ def formated_table(table_json, **kwargs):
     for key, name in table['table_header'].items():
         header_keys.append(key)
         formated_header += f' {name} |'
-        formated_separator += '---|'        
-    
+        formated_separator += '---|'
+
     formated_table = {}
     formated_table['table_header'] = formated_header
     formated_table['table_separator'] = formated_separator
@@ -224,7 +224,7 @@ def formated_table(table_json, **kwargs):
         formated_content.append(formated_line)
 
     formated_table['table_content'] = formated_content
-        
+
     return formated_table
 
 
