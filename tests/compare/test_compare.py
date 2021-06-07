@@ -187,6 +187,13 @@ def test_maxRelativeDifference(value1, value2, normalisation, expected):
         11,
         0
     ),
+    (
+        'tests/samples/histograms.root',
+        'tests/samples/histograms.root',
+        0.02,
+        3,
+        0
+    ),
 ])
 def test_compare_two_root_files(file1, file2, tolerance, n_ok, n_not_ok):
     comparison = dict(compare_two_root_files(file1, file2, tolerance=tolerance))
