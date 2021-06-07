@@ -108,6 +108,8 @@ def load_value(name, file_name, keys):
     if hasattr(value, 'array'):
         value = value.array()
     try:
+        if 'Model_TH' in str(value.__class__):
+            value = value.values(flow=True).flatten()
         value = ak.flatten(value)
     except ValueError:
         pass
