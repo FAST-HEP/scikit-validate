@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.4.1](https://github.com/FAST-HEP/scikit-validate/tree/v0.4.1)
+
+[Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.4.0...v0.4.1)
+
+**Merged pull requests:**
+
+- Fixing issue \#38 [\#39](https://github.com/FAST-HEP/scikit-validate/pull/39) ([kreczko](https://github.com/kreczko))
+
 ## [v0.4.0](https://github.com/FAST-HEP/scikit-validate/tree/v0.4.0) (2020-12-07)
 
 [Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.4.0rc3...v0.4.0)

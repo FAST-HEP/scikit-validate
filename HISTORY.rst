@@ -1,3 +1,14 @@
+0.4.1
+------------
+- Merge pull request #39 from FAST-HEP/kreczko-issue-38. [Luke Kreczko]
+
+  Fixing issue #38
+- Fixed issue #38: processing histograms. [Luke Kreczko]
+- Added test for issue #38. [Luke Kreczko]
+- Drop the obsolete History.rst from the Docs. [Luke Kreczko]
+- Tagged version 0.4.0. [Luke Kreczko]
+
+
 0.3.12
 ------------
 
