@@ -199,7 +199,7 @@ def test_maxRelativeDifference(value1, value2, normalisation, expected):
         'tests/samples/root_other.root',
         0.02,
         0,
-        2 # file does not contain comparable distributions
+        2  # file does not contain comparable distributions
     ),
 ])
 def test_compare_two_root_files(file1, file2, tolerance, n_ok, n_not_ok):
