@@ -37,7 +37,7 @@ def _process(name, values, output_path):
                 "NoneType" if values['reference'] is None else str(ak.type(values['reference'])),
                 str(e),
             )
-    if status == compare.UNKNOWN:
+    if status == compare.UNKNOWN or status == compare.WARNING:
         msg = 'WARNING: Unable to compare (value type: {0}, reason: {1})'.format(
             "Unknown" if values['original'] is None else str(ak.type(values['original'])),
             values['reason'],
@@ -150,8 +150,6 @@ def cli(file_under_test, reference_file, output_path, report_file, prefix, n_cor
 
 
 def _reset_infinities(comparison):
-    if comparison['original'] is None or comparison['reference'] is None:
-        return None
     if 'str' in str(ak.type(comparison['original'])):
         return None
     if 'str' in str(ak.type(comparison['reference'])):
@@ -164,6 +162,7 @@ def _add_summary(comparison, prefix):
     summary['distributions'] = comparison
     summary[compare.FAILED] = []
     summary[compare.UNKNOWN] = []
+    summary[compare.WARNING] = []
     summary[compare.SUCCESS] = []
     summary[compare.ERROR] = []
     for name, values in comparison.items():

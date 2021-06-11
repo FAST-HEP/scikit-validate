@@ -8,11 +8,12 @@ import awkward as ak
 from skvalidate.io import recursive_keys, load_array
 from .metrics import compare_metrics, absolute_to_relative_timestamps
 from .. import logger
-import skvalidate.operations._awkward as skak # noqa F405
+import skvalidate.operations._awkward as skak  # noqa F405
 
 SUCCESS = 'success'
 FAILED = 'failed'
 UNKNOWN = 'unknown'
+WARNING = 'warning'
 ERROR = 'error'
 
 
@@ -60,25 +61,33 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
         evaluationFunc = maxRelativeDifference
         cut = 'value <= {}'.format(tolerance)
 
-        value1 = load_value(name, file1, keys1)
-        value2 = load_value(name, file2, keys2)
-
+        try:
+            value1 = load_value(name, file1, keys1)
+            value2 = load_value(name, file2, keys2)
+        except TypeError as e:
+            yield name, dict(
+                status=WARNING, reason=str(e),
+                original=None, reference=None, diff=None,
+            )
+            continue
         try:
             v1_size = np.size(value1)
             v2_size = np.size(value2)
         except Exception:
-            print(f'Cannot handle {name} due to issues with value.size')
+            reason = f'Cannot handle {name} due to issues with value.size'
+            yield name, dict(status=WARNING, reason=reason)
             continue
-        if len(value1) == 0 and len(value2) == 0:
+
+        if value1 is None or value2 is None:
+            status = UNKNOWN
+            reason = 'Cannot convert data to numpy array'
+        elif len(value1) == 0 and len(value2) == 0:
             status = SUCCESS
             pvalue = 1
         elif (v1_size == 0 and v2_size > 0) or (v1_size > 0 and v2_size == 0):
             status = FAILED
             reason = 'original file is empty' if v1_size > 0 else 'reference file is empty'
             diff = value1 if v1_size > 0 else value2
-        elif value1 is None or value2 is None:
-            status = UNKNOWN
-            reason = 'Cannot convert data to numpy array'
         else:
             ks_statistic, pvalue = stats.ks_2samp(ak.to_numpy(value2), ak.to_numpy(value1))
 
@@ -110,7 +119,13 @@ def load_value(name, file_name, keys):
     try:
         if 'Model_TH' in str(value.__class__):
             value = value.values(flow=True).flatten()
-        value = ak.flatten(value)
+        try:
+            value = ak.flatten(value)
+        except TypeError:
+            # TODO: log errors
+            msg = f"Cannot convert data ({value.__class__}) to numpy array"
+            raise TypeError(msg)
+
     except ValueError:
         pass
     return value
