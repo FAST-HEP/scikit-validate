@@ -1,6 +1,14 @@
 # Changelog
 
-## [v0.4.1](https://github.com/FAST-HEP/scikit-validate/tree/v0.4.1)
+## [v0.4.2](https://github.com/FAST-HEP/scikit-validate/tree/v0.4.2)
+
+[Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.4.1...v0.4.2)
+
+**Merged pull requests:**
+
+- Handling of non-convertible ROOT objects [\#41](https://github.com/FAST-HEP/scikit-validate/pull/41) ([kreczko](https://github.com/kreczko))
+
+## [v0.4.1](https://github.com/FAST-HEP/scikit-validate/tree/v0.4.1) (2021-06-07)
 
 [Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.4.0...v0.4.1)
 

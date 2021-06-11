@@ -1,3 +1,14 @@
+0.4.2
+------------
+- Merge pull request #41 from FAST-HEP/kreczko-issue-38-part2. [Luke
+  Kreczko]
+
+  Handling of non-convertible ROOT objects
+- Fix linting issue. [Luke Kreczko]
+- Added handling of unconvertible ROOT objects. [Luke Kreczko]
+- Added tests for ROOT types that cannot be numpyfied. [Luke Kreczko]
+
+
 0.4.1
 ------------
 - Merge pull request #39 from FAST-HEP/kreczko-issue-38. [Luke Kreczko]
