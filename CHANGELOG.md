@@ -1,6 +1,19 @@
 # Changelog
 
-## [v0.4.2](https://github.com/FAST-HEP/scikit-validate/tree/v0.4.2)
+## [v0.4.3](https://github.com/FAST-HEP/scikit-validate/tree/v0.4.3)
+
+[Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.4.2...v0.4.3)
+
+**Closed issues:**
+
+- Issue in 0.4.2 in \_reset\_infinities [\#42](https://github.com/FAST-HEP/scikit-validate/issues/42)
+- Error comparing ROOT files [\#38](https://github.com/FAST-HEP/scikit-validate/issues/38)
+
+**Merged pull requests:**
+
+- Fixing issue \#42: accessing values for failed distributions [\#43](https://github.com/FAST-HEP/scikit-validate/pull/43) ([kreczko](https://github.com/kreczko))
+
+## [v0.4.2](https://github.com/FAST-HEP/scikit-validate/tree/v0.4.2) (2021-06-11)
 
 [Full Changelog](https://github.com/FAST-HEP/scikit-validate/compare/v0.4.1...v0.4.2)
 

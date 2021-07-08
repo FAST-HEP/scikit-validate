@@ -1,3 +1,13 @@
+0.4.3
+------------
+- Merge pull request #43 from FAST-HEP/kreczko-issue-42. [Luke Kreczko]
+
+  Fixing issue #42: accessing values for failed distributions
+- Fixed typo and move from np.resize to ak.pad_none + ak.fill_none.
+  [Luke Kreczko]
+- Fixed issue #42. [Luke Kreczko]
+
+
 0.4.2
 ------------
 - Merge pull request #41 from FAST-HEP/kreczko-issue-38-part2. [Luke
