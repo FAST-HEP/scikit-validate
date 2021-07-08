@@ -150,6 +150,8 @@ def cli(file_under_test, reference_file, output_path, report_file, prefix, n_cor
 
 
 def _reset_infinities(comparison):
+    if 'original' not in comparison or 'reference' not in comparison:
+        return None
     if 'str' in str(ak.type(comparison['original'])):
         return None
     if 'str' in str(ak.type(comparison['reference'])):
