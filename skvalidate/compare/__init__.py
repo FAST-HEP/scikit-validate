@@ -18,22 +18,21 @@ ERROR = 'error'
 
 
 def difference(a1, a2):
-    a1_tmp, a2_tmp = _ensure_same_lentgth(a1, a2)
+    a1_tmp, a2_tmp = _ensure_same_length(a1, a2)
     if hasattr(a1, 'dtype'):
         if np.issubdtype(a1.dtype, np.str_):
             return []
+    return a1_tmp - a2_tmp
 
-    return np.subtract(a1_tmp, a2_tmp)
 
-
-def _ensure_same_lentgth(a1, a2):
+def _ensure_same_length(a1, a2):
     a1_size, a2_size = np.size(a1), np.size(a2)
     if a1_size == a2_size:
         return a1, a2
     if a1_size > a2_size:
-        return a1, np.resize(a2, a1_size)
+        return a1, ak.fill_none(ak.pad_none(a2, a1_size, axis=0), 0)
     if a2_size > a1_size:
-        return np.resize(a1, a2_size), a2
+        return ak.fill_none(ak.pad_none(a1, a2_size, axis=0), 0), a2
 
 
 def is_ok(evaluationFunc, cut, *args, **kwargs):
@@ -70,6 +69,7 @@ def compare_two_root_files(file1, file2, tolerance=0.02):
                 original=None, reference=None, diff=None,
             )
             continue
+
         try:
             v1_size = np.size(value1)
             v2_size = np.size(value2)
