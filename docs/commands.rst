@@ -154,6 +154,41 @@ Example output 2 - `test.y` exists in both, but different random seed:
       :target: _static/root_diff/test.y.png
 
 
+sv_root_info
+--------------------
+Show information about content of a ROOT file. Will display type and uproot intepretation if available.
+
+::
+
+    sv_root_info tests/samples/test_1.root
+    +----+---------------+-----------+---------------------------+-------------------+---------------------+---------------+-------------------+------------+
+    |    | name          | type      | interpretation            |   compressedbytes |   uncompressedbytes | hasStreamer   | uproot_readable   | is_empty   |
+    |----+---------------+-----------+---------------------------+-------------------+---------------------+---------------+-------------------+------------|
+    |  0 | test;1.i      | int32_t   | AsDtype('>i4')            |             14157 |               40000 | False         | True              | False      |
+    |  1 | test;1.string | char*     | AsStrings()               |             54474 |               90040 | False         | True              | False      |
+    |  2 | test;1.v      | float[10] | AsDtype("('>f4', (10,))") |            371067 |              400000 | False         | True              | False      |
+    |  3 | test;1.x      | float     | AsDtype('>f4')            |             37173 |               40000 | False         | True              | False      |
+    |  4 | test;1.y      | float     | AsDtype('>f4')            |             37380 |               40000 | False         | True              | False      |
+    |  5 | test;1.z      | float     | AsDtype('>f4')            |             37276 |               40000 | False         | True              | False      |
+    +----+---------------+-----------+---------------------------+-------------------+---------------------+---------------+-------------------+------------+
+
+The command will store the output table as `root_info.csv` by default.
+
+::
+
+    sv_root_info --help
+    Usage: sv_root_info [OPTIONS] INPUT_FILE
+
+      Read a ROOT file and reports information about its content (names, sizes,
+      types)
+
+    Options:
+      -o, --output-file PATH  CSV output file for information
+      --show-unreadable       print the file entries that uproot cannot read
+      --show-empty            print the file entries that are empty
+      -q, --quiet             print only failures
+      --help                  Show this message and exit.
+
 sv_version
 ------------
 
