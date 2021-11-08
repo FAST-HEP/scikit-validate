@@ -12,7 +12,7 @@ To install scikit-validate, run this command in your terminal:
 
 .. code-block:: console
 
-    $ pip install skvalidate
+    $ pip install scikit-validate
 
 This is the preferred method to install scikit-validate, as it will always install the most recent stable release.
 
