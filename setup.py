@@ -56,7 +56,7 @@ with open('HISTORY.rst') as history_file:
 
 requirements = [
     'awkward>=1.0.0',
-    'Click<8.0',
+    'Click<9.0',
     'gitpython<4.0.0',
     'fuzzywuzzy',
     'jinja2',
