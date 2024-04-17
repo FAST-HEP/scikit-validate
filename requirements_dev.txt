@@ -5,7 +5,7 @@ hypothesis==5.8.0
 flake8==3.8.3
 gitchangelog==3.0.4
 mock
-pip==21.1
+pip==23.3
 pytest==4.6.4
 pytest-cov
 pytest-runner==2.11.1
