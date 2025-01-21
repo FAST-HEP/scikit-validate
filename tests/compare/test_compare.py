@@ -149,8 +149,8 @@ def test_maxRelativeDifference(value1, value2, normalisation, expected):
         'tests/samples/test_1.root',
         'tests/samples/test_1.root',
         0,
-        6,
-        0
+        5,
+        1
     ),
     (
         'tests/samples/test_1.root',
@@ -163,8 +163,8 @@ def test_maxRelativeDifference(value1, value2, normalisation, expected):
         'tests/samples/test_1.root',
         'tests/samples/test_2.root',
         1,
-        6,
-        0
+        5,
+        1
     ),
     (
         'tests/samples/test_1.root',
