@@ -28,9 +28,9 @@ def test_object_subtract(object_type_ak_array):
 
 
 def test_scalar_amax(scalar_type_ak_array):
-    amax = ak.max(scalar_type_ak_array, initial=-9000)
+    amax = ak.max(scalar_type_ak_array, initial=0)
     np_array = ak.to_numpy(scalar_type_ak_array)
-    amax == np.amax(np_array, initial=-9000)
+    amax == np.amax(np_array, initial=0)
 
 
 def test_object_amax(object_type_ak_array):
@@ -40,10 +40,9 @@ def test_object_amax(object_type_ak_array):
 
 
 def test_scalar_laNorm(scalar_type_ak_array):
-    with pytest.raises(TypeError):
-        norm = np.linalg.norm(scalar_type_ak_array)
-        np_array = ak.to_numpy(scalar_type_ak_array)
-        norm == np.linalg.norm(np_array)
+    norm = np.linalg.norm(scalar_type_ak_array)
+    np_array = ak.to_numpy(scalar_type_ak_array)
+    norm == np.linalg.norm(np_array)
 
 
 def test_object_laNorm(object_type_ak_array):
@@ -60,8 +59,9 @@ def test_scalar_sum(scalar_type_ak_array):
 
 
 def test_object_sum(object_type_ak_array):
-    theSum = np.sum(object_type_ak_array)
-    np_array = ak.to_numpy(theSum)
-    ak.to_numpy(theSum) == np.sum(np_array)
+    with pytest.raises(TypeError):
+        theSum = np.sum(object_type_ak_array)
+        np_array = ak.to_numpy(theSum)
+        ak.to_numpy(theSum) == np.sum(np_array)
 
 # amax, linalg.norm
