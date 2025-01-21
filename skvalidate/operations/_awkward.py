@@ -19,8 +19,11 @@ ak.behavior[np.multiply, "TVector3", "TVector3"] = lambda left, right: left.fX *
 
 
 def parse_fields(array):
-    layout = array.layout
-    return layout.keys()
+    ak_version = ak.__version__.split('.')[0]
+    if ak_version == '1':
+        return array.layout.keys()
+    if ak_version == '2':
+        return array.fields
 
 
 def unpack(obj):
