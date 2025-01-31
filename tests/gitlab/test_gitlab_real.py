@@ -5,6 +5,8 @@ import skvalidate.gitlab as gl
 
 def test_connect(gitlab_settings):
     with patch.dict("os.environ", gitlab_settings.to_dict()):
+        # reset connection
+        gl.GITLAB_CONNECTION = None
         assert gl.GITLAB_CONNECTION is None
         gl._connect()
         assert gl.GITLAB_CONNECTION is not None
