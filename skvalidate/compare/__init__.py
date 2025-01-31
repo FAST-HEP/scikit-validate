@@ -149,8 +149,8 @@ def maxRelativeDifference(value1, value2, normalisation=None):
         normalisation = value2 if np.size(value2) > 0 else value1
         normalisation = norm(normalisation)
 
-    if abs(normalisation) == np.Infinity or np.Infinity in d:
-        return np.Infinity
+    if abs(normalisation) == np.inf or np.inf in d:
+        return np.inf
     if normalisation == 0:
         return 0
 
@@ -159,7 +159,7 @@ def maxRelativeDifference(value1, value2, normalisation=None):
 
 def reset_infinities(values):
     try:
-        values[np.absolute(values) == np.Infinity] = 0
+        values[np.absolute(values) == np.inf] = 0
     except Exception as e:
         logger.error('Cannot process', ak.type(values))
         raise e

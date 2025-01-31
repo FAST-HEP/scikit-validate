@@ -270,16 +270,16 @@ def _get_merge_request():
     logger.debug('Found {0} open merge request(s)'.format(len(mrs)))
     ci_pipeline_id = int(os.environ.get('CI_PIPELINE_ID'))
     for mr in mrs:
-        pipelines = mr.pipelines()
+        pipelines = mr.pipelines.list()
         for pipeline in pipelines:
-            p_id = int(pipeline['id'])
+            p_id = pipeline.id
             logger.debug('Found pipeline {0} for MR {1} (!{2})'.format(p_id, mr.id, mr.iid))
             if ci_pipeline_id == p_id:
                 # It is not possible to edit or delete MergeRequest and GroupMergeRequest objects.
                 # You need to create a ProjectMergeRequest object to apply changes:
                 editable_mr = project.mergerequests.get(mr.iid, lazy=True)
                 return editable_mr
-    logger.warn('No matching merge request found for pipeline {0}'.format(ci_pipeline_id))
+    logger.warning('No matching merge request found for pipeline {0}'.format(ci_pipeline_id))
     return None
 
 

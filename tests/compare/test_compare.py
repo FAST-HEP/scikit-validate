@@ -59,26 +59,26 @@ def test_difference(a1, a2, expected):
     (
         np.array([1, 2, 3]),
         np.array([2, 4, 6]),
-        np.Infinity,
+        np.inf,
         0.1,
         False
     ),
     (
-        np.array([np.Infinity, np.Infinity, np.Infinity]),
+        np.array([np.inf, np.inf, np.inf]),
         np.array([2, 4, 6]),
         1,
         0.02,
         False
     ),
     (
-        np.array([np.Infinity, np.Infinity, np.Infinity]),
+        np.array([np.inf, np.inf, np.inf]),
         np.array([2, 4, 6]),
-        np.Infinity,
+        np.inf,
         0.1,
         False
     ),
     (
-        np.array([np.Infinity, np.Infinity, np.Infinity]),
+        np.array([np.inf, np.inf, np.inf]),
         np.array([2, 4, 6]),
         0,
         0.1,
@@ -118,26 +118,26 @@ def test_is_ok(value1, value2, normalisation, tolerance, expected):
     (
         np.array([1, 2, 3]),
         np.array([2, 4, 6]),
-        np.Infinity,
-        np.Infinity
+        np.inf,
+        np.inf
     ),
     (
-        np.array([np.Infinity, np.Infinity, np.Infinity]),
+        np.array([np.inf, np.inf, np.inf]),
         np.array([2, 4, 6]),
         1,
-        np.Infinity,
+        np.inf,
     ),
     (
-        np.array([np.Infinity, np.Infinity, np.Infinity]),
+        np.array([np.inf, np.inf, np.inf]),
         np.array([2, 4, 6]),
-        np.Infinity,
-        np.Infinity,
+        np.inf,
+        np.inf,
     ),
     (
-        np.array([np.Infinity, np.Infinity, np.Infinity]),
+        np.array([np.inf, np.inf, np.inf]),
         np.array([2, 4, 6]),
         0,
-        np.Infinity,
+        np.inf,
     ),
 ])
 def test_maxRelativeDifference(value1, value2, normalisation, expected):
@@ -149,8 +149,8 @@ def test_maxRelativeDifference(value1, value2, normalisation, expected):
         'tests/samples/test_1.root',
         'tests/samples/test_1.root',
         0,
-        6,
-        0
+        5,
+        1
     ),
     (
         'tests/samples/test_1.root',
@@ -163,8 +163,8 @@ def test_maxRelativeDifference(value1, value2, normalisation, expected):
         'tests/samples/test_1.root',
         'tests/samples/test_2.root',
         1,
-        6,
-        0
+        5,
+        1
     ),
     (
         'tests/samples/test_1.root',

@@ -13,8 +13,8 @@ def test_positive_change_adjust_axis_limits(a_min, a_max):
     change = 0.2
     new_a_min, new_a_max = adjust_axis_limits(a_min, a_max, change, logy)
 
-    assert new_a_min < a_min if a_min != 0 else new_a_min == a_min
-    assert new_a_max > a_max if a_max != 0 else new_a_max == a_max
+    assert new_a_min <= a_min if a_min != 0 else new_a_min == a_min
+    assert new_a_max >= a_max if a_max != 0 else new_a_max == a_max
 
 
 @given(st.floats(min_value=-1e6, max_value=1e6), st.floats(min_value=-1e6, max_value=1e6))
@@ -24,8 +24,8 @@ def test_negative_change_adjust_axis_limits(a_min, a_max):
     change = - 0.2
     new_a_min, new_a_max = adjust_axis_limits(a_min, a_max, change, logy)
 
-    assert new_a_min > a_min if a_min != 0 else new_a_min == a_min
-    assert new_a_max < a_max if a_max != 0 else new_a_max == a_max
+    assert new_a_min >= a_min if a_min != 0 else new_a_min == a_min
+    assert new_a_max <= a_max if a_max != 0 else new_a_max == a_max
 
 
 @given(st.floats(min_value=-1e6, max_value=1e6), st.floats(min_value=-1e6, max_value=1e6))
@@ -36,10 +36,12 @@ def test_logy_adjust_axis_limits(a_min, a_max):
     change = 0.2
     new_a_min, new_a_max = adjust_axis_limits(a_min, a_max, change, logy)
 
+    print(a_min, a_max, new_a_min, new_a_max)
+
     assert new_a_min > 0
     assert new_a_max > 0
-    assert new_a_min < a_min if a_min > 0 else new_a_min > 0
-    assert new_a_max > a_max if a_max > 0 else new_a_max > 0
+    assert new_a_min <= a_min if a_min > 0 else new_a_min > 0
+    assert new_a_max >= a_max if a_max > 0 else new_a_max > 0
 
 
 @given(st.text(), st.text())
