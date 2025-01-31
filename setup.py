@@ -131,6 +131,9 @@ setup(
     setup_requires=setup_requirements,
     test_suite='tests',
     tests_require=test_requirements,
+    extras_require={
+        'test': test_requirements,
+    },
     url='https://gitlab.cern.ch/fast-hep/public/scikit-validate',
     version=find_version("skvalidate", '__init__.py'),
     zip_safe=False,
