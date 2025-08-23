@@ -172,6 +172,61 @@ def __repr_section__(name, section):
         str(section),
     )
 
+def formatted_table(table_json, **kwargs):
+
+    with open(table_json) as f:
+        table = json.load(f)
+
+    try:
+        if 'table_header' not in table:
+            raise Exception("Missing \'table_header\' field")
+        if 'table_content' not in table:
+            raise Exception("Missing \'table_content\' field")
+    except Exception as e:
+        logger.error('Error reading the table file: {}'.format(e))
+        raise e
+
+    if 'symbol_success' in kwargs:
+        symbol_success = kwargs.pop('symbol_success')
+    else:
+        symbol_success = 'success'
+
+    if 'symbol_failed' in kwargs:
+        symbol_failed = kwargs.pop('symbol_failed')
+    else:
+        symbol_failed = 'failed'
+
+    header_keys = []
+    formated_header = '|'
+    formated_separator = '|'
+
+    for key, name in table['table_header'].items():
+        header_keys.append(key)
+        formated_header += f' {name} |'
+        formated_separator += '---|'
+
+    formated_table = {}
+    formated_table['table_header'] = formated_header
+    formated_table['table_separator'] = formated_separator
+
+    formated_content = []
+
+    for var_key, var_values in table['table_content'].items():
+        formated_line = '|'
+        for header_key in header_keys:
+            if header_key.find('status') != -1 and var_values[header_key]:
+                formated_line += f' {symbol_success} |'
+            elif header_key.find('status') != -1:
+                formated_line += f' {symbol_failed} |'
+            else:
+                formated_line += f' {var_values[header_key]} |'
+
+        formated_content.append(formated_line)
+
+    formated_table['table_content'] = formated_content
+
+    return formated_table
+
 
 def get_metrics(metrics_json, metrics_ref_json, **kwargs):
     profile = kwargs.pop('profile', '')
